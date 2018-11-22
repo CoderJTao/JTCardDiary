@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PhotoView" customModule="JTCardDiary" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xcy-5Y-Nor">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="260"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xwO-Vf-Vcu">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E11-df-JKh">
+                    <rect key="frame" x="0.0" y="260" width="375" height="44"/>
+                    <color key="backgroundColor" red="0.14901960784313725" green="0.74901960784313726" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="4MR-FH-b7q"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="导入0张照片"/>
+                    <connections>
+                        <action selector="importBtnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="anc-3s-gLP"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="xcy-5Y-Nor" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="9HM-AD-NAk"/>
+                <constraint firstItem="E11-df-JKh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="E8T-lH-MvZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="E11-df-JKh" secondAttribute="trailing" id="Mx7-Rx-KwA"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="xcy-5Y-Nor" secondAttribute="bottom" id="STg-Mv-qh6"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xcy-5Y-Nor" secondAttribute="trailing" id="c75-F9-tD7"/>
+                <constraint firstItem="xcy-5Y-Nor" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="dCN-Rc-d4N"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="E11-df-JKh" secondAttribute="bottom" constant="-44" id="xW3-2X-Aic"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="bottomImportBtn" destination="xW3-2X-Aic" id="zgd-xX-aGV"/>
+                <outlet property="collectionView" destination="xcy-5Y-Nor" id="q9Q-p6-uxU"/>
+                <outlet property="importBtn" destination="E11-df-JKh" id="L7u-2d-LVc"/>
+            </connections>
+            <point key="canvasLocation" x="-159" y="58"/>
+        </view>
+    </objects>
+</document>

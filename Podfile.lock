@@ -1,0 +1,30 @@
+PODS:
+  - Realm (3.11.1):
+    - Realm/Headers (= 3.11.1)
+  - Realm/Headers (3.11.1)
+  - RealmSwift (3.11.1):
+    - Realm (= 3.11.1)
+  - SnapKit (4.2.0)
+  - YYText (1.0.7)
+
+DEPENDENCIES:
+  - RealmSwift (~> 3.11.1)
+  - SnapKit (~> 4.2.0)
+  - YYText (~> 1.0.7)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Realm
+    - RealmSwift
+    - SnapKit
+    - YYText
+
+SPEC CHECKSUMS:
+  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
+  RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+
+PODFILE CHECKSUM: a1d37a16b1a06877bfcd66e2361b5fb0c6fc6889
+
+COCOAPODS: 1.5.3
