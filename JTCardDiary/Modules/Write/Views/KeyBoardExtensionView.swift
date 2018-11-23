@@ -113,34 +113,34 @@ extension KeyBoardExtensionView {
     }
     
     @objc func photoBtnClick(_ sender: UIButton) {
-        self.videoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        sender.isSelected = !sender.isSelected
+//        self.videoBtn.isSelected = false
+//        self.bgmBtn.isSelected = false
+//        self.fontBtn.isSelected = false
+//        self.colorBtn.isSelected = false
+//
+//        sender.isSelected = !sender.isSelected
         
         self.delegate?.photoPressed(sender)
     }
     
     @objc func videoBtnClick(_ sender: UIButton) {
-        self.photoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        sender.isSelected = !sender.isSelected
+//        self.photoBtn.isSelected = false
+//        self.bgmBtn.isSelected = false
+//        self.fontBtn.isSelected = false
+//        self.colorBtn.isSelected = false
+//
+//        sender.isSelected = !sender.isSelected
         
         self.delegate?.videoPressed(sender)
     }
     
     @objc func bgmBtnClick(_ sender: UIButton) {
-        self.photoBtn.isSelected = false
-        self.videoBtn.isSelected = false
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        sender.isSelected = !sender.isSelected
+//        self.photoBtn.isSelected = false
+//        self.videoBtn.isSelected = false
+//        self.fontBtn.isSelected = false
+//        self.colorBtn.isSelected = false
+//
+//        sender.isSelected = !sender.isSelected
         
         self.delegate?.bgmPressedn(sender)
     }

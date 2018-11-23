@@ -84,5 +84,36 @@ extension UIView {
         get {
             return originX+width
         }
-    }    
+    }
+    
+    /// 为view添加线条
+    func addLine(_ color: CGColor = UIColor(r: 230, g: 230, b: 230).cgColor, positon: LinePosition) {
+        let border = CALayer()
+        let width = CGFloat(1.0)
+        border.borderColor = color
+        
+        var frame = CGRect.zero
+        switch positon {
+        case .left:
+            frame = CGRect(x:0, y:0, width:width, height:self.height)
+        case .right:
+            frame = CGRect(x:self.width - width, y:0, width:width, height:self.height)
+        case .top:
+            frame = CGRect(x:0, y:0, width:self.width, height:width)
+        case .bottom:
+            frame = CGRect(x:0, y:self.height - width, width:self.width, height:1)
+        }
+        
+        border.frame = CGRect(x:0, y:self.height - width, width:self.width, height:1)
+        border.borderWidth = width
+        self.layer.addSublayer(border)
+        self.layer.masksToBounds = true
+    }
+}
+
+enum LinePosition {
+    case left
+    case right
+    case top
+    case bottom
 }

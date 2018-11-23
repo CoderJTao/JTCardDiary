@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import MediaPlayer
 
 class EditController: UIViewController {
     
@@ -15,16 +16,21 @@ class EditController: UIViewController {
     
     private var keyboardHeight: CGFloat = 0
     
+    private var imageMood: UIImageView = {
+        let image = UIImageView(frame: CGRect(x: 160, y: 10, width: 16, height: 16))
+        image.image = UIImage(named: "happy")
+        image.contentMode = UIView.ContentMode.scaleAspectFit
+        return image
+    }()
+    private var imageWeather: UIImageView = {
+        let image = UIImageView(frame: CGRect(x: 180, y: 10, width: 16, height: 16))
+        image.image = UIImage(named: "yintian")
+        image.contentMode = UIView.ContentMode.scaleAspectFit
+        return image
+    }()
+    
     private var keyBoardTopView: KeyBoardExtensionView = {
         let view = KeyBoardExtensionView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: 44))
-        return view
-    }()
-    private var photoView: PhotoView = {
-        let view = Bundle.main.loadNibNamed("PhotoView", owner: self, options: nil)?[0] as! PhotoView
-        return view
-    }()
-    private var videoView: VideoView = {
-        let view = Bundle.main.loadNibNamed("VideoView", owner: self, options: nil)?[0] as! VideoView
         return view
     }()
     
@@ -32,6 +38,9 @@ class EditController: UIViewController {
         let view = FormatView()
         return view
     }()
+    
+    @IBOutlet weak var bgmView: UIView!
+    
     
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var textView: UITextView!
@@ -48,12 +57,20 @@ class EditController: UIViewController {
     }
 
     func setDateTitle(title: String) {
-        let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 36))
+        
+        let lbl = UILabel(frame: CGRect(x: 0, y: 8, width: 120, height: 20))
         lbl.textAlignment = .center
         lbl.textColor = UIColor.hexString(hexString: TextColor_black)
         lbl.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
-        lbl.text = title
-        self.navigationItem.titleView = lbl
+        lbl.text = "NOV, 23 / 2018"
+        titleView.addSubview(lbl)
+        lbl.center = titleView.center
+        
+        titleView.addSubview(imageMood)
+        titleView.addSubview(imageWeather)
+        
+        self.navigationItem.titleView = titleView
     }
     
     func setText(text: NSAttributedString) {
@@ -70,9 +87,16 @@ extension EditController {
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.hexString(hexString: "2D2D2D")
         
         
-        //  test
+        //  kb
         self.keyBoardTopView.delegate = self
         self.textView.inputAccessoryView = self.keyBoardTopView
+        
+        // 为bgmView添加背景
+        self.bgmView.layer.shadowColor = UIColor.gray.cgColor
+        self.bgmView.layer.shadowOpacity = 0.4
+        self.bgmView.layer.shadowRadius = 4.0
+        self.bgmView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.bgmView.layer.shadowPath = UIBezierPath(rect: CGRect(x: -2, y: -2, width: kScreenWidth - 30 + 4, height: 50 + 4)).cgPath
     }
     
     @objc func saveItemClick(_ sender: UIBarButtonItem) {
@@ -88,8 +112,6 @@ extension EditController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        self.textView.setContentOffset(CGPoint(x: self.textView.contentOffset.x, y: self.textView.contentSize.height), animated: true)
-        
         return true
     }
     
@@ -107,7 +129,7 @@ extension EditController: UITextViewDelegate {
 //
 //        //将视图上移计算好的偏移
         UIView.animate(withDuration: duration) {
-            self.bottomConstraint.constant = 20 + kbHeight
+            self.bottomConstraint.constant = 8 + kbHeight
             self.view.layoutIfNeeded()
         }
         
@@ -119,7 +141,7 @@ extension EditController: UITextViewDelegate {
         let duration = (info?[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double)
         
         UIView.animate(withDuration: duration) {
-            self.bottomConstraint.constant = 20
+            self.bottomConstraint.constant = 8
             self.view.layoutIfNeeded()
         }
     }
@@ -132,12 +154,23 @@ extension EditController: KeyBoardExtensionDelegate {
     func photoPressed(_ sender: UIButton) {
         print("照片点击")
         
-        if sender.isSelected {
-            switch PHPhotoLibrary.authorizationStatus() {
-            case .authorized:
-                print("authorized")
-                self.photoView.initData()
-            default:
+        if PHPhotoLibrary.authorizationStatus() == .notDetermined {
+            PHPhotoLibrary.requestAuthorization() { status in
+                if status == .authorized {
+                    print("authorized")
+                    
+                    DispatchQueue.main.async {
+                        let vc = PhotoController()
+                        vc.setType(type: .image)
+                        let nav = UINavigationController(rootViewController: vc)
+                        self.present(nav, animated: true, completion: {
+                            
+                        })
+                    }
+                }
+            }
+        } else if PHPhotoLibrary.authorizationStatus() == .denied || PHPhotoLibrary.authorizationStatus() == .restricted {
+            DispatchQueue.main.async {
                 let alert = UIAlertController(title: nil, message: "请在iPhone的\"设置-隐私-照片\"选项中，\n允许访问你的手机相册。", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
                     
@@ -149,30 +182,37 @@ extension EditController: KeyBoardExtensionDelegate {
                     
                 })
             }
-        }
-        
-        self.videoView.removeFromSuperview()
-        self.fontView.removeFromSuperview()
-        
-        if sender.isSelected {
-            self.photoView.frame = CGRect(x: 0, y: kScreenHeight-self.keyboardHeight, width: kScreenWidth, height: self.keyboardHeight)
-            self.view.addSubview(self.photoView)
         } else {
-            self.photoView.removeFromSuperview()
+            let vc = PhotoController()
+            vc.setType(type: .image)
+            let nav = UINavigationController(rootViewController: vc)
+            self.present(nav, animated: true, completion: {
+                
+            })
         }
         
-        self.isHideKB(isHide: sender.isSelected)
     }
     
     func videoPressed(_ sender: UIButton) {
         print("视频点击")
         
-        if sender.isSelected {
-            switch PHPhotoLibrary.authorizationStatus() {
-            case .authorized:
-                print("authorized")
-                self.videoView.initData()
-            default:
+        if PHPhotoLibrary.authorizationStatus() == .notDetermined {
+            PHPhotoLibrary.requestAuthorization() { status in
+                if status == .authorized {
+                    print("authorized")
+                    
+                    DispatchQueue.main.async {
+                        let vc = PhotoController()
+                        vc.setType(type: .video)
+                        let nav = UINavigationController(rootViewController: vc)
+                        self.present(nav, animated: true, completion: {
+                            
+                        })
+                    }
+                }
+            }
+        } else if PHPhotoLibrary.authorizationStatus() == .denied || PHPhotoLibrary.authorizationStatus() == .restricted {
+            DispatchQueue.main.async {
                 let alert = UIAlertController(title: nil, message: "请在iPhone的\"设置-隐私-照片\"选项中，\n允许访问你的手机相册。", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
                     
@@ -183,31 +223,61 @@ extension EditController: KeyBoardExtensionDelegate {
                 self.present(alert, animated: true, completion: {
                     
                 })
-                
             }
-        }
-        
-        self.photoView.removeFromSuperview()
-        self.fontView.removeFromSuperview()
-        
-        if sender.isSelected {
-            self.videoView.frame = CGRect(x: 0, y: kScreenHeight-self.keyboardHeight, width: kScreenWidth, height: self.keyboardHeight)
-            self.view.addSubview(self.videoView)
         } else {
-            self.videoView.removeFromSuperview()
+            let vc = PhotoController()
+            vc.setType(type: .video)
+            let nav = UINavigationController(rootViewController: vc)
+            self.present(nav, animated: true, completion: {
+                
+            })
         }
-        
-        self.isHideKB(isHide: sender.isSelected)
     }
     
     func bgmPressedn(_ sender: UIButton) {
         print("音乐点击")
+        
+        if MPMediaLibrary.authorizationStatus() == .notDetermined {
+            PHPhotoLibrary.requestAuthorization() { status in
+                if status == .authorized {
+                    print("authorized")
+                    
+                    DispatchQueue.main.async {
+                        let vc = MusicController()
+                        let nav = UINavigationController(rootViewController: vc)
+                        self.present(nav, animated: true, completion: {
+                            
+                        })
+                    }
+                }
+            }
+        } else if MPMediaLibrary.authorizationStatus() == .denied || MPMediaLibrary.authorizationStatus() == .restricted {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: nil, message: "请在iPhone的\"设置-隐私-照片\"选项中，\n允许访问你的手机音乐。", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
+                    
+                }))
+                alert.addAction(UIAlertAction(title: "前往", style: .default, handler: { (act) in
+                    
+                }))
+                self.present(alert, animated: true, completion: {
+                    
+                })
+            }
+        } else {
+            let vc = MusicController()
+            let nav = UINavigationController(rootViewController: vc)
+            self.present(nav, animated: true, completion: {
+                
+            })
+        }
+        
+        
+        
     }
     
     func fontPressed(_ sender: UIButton) {
         print("字体点击")
-        self.photoView.removeFromSuperview()
-        self.videoView.removeFromSuperview()
         
         if sender.isSelected {
             self.fontView.frame = CGRect(x: 0, y: kScreenHeight-self.keyboardHeight, width: kScreenWidth, height: self.keyboardHeight)
@@ -235,7 +305,6 @@ extension EditController: KeyBoardExtensionDelegate {
     
     func endPressed(_ sender: UIButton) {
         // 下降时 插入的视图也需要消失
-        self.photoView.removeFromSuperview()
         self.fontView.removeFromSuperview()
         
         self.textView.resignFirstResponder()

@@ -1,17 +1,15 @@
 //
-//  FormatView.swift
+//  ColorView.swift
 //  JTCardDiary
 //
-//  Created by 江涛 on 2018/11/20.
+//  Created by 江涛 on 2018/11/23.
 //  Copyright © 2018 江涛. All rights reserved.
 //
 
 import UIKit
 
-class FormatView: UIView {
+class ColorView: UIView {
 
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         

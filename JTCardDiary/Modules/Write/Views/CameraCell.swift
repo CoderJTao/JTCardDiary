@@ -10,6 +10,10 @@ import UIKit
 import Photos
 
 class CameraCell: UICollectionViewCell {
+    
+    private var player = AVPlayer()
+    private var playerLayer = AVPlayerLayer()
+    
     private lazy var showImg: UIImageView = {
         let imageV = UIImageView(frame: self.bounds)
         
@@ -48,7 +52,7 @@ class CameraCell: UICollectionViewCell {
             self._asset = asset
             self.chooseImg.isHidden = false
             
-            imageManager.requestImage(for: asset, targetSize: self.bounds.size, contentMode: PHImageContentMode.aspectFill, options: nil) { (image, imageDic) in
+            imageManager.requestImage(for: asset, targetSize: CGSize(width: self.width*UIScreen.main.scale, height: self.height*UIScreen.main.scale), contentMode: PHImageContentMode.aspectFit, options: nil) { (image, imageDic) in
                 guard let temp = image else { return }
                 
                 self.showImg.image = temp
@@ -57,8 +61,16 @@ class CameraCell: UICollectionViewCell {
             }
             
         } else {
-            imageManager.requestPlayerItem(forVideo: asset, options: nil) { (playerItem, info) in
+            // options 待定
+            imageManager.requestPlayerItem(forVideo: asset, options: nil) { (playItem, info) in
                 
+                DispatchQueue.main.async {
+                    self.player = AVPlayer(playerItem: playItem)
+                    self.playerLayer = AVPlayerLayer(player: self.player)
+                    self.playerLayer.backgroundColor = UIColor.black.cgColor
+                    self.playerLayer.frame = self.bounds
+                    self.layer.addSublayer(self.playerLayer)
+                }
                 print(info)
             }
         }
