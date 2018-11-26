@@ -16,7 +16,8 @@ class CameraCell: UICollectionViewCell {
     
     private lazy var showImg: UIImageView = {
         let imageV = UIImageView(frame: self.bounds)
-        
+        imageV.contentMode = UIView.ContentMode.scaleAspectFill
+        imageV.layer.masksToBounds = true
         return imageV
     }()
     
@@ -52,12 +53,10 @@ class CameraCell: UICollectionViewCell {
             self._asset = asset
             self.chooseImg.isHidden = false
             
-            imageManager.requestImage(for: asset, targetSize: CGSize(width: self.width*UIScreen.main.scale, height: self.height*UIScreen.main.scale), contentMode: PHImageContentMode.aspectFit, options: nil) { (image, imageDic) in
+            imageManager.requestImage(for: asset, targetSize: CGSize(width: self.width*UIScreen.main.scale, height: self.height*UIScreen.main.scale), contentMode: PHImageContentMode.aspectFill, options: nil) { (image, imageDic) in
                 guard let temp = image else { return }
                 
                 self.showImg.image = temp
-                
-                print(imageDic)
             }
             
         } else {
@@ -71,7 +70,6 @@ class CameraCell: UICollectionViewCell {
                     self.playerLayer.frame = self.bounds
                     self.layer.addSublayer(self.playerLayer)
                 }
-                print(info)
             }
         }
         

@@ -17,13 +17,13 @@ class EditController: UIViewController {
     private var keyboardHeight: CGFloat = 0
     
     private var imageMood: UIImageView = {
-        let image = UIImageView(frame: CGRect(x: 160, y: 10, width: 16, height: 16))
+        let image = UIImageView(frame: CGRect(x: 140, y: 10, width: 16, height: 16))
         image.image = UIImage(named: "happy")
         image.contentMode = UIView.ContentMode.scaleAspectFit
         return image
     }()
     private var imageWeather: UIImageView = {
-        let image = UIImageView(frame: CGRect(x: 180, y: 10, width: 16, height: 16))
+        let image = UIImageView(frame: CGRect(x: 160, y: 10, width: 16, height: 16))
         image.image = UIImage(named: "yintian")
         image.contentMode = UIView.ContentMode.scaleAspectFit
         return image
@@ -35,7 +35,7 @@ class EditController: UIViewController {
     }()
     
     private var fontView: FormatView = {
-        let view = FormatView()
+        let view = Bundle.main.loadNibNamed("FormatView", owner: self, options: nil)?[0] as! FormatView
         return view
     }()
     
@@ -65,12 +65,40 @@ class EditController: UIViewController {
         lbl.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         lbl.text = "NOV, 23 / 2018"
         titleView.addSubview(lbl)
-        lbl.center = titleView.center
+        lbl.center = CGPoint(x: titleView.center.x-25, y: titleView.center.y)
+        
+        let btn = UIButton(frame: titleView.bounds)
+        btn.addTarget(self, action: #selector(moodAndWeatherBtnClick), for: .touchUpInside)
         
         titleView.addSubview(imageMood)
         titleView.addSubview(imageWeather)
+        titleView.addSubview(btn)
+        
+        titleView.clipsToBounds = true
+        titleView.layer.borderWidth = 1
+        titleView.layer.borderColor = UIColor.hexString(hexString: TextColor_gray).cgColor
+        titleView.layer.cornerRadius = 18
         
         self.navigationItem.titleView = titleView
+    }
+    
+    @objc private func moodAndWeatherBtnClick() {
+        let vc = MoodAndWeatherController()
+        vc.modalPresentationStyle = .overCurrentContext
+        
+        vc.passWeatherAndMood = { (weather, mood) in
+            if !weather.isEmpty {
+                self.imageWeather.image = UIImage(named: WeatherDic[weather] ?? "yintian")
+            }
+            
+            if !mood.isEmpty {
+                self.imageMood.image = UIImage(named: MoodDic[mood] ?? "happy")
+            }
+        }
+        
+        self.present(vc, animated: false) {
+            
+        }
     }
     
     func setText(text: NSAttributedString) {

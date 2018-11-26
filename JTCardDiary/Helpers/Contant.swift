@@ -54,6 +54,10 @@ let SeparatColor = "EBEBEB"
 let MonthSubDic = ["1": "JAN", "2": "FEB", "3": "MAR", "4": "APR", "5": "MAY", "6": "JUN", "7": "JUL", "8": "AUG", "9": "SEP", "10": "OCT", "11": "NOV", "12": "DEC"]
 let MonthDic = ["1": "JANUARY", "2": "FEBRUARY", "3": "MARCH", "4": "APRIL", "5": "MAY", "6": "JUNE", "7": "JULY", "8": "AUGUST", "9": "SEPTEMBER", "10": "OCTOBER", "11": "NOVEMBER", "12": "DECEMBER"]
 
+// weather and mood
+let WeatherDic = ["晴天": "qing_s", "阴天": "yintian_s", "刮风": "feng_s", "小雨": "xiaoyu_s", "大雨": "dayu_s", "阵雨": "zhenyu_s", "雪": "daxue_s", "雾": "wu_s"]
+let MoodDic = ["开心": "happy_s", "无聊": "boring_s", "非常高兴": "lol_s", "酷炫": "cool_s", "疑问": "question_s", "难过": "sad_s", "悲伤": "cry_s", "愤怒": "shengqi_s"]
+
 
 var CurrentDate: String {
     get {

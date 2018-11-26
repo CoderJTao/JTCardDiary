@@ -24,6 +24,10 @@
 		6C4C2DE5219AC0EC00DF73BE /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4C2DE3219AC0EC00DF73BE /* HomeCell.swift */; };
 		6C4C2DE6219AC0EC00DF73BE /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C4C2DE4219AC0EC00DF73BE /* HomeCell.xib */; };
 		6C4C2DE8219ACAA400DF73BE /* HomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C4C2DE7219ACAA400DF73BE /* HomeController.xib */; };
+		6C5861F121AB978600D19E85 /* MusicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5861EF21AB978600D19E85 /* MusicCell.swift */; };
+		6C5861F221AB978600D19E85 /* MusicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C5861F021AB978600D19E85 /* MusicCell.xib */; };
+		6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */; };
+		6C5861F621ABA4F900D19E85 /* MoodAndWeatherController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */; };
 		6C825DFE21A294820083FEC4 /* AttributeTextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825DFD21A294820083FEC4 /* AttributeTextHelper.swift */; };
 		6C825E0221A2B8890083FEC4 /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825E0021A2B8890083FEC4 /* EditController.swift */; };
 		6C825E0321A2B8890083FEC4 /* EditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C825E0121A2B8890083FEC4 /* EditController.xib */; };
@@ -71,6 +75,10 @@
 		6C4C2DE3219AC0EC00DF73BE /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		6C4C2DE4219AC0EC00DF73BE /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
 		6C4C2DE7219ACAA400DF73BE /* HomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeController.xib; sourceTree = "<group>"; };
+		6C5861EF21AB978600D19E85 /* MusicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicCell.swift; sourceTree = "<group>"; };
+		6C5861F021AB978600D19E85 /* MusicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicCell.xib; sourceTree = "<group>"; };
+		6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAndWeatherController.swift; sourceTree = "<group>"; };
+		6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoodAndWeatherController.xib; sourceTree = "<group>"; };
 		6C825DFD21A294820083FEC4 /* AttributeTextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeTextHelper.swift; sourceTree = "<group>"; };
 		6C825E0021A2B8890083FEC4 /* EditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditController.swift; sourceTree = "<group>"; };
 		6C825E0121A2B8890083FEC4 /* EditController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditController.xib; sourceTree = "<group>"; };
@@ -233,6 +241,8 @@
 				6C825E0821A3F6370083FEC4 /* Views */,
 				6C825E0021A2B8890083FEC4 /* EditController.swift */,
 				6C825E0121A2B8890083FEC4 /* EditController.xib */,
+				6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */,
+				6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */,
 				6C8DF6EC21A7A5D80099F1B5 /* PhotoController.swift */,
 				6C8DF6ED21A7A5D80099F1B5 /* PhotoController.xib */,
 				6C8DF6F021A803B60099F1B5 /* MusicController.swift */,
@@ -246,6 +256,8 @@
 			children = (
 				6C825E0921A3FF930083FEC4 /* KeyBoardExtensionView.swift */,
 				6C8DF6CE21A683170099F1B5 /* CameraCell.swift */,
+				6C5861EF21AB978600D19E85 /* MusicCell.swift */,
+				6C5861F021AB978600D19E85 /* MusicCell.xib */,
 				6C825E0F21A400050083FEC4 /* FormatView.swift */,
 				6C825E1521A40DB90083FEC4 /* FormatView.xib */,
 				6C8DF6F421A809020099F1B5 /* ColorView.swift */,
@@ -333,11 +345,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C5861F621ABA4F900D19E85 /* MoodAndWeatherController.xib in Resources */,
 				6C825E1621A40DB90083FEC4 /* FormatView.xib in Resources */,
 				6C08A5EB21A15ACD0041EE25 /* DisplayController.xib in Resources */,
 				6C8DF6F321A803B60099F1B5 /* MusicController.xib in Resources */,
 				6C8DF6F721A809380099F1B5 /* ColorView.xib in Resources */,
 				6C4C2DE8219ACAA400DF73BE /* HomeController.xib in Resources */,
+				6C5861F221AB978600D19E85 /* MusicCell.xib in Resources */,
 				6C908B5D219EA18F00BB3D1E /* DiaryListCell.xib in Resources */,
 				6C4C2DC5219AB03300DF73BE /* LaunchScreen.storyboard in Resources */,
 				6C825E0321A2B8890083FEC4 /* EditController.xib in Resources */,
@@ -417,6 +431,7 @@
 				6C825DFE21A294820083FEC4 /* AttributeTextHelper.swift in Sources */,
 				6C8DF6F521A809020099F1B5 /* ColorView.swift in Sources */,
 				6C4C2DDF219ABFCA00DF73BE /* String+Extension.swift in Sources */,
+				6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */,
 				6C825E0A21A3FF930083FEC4 /* KeyBoardExtensionView.swift in Sources */,
 				6C825E0221A2B8890083FEC4 /* EditController.swift in Sources */,
 				6C8DF6EE21A7A5D80099F1B5 /* PhotoController.swift in Sources */,
@@ -432,6 +447,7 @@
 				6C4C2DE2219ABFCA00DF73BE /* DiaryManager.swift in Sources */,
 				6C4C2DDC219ABFCA00DF73BE /* Date+Extension.swift in Sources */,
 				6C4C2DD0219ABDF800DF73BE /* HomeController.swift in Sources */,
+				6C5861F121AB978600D19E85 /* MusicCell.swift in Sources */,
 				6CB36CD8219D513400B43800 /* DatePickerController.swift in Sources */,
 				6C8DF6F221A803B60099F1B5 /* MusicController.swift in Sources */,
 				6C4C2DDD219ABFCA00DF73BE /* UIView+Extension.swift in Sources */,

@@ -175,7 +175,7 @@ extension DiaryListController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DisplayController()
-        vc.setText(text: self.textView.attributedText)
+//        vc.setText(text: self.textView.attributedText)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
