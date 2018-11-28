@@ -55,8 +55,8 @@ class EditController: UIViewController {
     
     var diaryModel: DiaryModel?
     
-    var weatherStr = "yintian"
-    var moodStr = "happy"
+    var weatherStr = ""
+    var moodStr = ""
     
     var bgmModel: BgmModel?
     

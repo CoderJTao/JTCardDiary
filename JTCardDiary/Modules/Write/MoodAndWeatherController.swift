@@ -50,8 +50,33 @@ class MoodAndWeatherController: UIViewController {
     }
     
     func setShowImg(weather: String, mood: String) {
+        if weather.isEmpty {
+            self.weatherLbl?.text = "今天天气如何？"
+        } else {
+            if WeatherArr.contains(weather) {
+                let index = WeatherArr.index(of: weather)
+                if let use = index {
+                    let weatherBtn = self.view.viewWithTag(WEATHER_TAG+use) as! UIButton
+                    weatherBtn.isSelected = true
+                    
+                    self.weatherLbl?.text = weather
+                }
+            }
+        }
         
-        
+        if mood.isEmpty {
+            self.moodLbl?.text = "今天心情如何？"
+        } else {
+            if MoodArr.contains(mood) {
+                let index = MoodArr.index(of: mood)
+                if let use = index {
+                    let moodBtn = self.view.viewWithTag(MOOD_TAG+use) as! UIButton
+                    moodBtn.isSelected = true
+                    
+                    self.moodLbl?.text = mood
+                }
+            }
+        }
     }
     
     
