@@ -18,6 +18,9 @@ class DisplayController: UIViewController {
     
     @IBOutlet weak var bgmView: UIView!
     @IBOutlet weak var bgmViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bgmImg: UIImageView!
+    @IBOutlet weak var bgmName: UILabel!
+    @IBOutlet weak var bgmArtistName: UILabel!
     
     
     @IBOutlet weak var textView: UITextView!
@@ -25,6 +28,9 @@ class DisplayController: UIViewController {
     @IBOutlet weak var funcView: UIView!
     
     private var attText = NSAttributedString()
+    
+    var diaryModel: DiaryModel?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +42,20 @@ class DisplayController: UIViewController {
         setUpUI()
     }
     
+    func setDiaryModel(model: DiaryModel) {
+        self.diaryModel = model
+        
+        if let bgm = model.bgm {
+//            self.bgmImg.image =
+            self.bgmName.text = bgm.musicName
+            self.bgmArtistName.text = bgm.artistName
+        } else {
+            self.bgmView.isHidden = true
+            self.bgmViewHeightConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+        
+    }
     
     func setText(text: NSAttributedString) {
         self.attText = text

@@ -13,6 +13,8 @@ class DiaryListController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var listData: [DiaryModel] = []
+    
     private var textView = UITextView()
     private let textFont = UIFont.systemFont(ofSize: 15, weight: .thin)
     
@@ -39,9 +41,13 @@ class DiaryListController: UIViewController {
     }
     
     @IBAction func writeTodayBtnClick(_ sender: UIButton) {
+        let dateStr = Date().toString()
+        
+        let vc = EditController()
+        vc.setDateTitle(title: dateStr)
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-
 }
 
 /*
@@ -165,7 +171,7 @@ enum ImageAttachmentMode {
 
 extension DiaryListController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return self.listData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -175,6 +181,10 @@ extension DiaryListController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DisplayController()
+        
+        let arr = self.textView.attributedText.transformToArray()
+        
+        vc.setDiaryModel(model: listData[indexPath.row])
 //        vc.setText(text: self.textView.attributedText)
         self.navigationController?.pushViewController(vc, animated: true)
     }

@@ -114,8 +114,12 @@ class HomeController: UIViewController {
     }
     
     @IBAction func writeTodayBtnClick(_ sender: UIButton) {
+        let dateStr = Date().toString()
         
-        
+        let vc = EditController()
+        vc.setDateTitle(title: dateStr)
+
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     

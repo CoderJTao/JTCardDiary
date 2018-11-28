@@ -13,7 +13,6 @@ import MediaPlayer
 class EditController: UIViewController {
     
     private var currentText = NSMutableAttributedString()
-    
     private var keyboardHeight: CGFloat = 0
     
     private var imageMood: UIImageView = {
@@ -39,16 +38,33 @@ class EditController: UIViewController {
         return view
     }()
     
+    private var colorView: ColorView = {
+        let view = ColorView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: 300))
+        return view
+    }()
+    
     @IBOutlet weak var bgmView: UIView!
+    @IBOutlet weak var heightConstraints: NSLayoutConstraint!
+    @IBOutlet weak var bgmImg: UIImageView!
+    @IBOutlet weak var bgmName: UILabel!
+    @IBOutlet weak var bgmArtistName: UILabel!
     
-    
-    @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
+    var diaryModel: DiaryModel?
+    
+    var weatherStr = "yintian"
+    var moodStr = "happy"
+    
+    var bgmModel: BgmModel?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         showNavigationBackButton()
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -82,30 +98,27 @@ class EditController: UIViewController {
         self.navigationItem.titleView = titleView
     }
     
-    @objc private func moodAndWeatherBtnClick() {
-        let vc = MoodAndWeatherController()
-        vc.modalPresentationStyle = .overCurrentContext
+    func setDiaryModel(model: DiaryModel) {
+        self.diaryModel = model
         
-        vc.passWeatherAndMood = { (weather, mood) in
-            if !weather.isEmpty {
-                self.imageWeather.image = UIImage(named: WeatherDic[weather] ?? "yintian")
-            }
-            
-            if !mood.isEmpty {
-                self.imageMood.image = UIImage(named: MoodDic[mood] ?? "happy")
-            }
-        }
-        
-        self.present(vc, animated: false) {
-            
+        if let bgm = model.bgm {
+            //            self.bgmImg.image =
+            self.bgmName.text = bgm.musicName
+            self.bgmArtistName.text = bgm.artistName
+        } else {
+            self.bgmView.isHidden = true
+            self.heightConstraints.constant = 0
+            self.view.layoutIfNeeded()
         }
     }
+    
+    
     
     func setText(text: NSAttributedString) {
         self.currentText = NSMutableAttributedString(attributedString: text)
     }
 }
-
+// MARK: - private method
 extension EditController {
     private func setUpUI() {
         self.textView.attributedText = self.currentText
@@ -125,16 +138,70 @@ extension EditController {
         self.bgmView.layer.shadowRadius = 4.0
         self.bgmView.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.bgmView.layer.shadowPath = UIBezierPath(rect: CGRect(x: -2, y: -2, width: kScreenWidth - 30 + 4, height: 50 + 4)).cgPath
+        
+        if let model = self.diaryModel {
+            if let bgm = model.bgm {
+                self.bgmView.isHidden = false
+                self.heightConstraints.constant = 50
+                self.bgmView.layer.masksToBounds = false
+                self.view.layoutIfNeeded()
+                //            self.bgmImg.image =
+                self.bgmName.text = bgm.musicName
+                self.bgmArtistName.text = bgm.artistName
+            } else {
+                self.bgmView.isHidden = true
+                self.heightConstraints.constant = 0
+                self.bgmView.layer.masksToBounds = true
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.bgmView.isHidden = true
+            self.heightConstraints.constant = 0
+            self.bgmView.layer.masksToBounds = true
+            self.view.layoutIfNeeded()
+        }
     }
     
-    @objc func saveItemClick(_ sender: UIBarButtonItem) {
+    @objc private func moodAndWeatherBtnClick() {
+        let vc = MoodAndWeatherController()
+        vc.modalPresentationStyle = .overCurrentContext
+        
+        vc.setShowImg(weather: self.weatherStr, mood: self.moodStr)
+        
+        vc.passWeatherAndMood = { (weather, mood) in
+            if !weather.isEmpty {
+                self.weatherStr = weather
+                self.imageWeather.image = UIImage(named: WeatherDic[weather] ?? "yintian")
+            }
+            
+            if !mood.isEmpty {
+                self.moodStr = mood
+                self.imageMood.image = UIImage(named: MoodDic[mood] ?? "happy")
+            }
+        }
+        
+        self.present(vc, animated: false) {
+            
+        }
+    }
+    
+    @objc private func saveItemClick(_ sender: UIBarButtonItem) {
         print("保存")
+        
+        let diaryModel = DiaryModel.init(title: self.titleTF.text, weather: "yintian", mood: "happy", bgm: self.bgmModel, richText: self.textView.attributedText.transformToArray())
+        
     }
     
 }
 
+// MARK: - UITextViewDelegate, UITextFieldDelegate
+extension EditController: UITextViewDelegate, UITextFieldDelegate {
 
-extension EditController: UITextViewDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         return true
     }
@@ -182,6 +249,9 @@ extension EditController: KeyBoardExtensionDelegate {
     func photoPressed(_ sender: UIButton) {
         print("照片点击")
         
+        self.colorView.removeFromSuperview()
+        self.fontView.removeFromSuperview()
+        
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
@@ -218,11 +288,13 @@ extension EditController: KeyBoardExtensionDelegate {
                 
             })
         }
-        
     }
     
     func videoPressed(_ sender: UIButton) {
         print("视频点击")
+        
+        self.colorView.removeFromSuperview()
+        self.fontView.removeFromSuperview()
         
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
@@ -265,6 +337,9 @@ extension EditController: KeyBoardExtensionDelegate {
     func bgmPressedn(_ sender: UIButton) {
         print("音乐点击")
         
+        self.colorView.removeFromSuperview()
+        self.fontView.removeFromSuperview()
+        
         if MPMediaLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
@@ -306,10 +381,16 @@ extension EditController: KeyBoardExtensionDelegate {
     
     func fontPressed(_ sender: UIButton) {
         print("字体点击")
+        self.colorView.removeFromSuperview()
         
         if sender.isSelected {
             self.fontView.frame = CGRect(x: 0, y: kScreenHeight-self.keyboardHeight, width: kScreenWidth, height: self.keyboardHeight)
             self.view.addSubview(self.fontView)
+            
+            self.fontView.fontClick = {
+                
+            }
+            
         } else {
             self.fontView.removeFromSuperview()
         }
@@ -318,7 +399,22 @@ extension EditController: KeyBoardExtensionDelegate {
     }
     
     func colorPickerPressed(_ sender: UIButton) {
-        print("t色板点击")
+        print("色板点击")
+        self.fontView.removeFromSuperview()
+        
+        if sender.isSelected {
+            self.colorView.frame = CGRect(x: 0, y: kScreenHeight-self.keyboardHeight, width: kScreenWidth, height: self.keyboardHeight)
+            self.view.addSubview(self.colorView)
+            
+            self.colorView.colorClick = { (colorStr) in
+                self.colorView.removeFromSuperview()
+            }
+            
+        } else {
+            self.colorView.removeFromSuperview()
+        }
+        
+        isHideKB(isHide: sender.isSelected)
     }
     
     private func isHideKB(isHide: Bool) {

@@ -10,16 +10,16 @@ import UIKit
 //import RealmSwift
 
 class DiaryManager {
-//    // singleton
-//    internal static let sharedInstance = {
-//        return DiaryManager()
-//    }()
-//
+    // singleton
+    internal static let sharedInstance = {
+        return DiaryManager()
+    }()
+    
+    private init() {}
+
 //    private var defaultDiaryModel: DiaryModel = DiaryModel()
 //
-//    private init() {
-//
-//    }
+    
 //
 //    private func getRealm() -> Realm {
 //        let docPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String

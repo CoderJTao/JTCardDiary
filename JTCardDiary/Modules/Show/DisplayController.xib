@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DisplayController" customModule="JTCardDiary" customModuleProvider="target">
             <connections>
+                <outlet property="bgmArtistName" destination="jH7-Fk-lZd" id="4Q3-vZ-bvr"/>
+                <outlet property="bgmImg" destination="tlH-6Q-0z2" id="Ad2-B3-tE5"/>
+                <outlet property="bgmName" destination="XHS-gt-WSm" id="OKu-LP-ME5"/>
                 <outlet property="bgmView" destination="h0m-mu-qpg" id="SEJ-b4-Br2"/>
                 <outlet property="bgmViewHeightConstraint" destination="scg-Yk-OYu" id="dBi-hR-2bk"/>
                 <outlet property="countLbl" destination="WZL-9D-OJh" id="BGb-Tj-ptA"/>

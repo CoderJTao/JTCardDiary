@@ -9,8 +9,12 @@
 import UIKit
 
 class FormatView: UIView {
-
     
+    private let Font_Tag = 331
+    
+    var fontClick: ()->() = {
+        
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,4 +24,12 @@ class FormatView: UIView {
         super.init(coder: aDecoder)
     }
 
+    
+    @IBAction func fontClick(_ sender: UIButton) {
+        
+        self.fontClick()
+    }
+    
+    
+    
 }

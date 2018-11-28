@@ -52,6 +52,16 @@ extension UIView {
         }
     }
     
+    /// size
+    var size: CGSize {
+        get {
+            return frame.size
+        }
+        set {
+            frame.size = newValue
+        }
+    }
+    
     /// centerX
     var centerX: CGFloat {
         get {
@@ -84,6 +94,21 @@ extension UIView {
         get {
             return originX+width
         }
+    }
+    
+    /// 切圆角
+    func cutCornerRadius(position: UIRectCorner, radius: CGFloat) {
+        //创建贝塞尔,指定画圆角的地方为下方的左，右两个角添加阴影
+        let mask:UIBezierPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: position, cornerRadii: CGSize(width: radius, height: radius))
+        let shape:CAShapeLayer = CAShapeLayer()
+        shape.fillColor = self.backgroundColor!.cgColor
+        //Layer的线为贝塞尔曲线
+        
+        shape.path = mask.cgPath
+        shape.frame = self.bounds
+        
+        self.layer.mask = shape
+        self.layer.masksToBounds = true
     }
     
     /// 为view添加线条

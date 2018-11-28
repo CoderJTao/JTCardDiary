@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -124,13 +123,13 @@
                         <color key="textColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xiaoyu" translatesAutoresizingMaskIntoConstraints="NO" id="Q5X-J1-Oh7">
-                        <rect key="frame" x="230" y="16" width="26" height="24"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="happy" translatesAutoresizingMaskIntoConstraints="NO" id="Q5X-J1-Oh7">
+                        <rect key="frame" x="232" y="16" width="24" height="24"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="Q5X-J1-Oh7" secondAttribute="height" multiplier="13:12" id="4PI-ZE-byb"/>
+                            <constraint firstAttribute="width" secondItem="Q5X-J1-Oh7" secondAttribute="height" multiplier="1:1" id="4PI-ZE-byb"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="boring" translatesAutoresizingMaskIntoConstraints="NO" id="8vR-T0-Eob">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yintian" translatesAutoresizingMaskIntoConstraints="NO" id="8vR-T0-Eob">
                         <rect key="frame" x="268" y="16" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="DIS-Q5-Iek"/>
@@ -169,10 +168,10 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="boring" width="48" height="48"/>
+        <image name="happy" width="48" height="48"/>
         <image name="location" width="20" height="28"/>
         <image name="test" width="1080" height="1920"/>
         <image name="time" width="32" height="32"/>
-        <image name="xiaoyu" width="42" height="39"/>
+        <image name="yintian" width="42" height="34"/>
     </resources>
 </document>

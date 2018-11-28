@@ -23,7 +23,28 @@ class CameraCell: UICollectionViewCell {
     
     var isChoose: Bool = false {
         didSet {
-            self.chooseImg.image = isChoose ? UIImage(named: "select_yes") : UIImage(named: "select_no")
+            if isChoose {
+                self.chooseImg.image = UIImage(named: "select_yes")
+                
+                /*
+                 dampingRatio(动画阻尼系数)和velocity(动画开始速度)是需要重点了解的。阻尼系数（0~1），学物理的时候因该接触过，衡量阻力大小的一个标准，阻尼系数越大则说明阻力越大，动画的减速越开, 如果设为一的话，几乎没有弹簧的效果。而velocity(动画开始速度：0～1)想对来说比较好理解，就是弹簧动画开始时的速度。
+                 ---------------------
+                 */
+                
+                let pulse = CASpringAnimation(keyPath: "transform.scale")
+                pulse.damping = 7.5 //阻尼，调整动画到达稳定时间的值，默认值为10.0。阻尼值越大，动画持续时间远短。可以是任何的自然数，如果为0，将永远震荡下去。
+                pulse.fromValue = 0.8
+                pulse.toValue = 1.0
+                pulse.initialVelocity = 0 //初始速度，默认值为0.0，可以是一切整数
+                pulse.mass = 0.8 // 重量，类似于锤摆的重量，默认值为1.0。
+                pulse.stiffness = 100 //弹性系数，默认值为100.0。值越小，弹跳的越柔软，值越大，弹跳的越僵硬。
+                pulse.duration = pulse.settlingDuration
+                self.chooseImg.layer.add(pulse, forKey: nil)
+                
+            } else {
+                self.chooseImg.image = UIImage(named: "select_no")
+            }
+            
         }
     }
     

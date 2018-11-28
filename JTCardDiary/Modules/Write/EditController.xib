@@ -11,10 +11,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditController" customModule="JTCardDiary" customModuleProvider="target">
             <connections>
+                <outlet property="bgmArtistName" destination="dM7-8q-OnF" id="jL7-GH-CeZ"/>
+                <outlet property="bgmImg" destination="Rp9-PO-JCQ" id="MGY-8a-R9x"/>
+                <outlet property="bgmName" destination="Beu-tw-JYY" id="tNs-mS-TbY"/>
                 <outlet property="bgmView" destination="AK0-nm-7zb" id="el2-gI-vW1"/>
                 <outlet property="bottomConstraint" destination="Ww0-vs-Nbt" id="Arx-uX-Vfe"/>
+                <outlet property="heightConstraints" destination="EHa-A2-phY" id="PPd-oL-OMq"/>
                 <outlet property="textView" destination="qAv-3i-ra6" id="nTZ-Rm-iPi"/>
-                <outlet property="titleLbl" destination="SoL-Qw-T4m" id="nOx-Iy-Da9"/>
+                <outlet property="titleTF" destination="Yw5-O5-TmM" id="osU-0R-wRg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,22 +31,13 @@
                     <rect key="frame" x="8" y="110" width="359" height="549"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <string key="text">几天奶奶爱到家了撒娇的了撒娇的拉萨氪金大佬刷卡机达拉斯科技的萨拉科技大 氪金大佬萨科技的快乐撒娇的拉萨惊呆了萨科技的来看撒娇的卢卡斯建档立卡时间段来看撒娇地拉时间段绿卡基多拉看似简单拉克丝基多拉圣诞节了撒娇地洒落肯德基萨洛克的就撒禄口街道撒了肯德基爱上了肯德基爱丽丝肯德基</string>
-                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="fjs-6K-Ab7"/>
                     </connections>
                 </textView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是今天日记的标题" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SoL-Qw-T4m">
-                    <rect key="frame" x="12" y="28" width="351" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="3VN-WL-hfE"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AK0-nm-7zb">
                     <rect key="frame" x="15" y="54" width="345" height="50"/>
                     <subviews>
@@ -97,18 +92,30 @@
                         <constraint firstAttribute="bottom" secondItem="Rp9-PO-JCQ" secondAttribute="bottom" constant="4" id="zu2-F8-zvI"/>
                     </constraints>
                 </view>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="这是今天的标题" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yw5-O5-TmM">
+                    <rect key="frame" x="12" y="28" width="351" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="nnr-0m-aaM"/>
+                    </constraints>
+                    <color key="textColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="otP-bH-eph"/>
+                    </connections>
+                </textField>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="AK0-nm-7zb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="5We-br-OMe"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Yw5-O5-TmM" secondAttribute="trailing" constant="12" id="A29-Gk-EBh"/>
+                <constraint firstItem="Yw5-O5-TmM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="HR6-vk-JaA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="AK0-nm-7zb" secondAttribute="trailing" constant="15" id="Szg-BM-XaV"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="qAv-3i-ra6" secondAttribute="bottom" constant="8" id="Ww0-vs-Nbt"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="SoL-Qw-T4m" secondAttribute="trailing" constant="12" id="XK5-PX-B7y"/>
-                <constraint firstItem="SoL-Qw-T4m" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="Y2n-y7-ohS"/>
-                <constraint firstItem="AK0-nm-7zb" firstAttribute="top" secondItem="SoL-Qw-T4m" secondAttribute="bottom" constant="6" id="Zxq-jE-fHO"/>
                 <constraint firstItem="qAv-3i-ra6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="dFn-7J-X9I"/>
-                <constraint firstItem="SoL-Qw-T4m" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="g7u-kX-otv"/>
                 <constraint firstAttribute="trailing" secondItem="qAv-3i-ra6" secondAttribute="trailing" constant="8" id="kwc-eZ-Drh"/>
+                <constraint firstItem="AK0-nm-7zb" firstAttribute="top" secondItem="Yw5-O5-TmM" secondAttribute="bottom" constant="6" id="nXS-7f-18E"/>
+                <constraint firstItem="Yw5-O5-TmM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="ozd-lW-U56"/>
                 <constraint firstItem="qAv-3i-ra6" firstAttribute="top" secondItem="AK0-nm-7zb" secondAttribute="bottom" constant="6" id="zDC-xr-iL4"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

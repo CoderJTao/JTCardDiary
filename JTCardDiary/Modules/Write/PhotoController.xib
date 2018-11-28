@@ -36,9 +36,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcW-K6-OYF">
                     <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kzm-hX-Hec">
-                            <rect key="frame" x="16" y="8" width="46" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kzm-hX-Hec">
+                            <rect key="frame" x="8" y="5" width="60" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="Ksv-hE-eSe"/>
+                            </constraints>
                             <state key="normal" title="预览">
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                             </state>
@@ -46,10 +48,13 @@
                                 <action selector="previewBtnClick:" destination="-1" eventType="touchUpInside" id="zBU-Ik-jyd"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbO-aB-aqB">
-                            <rect key="frame" x="321" y="7" width="46" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="确定">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbO-aB-aqB">
+                            <rect key="frame" x="297" y="5" width="70" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="q0g-7A-FvZ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="导入">
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                             </state>
                             <connections>
@@ -59,7 +64,13 @@
                     </subviews>
                     <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="SbO-aB-aqB" secondAttribute="trailing" constant="8" id="Acv-mi-8XO"/>
+                        <constraint firstItem="kzm-hX-Hec" firstAttribute="top" secondItem="vcW-K6-OYF" secondAttribute="top" constant="5" id="Bwr-gh-eI2"/>
+                        <constraint firstItem="SbO-aB-aqB" firstAttribute="top" secondItem="vcW-K6-OYF" secondAttribute="top" constant="5" id="QsN-PQ-prU"/>
+                        <constraint firstItem="SbO-aB-aqB" firstAttribute="centerY" secondItem="vcW-K6-OYF" secondAttribute="centerY" id="VBE-12-G0O"/>
                         <constraint firstAttribute="height" constant="44" id="WhD-2G-mep"/>
+                        <constraint firstItem="kzm-hX-Hec" firstAttribute="leading" secondItem="vcW-K6-OYF" secondAttribute="leading" constant="8" id="o1S-6Q-TJc"/>
+                        <constraint firstItem="kzm-hX-Hec" firstAttribute="centerY" secondItem="vcW-K6-OYF" secondAttribute="centerY" id="pwR-71-Fwi"/>
                     </constraints>
                 </view>
             </subviews>

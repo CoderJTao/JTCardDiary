@@ -56,4 +56,19 @@ extension UIColor {
         
         return UIColor(r: r, g: g, b: b, a: alpha)
     }
+    
+    /// 颜色码转换十六进制
+    ///
+    /// - Parameters:
+    ///   - hex: 十六进制颜色码
+    ///   - aplha: 透明度
+    /// - Returns: 十六进制
+    func toHexString() -> String {
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        if getRed(&r, green: &g, blue: &b, alpha: &a) {
+            return String(format: "#%02x%02x%02x", Int(r * 255), Int(g * 255), Int(b * 255))
+        }
+        return ""
+    }
+    
 }

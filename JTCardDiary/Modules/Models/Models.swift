@@ -21,5 +21,25 @@ struct MonthModel {
     var isWrited: Int
 }
 
+struct BgmModel {
+    var showImg: String
+    var musicName: String
+    var artistName: String
+    var bgmPath: String
+}
+
+struct DiaryModel {
+    var title: String?
+    var weather: String?
+    var mood: String?
+    
+    var bgm: BgmModel?
+    
+    var richText: [[String: Any]]
+}
+
+
+
+
 
 

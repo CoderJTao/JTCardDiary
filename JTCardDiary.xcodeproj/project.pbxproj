@@ -28,7 +28,6 @@
 		6C5861F221AB978600D19E85 /* MusicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C5861F021AB978600D19E85 /* MusicCell.xib */; };
 		6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */; };
 		6C5861F621ABA4F900D19E85 /* MoodAndWeatherController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */; };
-		6C825DFE21A294820083FEC4 /* AttributeTextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825DFD21A294820083FEC4 /* AttributeTextHelper.swift */; };
 		6C825E0221A2B8890083FEC4 /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825E0021A2B8890083FEC4 /* EditController.swift */; };
 		6C825E0321A2B8890083FEC4 /* EditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C825E0121A2B8890083FEC4 /* EditController.xib */; };
 		6C825E0A21A3FF930083FEC4 /* KeyBoardExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825E0921A3FF930083FEC4 /* KeyBoardExtensionView.swift */; };
@@ -40,7 +39,6 @@
 		6C8DF6F221A803B60099F1B5 /* MusicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8DF6F021A803B60099F1B5 /* MusicController.swift */; };
 		6C8DF6F321A803B60099F1B5 /* MusicController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C8DF6F121A803B60099F1B5 /* MusicController.xib */; };
 		6C8DF6F521A809020099F1B5 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8DF6F421A809020099F1B5 /* ColorView.swift */; };
-		6C8DF6F721A809380099F1B5 /* ColorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C8DF6F621A809380099F1B5 /* ColorView.xib */; };
 		6C908B5C219EA18F00BB3D1E /* DiaryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C908B5A219EA18F00BB3D1E /* DiaryListCell.swift */; };
 		6C908B5D219EA18F00BB3D1E /* DiaryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C908B5B219EA18F00BB3D1E /* DiaryListCell.xib */; };
 		6CB36CD3219C1EF400B43800 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB36CD2219C1EF400B43800 /* Models.swift */; };
@@ -51,6 +49,7 @@
 		6CB36CDD219D679400B43800 /* DiaryListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CB36CDB219D679400B43800 /* DiaryListController.xib */; };
 		6CB36CE1219D6CD700B43800 /* JTCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB36CDF219D6CD600B43800 /* JTCalendarView.swift */; };
 		6CB36CE2219D6CD700B43800 /* JTCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB36CE0219D6CD700B43800 /* JTCalendarCell.swift */; };
+		6CF5A84321AE3E460065D5F2 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF5A84221AE3E460065D5F2 /* NSAttributedString+Extension.swift */; };
 		A9893DA64906CA2416E92268 /* Pods_JTCardDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91A885DB4E3E31C0184BD767 /* Pods_JTCardDiary.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,7 +78,6 @@
 		6C5861F021AB978600D19E85 /* MusicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicCell.xib; sourceTree = "<group>"; };
 		6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAndWeatherController.swift; sourceTree = "<group>"; };
 		6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoodAndWeatherController.xib; sourceTree = "<group>"; };
-		6C825DFD21A294820083FEC4 /* AttributeTextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeTextHelper.swift; sourceTree = "<group>"; };
 		6C825E0021A2B8890083FEC4 /* EditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditController.swift; sourceTree = "<group>"; };
 		6C825E0121A2B8890083FEC4 /* EditController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditController.xib; sourceTree = "<group>"; };
 		6C825E0921A3FF930083FEC4 /* KeyBoardExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardExtensionView.swift; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 		6C8DF6F021A803B60099F1B5 /* MusicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicController.swift; sourceTree = "<group>"; };
 		6C8DF6F121A803B60099F1B5 /* MusicController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicController.xib; sourceTree = "<group>"; };
 		6C8DF6F421A809020099F1B5 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
-		6C8DF6F621A809380099F1B5 /* ColorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorView.xib; sourceTree = "<group>"; };
 		6C908B5A219EA18F00BB3D1E /* DiaryListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListCell.swift; sourceTree = "<group>"; };
 		6C908B5B219EA18F00BB3D1E /* DiaryListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiaryListCell.xib; sourceTree = "<group>"; };
 		6CB36CD2219C1EF400B43800 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -102,6 +99,7 @@
 		6CB36CDB219D679400B43800 /* DiaryListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiaryListController.xib; sourceTree = "<group>"; };
 		6CB36CDF219D6CD600B43800 /* JTCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTCalendarView.swift; sourceTree = "<group>"; };
 		6CB36CE0219D6CD700B43800 /* JTCalendarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTCalendarCell.swift; sourceTree = "<group>"; };
+		6CF5A84221AE3E460065D5F2 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		91A885DB4E3E31C0184BD767 /* Pods_JTCardDiary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JTCardDiary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9866E85C29A6E4AC9AA2EDDA /* Pods-JTCardDiary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JTCardDiary.release.xcconfig"; path = "Pods/Target Support Files/Pods-JTCardDiary/Pods-JTCardDiary.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -219,6 +217,7 @@
 				6C4C2DD4219ABFCA00DF73BE /* UIView+Extension.swift */,
 				6C4C2DD5219ABFCA00DF73BE /* UIViewController+Extension.swift */,
 				6C4C2DD6219ABFCA00DF73BE /* String+Extension.swift */,
+				6CF5A84221AE3E460065D5F2 /* NSAttributedString+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -230,7 +229,6 @@
 				6C4C2DD8219ABFCA00DF73BE /* JTAnimatedTransition.swift */,
 				6C4C2DD9219ABFCA00DF73BE /* Contant.swift */,
 				6C4C2DDA219ABFCA00DF73BE /* DiaryManager.swift */,
-				6C825DFD21A294820083FEC4 /* AttributeTextHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -261,7 +259,6 @@
 				6C825E0F21A400050083FEC4 /* FormatView.swift */,
 				6C825E1521A40DB90083FEC4 /* FormatView.xib */,
 				6C8DF6F421A809020099F1B5 /* ColorView.swift */,
-				6C8DF6F621A809380099F1B5 /* ColorView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -349,7 +346,6 @@
 				6C825E1621A40DB90083FEC4 /* FormatView.xib in Resources */,
 				6C08A5EB21A15ACD0041EE25 /* DisplayController.xib in Resources */,
 				6C8DF6F321A803B60099F1B5 /* MusicController.xib in Resources */,
-				6C8DF6F721A809380099F1B5 /* ColorView.xib in Resources */,
 				6C4C2DE8219ACAA400DF73BE /* HomeController.xib in Resources */,
 				6C5861F221AB978600D19E85 /* MusicCell.xib in Resources */,
 				6C908B5D219EA18F00BB3D1E /* DiaryListCell.xib in Resources */,
@@ -428,7 +424,6 @@
 				6CB36CE1219D6CD700B43800 /* JTCalendarView.swift in Sources */,
 				6CB36CE2219D6CD700B43800 /* JTCalendarCell.swift in Sources */,
 				6C4C2DE0219ABFCA00DF73BE /* JTAnimatedTransition.swift in Sources */,
-				6C825DFE21A294820083FEC4 /* AttributeTextHelper.swift in Sources */,
 				6C8DF6F521A809020099F1B5 /* ColorView.swift in Sources */,
 				6C4C2DDF219ABFCA00DF73BE /* String+Extension.swift in Sources */,
 				6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */,
@@ -450,6 +445,7 @@
 				6C5861F121AB978600D19E85 /* MusicCell.swift in Sources */,
 				6CB36CD8219D513400B43800 /* DatePickerController.swift in Sources */,
 				6C8DF6F221A803B60099F1B5 /* MusicController.swift in Sources */,
+				6CF5A84321AE3E460065D5F2 /* NSAttributedString+Extension.swift in Sources */,
 				6C4C2DDD219ABFCA00DF73BE /* UIView+Extension.swift in Sources */,
 				6C4C2DBB219AB02F00DF73BE /* AppDelegate.swift in Sources */,
 			);

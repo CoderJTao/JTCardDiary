@@ -28,7 +28,9 @@ class PhotoController: UIViewController {
     private var results: PHFetchResult<PHAsset>!
     private var selectAsset: [PHAsset] = []
     
-    
+    var importBtnClick: ([PHAsset])->() = { _ in
+        
+    }
     
     
     override func viewDidLoad() {
@@ -82,10 +84,14 @@ class PhotoController: UIViewController {
     
 
     @IBAction func previewBtnClick(_ sender: UIButton) {
+        
     }
     
     
     @IBAction func confirmBtnClick(_ sender: UIButton) {
+        if self.selectAsset.count <= 0 { return }
+        
+        self.importBtnClick(self.selectAsset)
     }
     
 }
@@ -172,10 +178,30 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
             if sources.count - 1 >= indexPath.row {
                 if cell.isChoose {
                     // 选中照片
+                    if let useAsset = cell._asset {
+                        if !self.selectAsset.contains(useAsset) {
+                            self.selectAsset.append(useAsset)
+                        }
+                    }
                     
+                    
+                    
+                    self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
                 } else {
                     // 取消选中
+                    if let useAsset = cell._asset {
+                        if self.selectAsset.contains(useAsset) {
+                            self.selectAsset = self.selectAsset.filter {
+                                $0.burstIdentifier != useAsset.burstIdentifier
+                            }
+                        }
+                    }
                     
+                    if self.selectAsset.count > 0 {
+                        self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
+                    } else {
+                        self.confirmBtn.setTitle("导入", for: .normal)
+                    }
                 }
                 
             } else {
@@ -185,10 +211,28 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
         } else {
             if cell.isChoose {
                 // 选中视频
+                if let useAsset = cell._asset {
+                    if !self.selectAsset.contains(useAsset) {
+                        self.selectAsset.append(useAsset)
+                    }
+                }
                 
+                self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
             } else {
                 // 取消选中
+                if let useAsset = cell._asset {
+                    if self.selectAsset.contains(useAsset) {
+                        self.selectAsset = self.selectAsset.filter {
+                            $0.burstIdentifier != useAsset.burstIdentifier
+                        }
+                    }
+                }
                 
+                if self.selectAsset.count > 0 {
+                    self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
+                } else {
+                    self.confirmBtn.setTitle("导入", for: .normal)
+                }
             }
         }
     }
