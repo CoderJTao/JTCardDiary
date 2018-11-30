@@ -27,7 +27,22 @@ class MusicCell: UITableViewCell {
     
     var isChoose: Bool = false {
         didSet {
-            self.selectImg.image = isChoose ? UIImage(named: "select_yes") : UIImage(named: "select_no")
+            if isChoose {
+                self.selectImg.image = UIImage(named: "select_yes")
+                
+                /*
+                 dampingRatio(动画阻尼系数)和velocity(动画开始速度)是需要重点了解的。阻尼系数（0~1），学物理的时候因该接触过，衡量阻力大小的一个标准，阻尼系数越大则说明阻力越大，动画的减速越开, 如果设为一的话，几乎没有弹簧的效果。而velocity(动画开始速度：0～1)想对来说比较好理解，就是弹簧动画开始时的速度。
+                 ---------------------
+                 */
+                self.selectImg.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 1, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+                    self.selectImg.transform = CGAffineTransform.identity
+                }) { (finished) in
+                    
+                }
+            } else {
+                self.selectImg.image = UIImage(named: "select_gray")
+            }
         }
     }
     

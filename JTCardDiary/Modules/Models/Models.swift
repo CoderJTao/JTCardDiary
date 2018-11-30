@@ -22,9 +22,9 @@ struct MonthModel {
 }
 
 struct BgmModel {
-    var showImg: String
+    var showImg: Data?
     var musicName: String
-    var artistName: String
+    var artistName: String?
     var bgmPath: String
 }
 

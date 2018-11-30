@@ -19,6 +19,8 @@ class PhotoController: UIViewController {
     
     private var type: MediaType = .image
     
+    private var preView: PreviewView?
+    
     private var thumbnailImageSize: CGSize {
         get {
             return CGSize(width: ((kScreenWidth - 20) / 4), height: ((kScreenWidth - 20) / 4))
@@ -27,8 +29,13 @@ class PhotoController: UIViewController {
     
     private var results: PHFetchResult<PHAsset>!
     private var selectAsset: [PHAsset] = []
+    private var selectPlayItem: AVPlayerItem?
     
-    var importBtnClick: ([PHAsset])->() = { _ in
+    var importImageClick: ([PHAsset])->() = { _ in
+        
+    }
+    
+    var importVideoClick: (AVPlayerItem)->() = { _ in
         
     }
     
@@ -52,8 +59,17 @@ class PhotoController: UIViewController {
     }
     
     @objc func dismissClick() {
-        self.dismiss(animated: true) {
-            
+        if let vw = self.preView {
+            UIView.animate(withDuration: 0.3, animations: {
+                vw.frame = CGRect(x: self.view.width, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
+            }) { (finished) in
+                vw.removeFromSuperview()
+                self.preView = nil
+            }
+        } else {
+            self.dismiss(animated: true) {
+                
+            }
         }
     }
     
@@ -84,16 +100,42 @@ class PhotoController: UIViewController {
     
 
     @IBAction func previewBtnClick(_ sender: UIButton) {
+        if self.selectAsset.count <= 0 { return }
         
+        if self.preView != nil {
+            self.preView = nil
+        }
+        
+        preView = PreviewView(frame: CGRect(x: self.view.width, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY))
+        preView?.backgroundColor = UIColor.hexString(hexString: "404040")
+        
+        self.view.addSubview(preView!)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
+        }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
+        }) { (finished) in
+            self.preView?.setSources(sources: self.selectAsset)
+        }
     }
     
     
     @IBAction func confirmBtnClick(_ sender: UIButton) {
-        if self.selectAsset.count <= 0 { return }
+        if self.type == .image {
+            if self.selectAsset.count <= 0 { return }
+            
+            self.importImageClick(self.selectAsset)
+        } else {
+            guard let item = self.selectPlayItem else { return }
+            
+            self.importVideoClick(item)
+        }
         
-        self.importBtnClick(self.selectAsset)
+        self.dismissClick()
     }
-    
 }
 
 extension PhotoController {
@@ -183,8 +225,8 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
                             self.selectAsset.append(useAsset)
                         }
                     }
-                    
-                    
+                    self.previewBtn.isEnabled = true
+                    self.confirmBtn.isEnabled = true
                     
                     self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
                 } else {
@@ -199,8 +241,12 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
                     
                     if self.selectAsset.count > 0 {
                         self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
+                        self.previewBtn.isEnabled = true
+                        self.confirmBtn.isEnabled = true
                     } else {
                         self.confirmBtn.setTitle("导入", for: .normal)
+                        self.previewBtn.isEnabled = false
+                        self.confirmBtn.isEnabled = false
                     }
                 }
                 
@@ -211,28 +257,26 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
         } else {
             if cell.isChoose {
                 // 选中视频
-                if let useAsset = cell._asset {
-                    if !self.selectAsset.contains(useAsset) {
-                        self.selectAsset.append(useAsset)
+                if self.selectPlayItem != nil {
+                    let hud = JGProgressHUDWrapper.init()
+                    hud.content = "只能导入一个视频"
+                    hud.show(self.view) {
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.init(uptimeNanoseconds: 1), execute: {
+                            hud.dismiss(nil)
+                        })
                     }
+                    return
+                }
+                if let useItem = cell._playItem {
+                    self.selectPlayItem = useItem
                 }
                 
-                self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
+                self.confirmBtn.setTitle("导入"+"(1)", for: .normal)
             } else {
                 // 取消选中
-                if let useAsset = cell._asset {
-                    if self.selectAsset.contains(useAsset) {
-                        self.selectAsset = self.selectAsset.filter {
-                            $0.burstIdentifier != useAsset.burstIdentifier
-                        }
-                    }
-                }
+                self.selectPlayItem = nil
                 
-                if self.selectAsset.count > 0 {
-                    self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
-                } else {
-                    self.confirmBtn.setTitle("导入", for: .normal)
-                }
+                self.confirmBtn.setTitle("导入", for: .normal)
             }
         }
     }

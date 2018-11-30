@@ -9,8 +9,11 @@
 import UIKit
 import Photos
 import MediaPlayer
+import AVFoundation
 
 class EditController: UIViewController {
+    
+    fileprivate var progressHud: JGProgressHUDWrapper?
     
     private var currentText = NSMutableAttributedString()
     private var keyboardHeight: CGFloat = 0
@@ -48,9 +51,10 @@ class EditController: UIViewController {
     @IBOutlet weak var bgmImg: UIImageView!
     @IBOutlet weak var bgmName: UILabel!
     @IBOutlet weak var bgmArtistName: UILabel!
+    private var bgmPath: String?
     
     @IBOutlet weak var titleTF: UITextField!
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textView: JTRichTextView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var diaryModel: DiaryModel?
@@ -118,7 +122,7 @@ class EditController: UIViewController {
         self.currentText = NSMutableAttributedString(attributedString: text)
     }
 }
-// MARK: - private method
+// MARK: - 自身的私有方法
 extension EditController {
     private func setUpUI() {
         self.textView.attributedText = self.currentText
@@ -188,26 +192,8 @@ extension EditController {
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
         print("保存")
         
-        let diaryModel = DiaryModel.init(title: self.titleTF.text, weather: "yintian", mood: "happy", bgm: self.bgmModel, richText: self.textView.attributedText.transformToArray())
+        let diaryModel = DiaryModel.init(title: self.titleTF.text, weather: WeatherDic[self.weatherStr], mood: MoodDic[self.moodStr], bgm: self.bgmModel, richText: self.textView.attributedText.transformToArray())
         
-    }
-    
-}
-
-// MARK: - UITextViewDelegate, UITextFieldDelegate
-extension EditController: UITextViewDelegate, UITextFieldDelegate {
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        return true
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        return true
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -216,13 +202,13 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
         let kbHeight = (info?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size.height
         self.keyboardHeight = kbHeight - 44
         
-//        // 获取光标frame
-//        let origin = textView.caretRect(for: (textView.selectedTextRange?.end)!).origin
-//        let point = textView.convert(origin, to: self.view)
+        //        // 获取光标frame
+        //        let origin = textView.caretRect(for: (textView.selectedTextRange?.end)!).origin
+        //        let point = textView.convert(origin, to: self.view)
         // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
         let duration = (info?[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double)
-//
-//        //将视图上移计算好的偏移
+        //
+        //        //将视图上移计算好的偏移
         UIView.animate(withDuration: duration) {
             self.bottomConstraint.constant = 8 + kbHeight
             self.view.layoutIfNeeded()
@@ -240,11 +226,54 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
             self.view.layoutIfNeeded()
         }
     }
-    
-    
 }
 
-// MARK: - KeyBoardExtensionDelegate
+// MARK: - UITextViewDelegate, UITextFieldDelegate
+extension EditController: UITextViewDelegate, UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+//        guard let str = self.textView.text else {
+//            return
+//        }
+//        let tempStr = NSString(string: str)
+//
+//        let len = self.textView.attributedText.length - self.textView.locationStr.length
+//
+//        if len > 0 {
+//            self.textView.newRange = NSRange(location: self.textView.selectedRange.location-len, length: len)
+//            self.textView.newStr = tempStr.substring(with: self.textView.newRange)
+//        }
+//
+//        var isChinese: Bool
+//        if let mode = self.textView.textInputMode?.primaryLanguage, mode == "en-US" {
+//            isChinese = false
+//        } else {
+//            isChinese = true
+//        }
+//
+//        let use = tempStr.replacingOccurrences(of: "?", with: "")
+//        if isChinese {
+//            if let selectedRange = self.textView.markedTextRange {
+//                // 获取高亮部分
+//                // 没有高亮选择的字，则对已输入的文字进行字数统计和限制
+//                if let _ = self.textView.position(from: selectedRange.start, offset: 0) {
+//
+//                    self.textView.setStyle()
+//                } else {
+//                    print("没有转化" + use)
+//                }
+//            }
+//        } else {
+//            self.textView.setStyle()
+//        }
+    }
+}
+
+// MARK: - 键盘上l扩展方法的回调
 extension EditController: KeyBoardExtensionDelegate {
     func photoPressed(_ sender: UIButton) {
         print("照片点击")
@@ -252,15 +281,21 @@ extension EditController: KeyBoardExtensionDelegate {
         self.colorView.removeFromSuperview()
         self.fontView.removeFromSuperview()
         
+        let vc = PhotoController()
+        vc.setType(type: .image)
+        let nav = UINavigationController(rootViewController: vc)
+        
+        vc.importImageClick = { assets in
+            self.importImageHandle(assets: assets)
+        }
+        
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
                     print("authorized")
                     
                     DispatchQueue.main.async {
-                        let vc = PhotoController()
-                        vc.setType(type: .image)
-                        let nav = UINavigationController(rootViewController: vc)
+                        
                         self.present(nav, animated: true, completion: {
                             
                         })
@@ -281,9 +316,6 @@ extension EditController: KeyBoardExtensionDelegate {
                 })
             }
         } else {
-            let vc = PhotoController()
-            vc.setType(type: .image)
-            let nav = UINavigationController(rootViewController: vc)
             self.present(nav, animated: true, completion: {
                 
             })
@@ -296,15 +328,21 @@ extension EditController: KeyBoardExtensionDelegate {
         self.colorView.removeFromSuperview()
         self.fontView.removeFromSuperview()
         
+        let vc = PhotoController()
+        vc.setType(type: .video)
+        let nav = UINavigationController(rootViewController: vc)
+        
+        vc.importVideoClick = { item in
+            self.importVideoHandle(playItem: item)
+        }
+        
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
                     print("authorized")
                     
                     DispatchQueue.main.async {
-                        let vc = PhotoController()
-                        vc.setType(type: .video)
-                        let nav = UINavigationController(rootViewController: vc)
+                        
                         self.present(nav, animated: true, completion: {
                             
                         })
@@ -325,9 +363,6 @@ extension EditController: KeyBoardExtensionDelegate {
                 })
             }
         } else {
-            let vc = PhotoController()
-            vc.setType(type: .video)
-            let nav = UINavigationController(rootViewController: vc)
             self.present(nav, animated: true, completion: {
                 
             })
@@ -340,14 +375,20 @@ extension EditController: KeyBoardExtensionDelegate {
         self.colorView.removeFromSuperview()
         self.fontView.removeFromSuperview()
         
+        let vc = MusicController()
+        let nav = UINavigationController(rootViewController: vc)
+        
+        vc.importMusicClick = { bgm in
+            self.importMusicHandle(bgm: bgm)
+        }
+        
         if MPMediaLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
                     print("authorized")
                     
                     DispatchQueue.main.async {
-                        let vc = MusicController()
-                        let nav = UINavigationController(rootViewController: vc)
+                        
                         self.present(nav, animated: true, completion: {
                             
                         })
@@ -368,15 +409,10 @@ extension EditController: KeyBoardExtensionDelegate {
                 })
             }
         } else {
-            let vc = MusicController()
-            let nav = UINavigationController(rootViewController: vc)
             self.present(nav, animated: true, completion: {
                 
             })
         }
-        
-        
-        
     }
     
     func fontPressed(_ sender: UIButton) {
@@ -387,8 +423,8 @@ extension EditController: KeyBoardExtensionDelegate {
             self.fontView.frame = CGRect(x: 0, y: kScreenHeight-self.keyboardHeight, width: kScreenWidth, height: self.keyboardHeight)
             self.view.addSubview(self.fontView)
             
-            self.fontView.fontClick = {
-                
+            self.fontView.fontClick = { style, isSet in
+                self.refreshTextViewStyle(style: style, isSet: isSet)
             }
             
         } else {
@@ -407,6 +443,9 @@ extension EditController: KeyBoardExtensionDelegate {
             self.view.addSubview(self.colorView)
             
             self.colorView.colorClick = { (colorStr) in
+                sender.isSelected = false
+                self.textView.color = UIColor.hexString(hexString: colorStr)
+                self.isHideKB(isHide: false)
                 self.colorView.removeFromSuperview()
             }
             
@@ -438,3 +477,98 @@ extension EditController: KeyBoardExtensionDelegate {
     
 }
 
+// MARK: - 处理导入数据 图片 视频 音乐
+extension EditController {
+    private func importImageHandle(assets: [PHAsset]) {
+        if self.progressHud == nil {
+            self.progressHud = JGProgressHUDWrapper()
+        }
+        
+        self.progressHud?.show(self.view, completion: nil)
+        
+        for value in assets {
+            let options = PHImageRequestOptions()
+            options.isSynchronous = true
+            
+            PHImageManager.default().requestImage(for: value, targetSize: CGSize(width: value.pixelWidth, height: value.pixelHeight), contentMode: PHImageContentMode.default, options: options) { (image, imageInfo) in
+                guard let temp = image else { return }
+                
+                DispatchQueue.main.async {
+                    self.textView.insertImage(image: temp)
+                }
+            }
+        }
+        
+        self.progressHud?.dismiss(nil)
+    }
+    
+    private func importVideoHandle(playItem: AVPlayerItem) {
+        if self.progressHud == nil {
+            self.progressHud = JGProgressHUDWrapper()
+        }
+        
+        self.progressHud?.show(self.view, completion: nil)
+        
+        
+        
+    }
+    
+    private func importMusicHandle(bgm: MPMediaItem) {
+        if self.progressHud == nil {
+            self.progressHud = JGProgressHUDWrapper()
+        }
+        
+        self.progressHud?.show(self.view, completion: nil)
+        
+        if let show = bgm.artwork?.image(at: CGSize(width: 100, height: 100)) {
+            self.bgmImg.image = show
+        }
+        
+        if let songTitle = bgm.value(forProperty: MPMediaItemPropertyTitle) as? String {
+            self.bgmName.text = songTitle
+        }
+        
+        if let songArt = bgm.value(forProperty: MPMediaItemPropertyArtist) as? String {
+            self.bgmArtistName.text = songArt
+        }
+        
+        if let path = bgm.value(forProperty: MPMediaItemPropertyAssetURL) as? URL {
+            self.bgmPath = path.absoluteString
+        }
+        
+        self.bgmView.isHidden = false
+        self.heightConstraints.constant = 50
+        self.bgmView.layer.masksToBounds = false
+        self.view.layoutIfNeeded()
+        
+        self.progressHud?.dismiss(nil)
+        
+    }
+    
+    private func refreshTextViewStyle(style: JTFontFormat, isSet: Bool) {
+        switch style {
+        case .alignLeft, .alignCenter, .alignRight:
+            self.textView.alignType = style
+        case .indent:
+            self.textView.isIndent = isSet
+        case .beBold:
+            self.textView.isBold = isSet
+        case .beItalic:
+            self.textView.isOblique = isSet
+        case .underLine:
+            self.textView.isUnderline = isSet
+        case .throughLine:
+            self.textView.isThrough = isSet
+        case .listOL:
+            self.textView.isListOL = isSet
+        case .listUL:
+            self.textView.isListUL = isSet
+        case .divider:
+            self.textView.addDividerLine = true
+        default:
+            break
+        }
+        
+        
+    }
+}

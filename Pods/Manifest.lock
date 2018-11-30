@@ -1,4 +1,5 @@
 PODS:
+  - JGProgressHUD (2.0.3)
   - Realm (3.11.1):
     - Realm/Headers (= 3.11.1)
   - Realm/Headers (3.11.1)
@@ -8,23 +9,26 @@ PODS:
   - YYText (1.0.7)
 
 DEPENDENCIES:
+  - JGProgressHUD (~> 2.0.3)
   - RealmSwift (~> 3.11.1)
   - SnapKit (~> 4.2.0)
   - YYText (~> 1.0.7)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - JGProgressHUD
     - Realm
     - RealmSwift
     - SnapKit
     - YYText
 
 SPEC CHECKSUMS:
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
   Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
   RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: a1d37a16b1a06877bfcd66e2361b5fb0c6fc6889
+PODFILE CHECKSUM: 9767b7f7c5590fc0b9a4d1f019130a9da38f7131
 
 COCOAPODS: 1.5.3

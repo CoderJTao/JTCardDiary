@@ -27,7 +27,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="qAv-3i-ra6">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="qAv-3i-ra6" customClass="JTRichTextView" customModule="JTCardDiary" customModuleProvider="target">
                     <rect key="frame" x="8" y="110" width="359" height="549"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <string key="text">几天奶奶爱到家了撒娇的了撒娇的拉萨氪金大佬刷卡机达拉斯科技的萨拉科技大 氪金大佬萨科技的快乐撒娇的拉萨惊呆了萨科技的来看撒娇的卢卡斯建档立卡时间段来看撒娇地拉时间段绿卡基多拉看似简单拉克丝基多拉圣诞节了撒娇地洒落肯德基萨洛克的就撒禄口街道撒了肯德基爱上了肯德基爱丽丝肯德基</string>

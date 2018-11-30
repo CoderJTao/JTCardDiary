@@ -12,12 +12,16 @@ import MediaPlayer
 class MusicController: UIViewController {
     
     private var musics: [MPMediaItem] = []
-    private var chooseMusic: [MPMediaItem] = []
+    private var chooseMusic: MPMediaItem?
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var functionView: UIView!
     @IBOutlet weak var importBtn: UIButton!
+    
+    var importMusicClick: (MPMediaItem)->() = { _ in
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +79,10 @@ class MusicController: UIViewController {
     }
     
     @IBAction func importBtnClick(_ sender: UIButton) {
+        guard let music = self.chooseMusic else { return }
+        
+        self.importMusicClick(music)
+        self.dismissClick()
     }
 }
 
@@ -116,17 +124,23 @@ extension MusicController: UITableViewDelegate, UITableViewDataSource {
         cell.isChoose = !cell.isChoose
         
         if cell.isChoose {
-            if !self.chooseMusic.contains(item) {
-                self.chooseMusic.append(item)
+            if self.chooseMusic != nil {
+                let hud = JGProgressHUDWrapper.init()
+                hud.content = "只能导入一个音乐哦"
+                hud.show(self.view) {
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.init(uptimeNanoseconds: 1), execute: {
+                        hud.dismiss(nil)
+                    })
+                }
+                return
             }
+            self.chooseMusic = item
         } else {
-            if self.chooseMusic.contains(item) {
-                self.chooseMusic = self.chooseMusic.filter { $0.persistentID != item.persistentID }
-            }
+            self.chooseMusic = nil
         }
         
-        if self.chooseMusic.count > 0 {
-            self.importBtn.setTitle("导入"+"("+"\(self.chooseMusic.count)"+")", for: .normal)
+        if self.chooseMusic != nil {
+            self.importBtn.setTitle("导入"+"(1)", for: .normal)
         } else {
             self.importBtn.setTitle("导入", for: .normal)
         }

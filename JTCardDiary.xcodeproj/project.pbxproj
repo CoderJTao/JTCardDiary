@@ -50,6 +50,9 @@
 		6CB36CE1219D6CD700B43800 /* JTCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB36CDF219D6CD600B43800 /* JTCalendarView.swift */; };
 		6CB36CE2219D6CD700B43800 /* JTCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB36CE0219D6CD700B43800 /* JTCalendarCell.swift */; };
 		6CF5A84321AE3E460065D5F2 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF5A84221AE3E460065D5F2 /* NSAttributedString+Extension.swift */; };
+		6CF5A84921AFC0880065D5F2 /* JTRichTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF5A84821AFC0880065D5F2 /* JTRichTextView.swift */; };
+		6CF5A84B21AFD1E80065D5F2 /* JGProgressHUDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF5A84A21AFD1E80065D5F2 /* JGProgressHUDWrapper.swift */; };
+		6CF5A85321AFF6B80065D5F2 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF5A85221AFF6B80065D5F2 /* PreviewView.swift */; };
 		A9893DA64906CA2416E92268 /* Pods_JTCardDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91A885DB4E3E31C0184BD767 /* Pods_JTCardDiary.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +103,9 @@
 		6CB36CDF219D6CD600B43800 /* JTCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTCalendarView.swift; sourceTree = "<group>"; };
 		6CB36CE0219D6CD700B43800 /* JTCalendarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTCalendarCell.swift; sourceTree = "<group>"; };
 		6CF5A84221AE3E460065D5F2 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
+		6CF5A84821AFC0880065D5F2 /* JTRichTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JTRichTextView.swift; sourceTree = "<group>"; };
+		6CF5A84A21AFD1E80065D5F2 /* JGProgressHUDWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JGProgressHUDWrapper.swift; sourceTree = "<group>"; };
+		6CF5A85221AFF6B80065D5F2 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		91A885DB4E3E31C0184BD767 /* Pods_JTCardDiary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JTCardDiary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9866E85C29A6E4AC9AA2EDDA /* Pods-JTCardDiary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JTCardDiary.release.xcconfig"; path = "Pods/Target Support Files/Pods-JTCardDiary/Pods-JTCardDiary.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +235,7 @@
 				6C4C2DD8219ABFCA00DF73BE /* JTAnimatedTransition.swift */,
 				6C4C2DD9219ABFCA00DF73BE /* Contant.swift */,
 				6C4C2DDA219ABFCA00DF73BE /* DiaryManager.swift */,
+				6CF5A84A21AFD1E80065D5F2 /* JGProgressHUDWrapper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -259,6 +266,8 @@
 				6C825E0F21A400050083FEC4 /* FormatView.swift */,
 				6C825E1521A40DB90083FEC4 /* FormatView.xib */,
 				6C8DF6F421A809020099F1B5 /* ColorView.swift */,
+				6CF5A84821AFC0880065D5F2 /* JTRichTextView.swift */,
+				6CF5A85221AFF6B80065D5F2 /* PreviewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -371,6 +380,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-JTCardDiary/Pods-JTCardDiary-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
@@ -380,6 +390,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -424,6 +435,7 @@
 				6CB36CE1219D6CD700B43800 /* JTCalendarView.swift in Sources */,
 				6CB36CE2219D6CD700B43800 /* JTCalendarCell.swift in Sources */,
 				6C4C2DE0219ABFCA00DF73BE /* JTAnimatedTransition.swift in Sources */,
+				6CF5A84B21AFD1E80065D5F2 /* JGProgressHUDWrapper.swift in Sources */,
 				6C8DF6F521A809020099F1B5 /* ColorView.swift in Sources */,
 				6C4C2DDF219ABFCA00DF73BE /* String+Extension.swift in Sources */,
 				6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */,
@@ -431,6 +443,7 @@
 				6C825E0221A2B8890083FEC4 /* EditController.swift in Sources */,
 				6C8DF6EE21A7A5D80099F1B5 /* PhotoController.swift in Sources */,
 				6C4C2DE5219AC0EC00DF73BE /* HomeCell.swift in Sources */,
+				6CF5A85321AFF6B80065D5F2 /* PreviewView.swift in Sources */,
 				6C908B5C219EA18F00BB3D1E /* DiaryListCell.swift in Sources */,
 				6C825E1021A400050083FEC4 /* FormatView.swift in Sources */,
 				6C4C2DE1219ABFCA00DF73BE /* Contant.swift in Sources */,
@@ -448,6 +461,7 @@
 				6CF5A84321AE3E460065D5F2 /* NSAttributedString+Extension.swift in Sources */,
 				6C4C2DDD219ABFCA00DF73BE /* UIView+Extension.swift in Sources */,
 				6C4C2DBB219AB02F00DF73BE /* AppDelegate.swift in Sources */,
+				6CF5A84921AFC0880065D5F2 /* JTRichTextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
