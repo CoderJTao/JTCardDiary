@@ -11,7 +11,7 @@ import Photos
 
 class CameraCell: UICollectionViewCell {
     
-    private var player = AVPlayer()
+    var player = AVPlayer()
     private var playerLayer = AVPlayerLayer()
     
     private lazy var showImg: UIImageView = {
@@ -19,6 +19,21 @@ class CameraCell: UICollectionViewCell {
         imageV.contentMode = UIView.ContentMode.scaleAspectFill
         imageV.layer.masksToBounds = true
         return imageV
+    }()
+    
+    private lazy var videoImg: UIImageView = {
+        let imageV = UIImageView(frame: CGRect(x: 4, y: self.height-17, width: 18, height: 15))
+        imageV.image = UIImage(named: "video_white")
+        
+        return imageV
+    }()
+    
+    private lazy var videoDurationLbl: UILabel = {
+        let lbl = UILabel(frame: CGRect(x: 26, y: self.height-17, width: self.width - 30, height: 15))
+        lbl.textAlignment = .right
+        lbl.font = UIFont.systemFont(ofSize: 13)
+        lbl.textColor = UIColor.white
+        return lbl
     }()
     
     var isChoose: Bool = false {
@@ -51,8 +66,10 @@ class CameraCell: UICollectionViewCell {
     
     private let imageManager = PHImageManager.default()
     
-    var _asset: PHAsset?
-    var _playItem: AVPlayerItem?
+    var _imageAsset: PHAsset?
+    
+    var _videoAsset: AVAsset?
+    var _videoPreviewImage: UIImage?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,7 +84,7 @@ class CameraCell: UICollectionViewCell {
     
     func setAsset(asset: PHAsset, type: PHAssetMediaType) {
         if type == .image {
-            self._asset = asset
+            self._imageAsset = asset
             self.chooseImg.isHidden = false
             
             imageManager.requestImage(for: asset, targetSize: CGSize(width: self.width*UIScreen.main.scale, height: self.height*UIScreen.main.scale), contentMode: PHImageContentMode.aspectFill, options: nil) { (image, imageDic) in
@@ -77,15 +94,34 @@ class CameraCell: UICollectionViewCell {
             }
             
         } else {
-            // options 待定
-            imageManager.requestPlayerItem(forVideo: asset, options: nil) { (playItem, info) in
-                self._playItem = playItem
-                DispatchQueue.main.async {
-                    self.player = AVPlayer(playerItem: playItem)
-                    self.playerLayer = AVPlayerLayer(player: self.player)
-                    self.playerLayer.backgroundColor = UIColor.black.cgColor
-                    self.playerLayer.frame = self.bounds
-                    self.layer.addSublayer(self.playerLayer)
+            addSubview(self.videoImg)
+            addSubview(self.videoDurationLbl)
+            
+            imageManager.requestAVAsset(forVideo: asset, options: nil) { (avAsset, audioMix, info) in
+                guard let useAsset = avAsset else { return }
+                
+                self._videoAsset = useAsset
+                
+                let duration = CMTimeGetSeconds(useAsset.duration)
+                
+                let assetGen = AVAssetImageGenerator(asset: useAsset)
+                
+                assetGen.appliesPreferredTrackTransform = true
+                
+                let time = CMTimeMakeWithSeconds(0.0, preferredTimescale: 600)
+                
+                let image = try? assetGen.copyCGImage(at: time, actualTime: nil)
+                if let useImgae = image {
+                    
+                    let videoImage = UIImage(cgImage: useImgae)
+                    
+                    self._videoPreviewImage = UIImage(cgImage: useImgae)
+                    
+                    DispatchQueue.main.async {
+                        self.showImg.image = videoImage
+                        self.videoDurationLbl.text = self.getFormatPlayTime(secounds: duration)
+                    }
+                    
                 }
             }
         }
@@ -97,7 +133,20 @@ class CameraCell: UICollectionViewCell {
     }
     
     
-    
+    func getFormatPlayTime(secounds: Double)->String{
+        if secounds.isNaN{
+            return "00:00"
+        }
+        var Min = Int(secounds / 60)
+        let Sec = Int(secounds.truncatingRemainder(dividingBy: 60))
+        var Hour = 0
+        if Min>=60 {
+            Hour = Int(Min / 60)
+            Min = Min - Hour*60
+            return String(format: ":%02d:%02d", Min, Sec)
+        }
+        return String(format: "%02d:%02d", Min, Sec)
+    }
     
     
 }

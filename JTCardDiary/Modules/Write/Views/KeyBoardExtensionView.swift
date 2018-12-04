@@ -12,9 +12,7 @@ protocol KeyBoardExtensionDelegate: AnyObject {
     func photoPressed(_ sender: UIButton)
     
     func videoPressed(_ sender: UIButton)
-    
-    func bgmPressedn(_ sender: UIButton)
-    
+        
     func fontPressed(_ sender: UIButton)
     
     func colorPickerPressed(_ sender: UIButton)
@@ -49,18 +47,8 @@ class KeyBoardExtensionView: UIView {
         return btn
     }()
     
-    private lazy var bgmBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*2, y: 0, width: btnWidthHeight, height: btnWidthHeight))
-        btn.addTarget(self, action: #selector(self.bgmBtnClick(_:)), for: .touchUpInside)
-        
-        btn.setImage(UIImage(named: "music"), for: .normal)
-        btn.setImage(UIImage(named: "music_s"), for: .selected)
-        
-        return btn
-    }()
-    
     private lazy var fontBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*3, y: 0, width: btnWidthHeight, height: btnWidthHeight))
+        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*2, y: 0, width: btnWidthHeight, height: btnWidthHeight))
         btn.addTarget(self, action: #selector(self.fontBtnClick(_:)), for: .touchUpInside)
         
         btn.setImage(UIImage(named: "font"), for: .normal)
@@ -70,7 +58,7 @@ class KeyBoardExtensionView: UIView {
     }()
     
     private lazy var colorBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*4, y: 0, width: btnWidthHeight, height: btnWidthHeight))
+        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*3, y: 0, width: btnWidthHeight, height: btnWidthHeight))
         btn.addTarget(self, action: #selector(self.colorBtnClick(_:)), for: .touchUpInside)
         
         btn.setImage(UIImage(named: "color_picker"), for: .normal)
@@ -106,7 +94,6 @@ extension KeyBoardExtensionView {
     private func setUpUI() {
         addSubview(photoBtn)
         addSubview(videoBtn)
-        addSubview(bgmBtn)
         addSubview(fontBtn)
         addSubview(colorBtn)
         addSubview(endBtn)
@@ -114,7 +101,6 @@ extension KeyBoardExtensionView {
     
     @objc func photoBtnClick(_ sender: UIButton) {
         self.videoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
         self.fontBtn.isSelected = false
         self.colorBtn.isSelected = false
         
@@ -126,7 +112,6 @@ extension KeyBoardExtensionView {
     
     @objc func videoBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
         self.fontBtn.isSelected = false
         self.colorBtn.isSelected = false
         
@@ -136,22 +121,9 @@ extension KeyBoardExtensionView {
         self.delegate?.videoPressed(sender)
     }
     
-    @objc func bgmBtnClick(_ sender: UIButton) {
-        self.photoBtn.isSelected = false
-        self.videoBtn.isSelected = false
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        self.delegate?.bgmPressedn(sender)
-    }
-    
     @objc func fontBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
         self.videoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
         self.colorBtn.isSelected = false
         
         sender.isSelected = !sender.isSelected
@@ -162,7 +134,6 @@ extension KeyBoardExtensionView {
     @objc func colorBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
         self.videoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
         self.fontBtn.isSelected = false
         
         sender.isSelected = !sender.isSelected
@@ -173,7 +144,6 @@ extension KeyBoardExtensionView {
     @objc func hideKBBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
         self.videoBtn.isSelected = false
-        self.bgmBtn.isSelected = false
         self.fontBtn.isSelected = false
         self.colorBtn.isSelected = false
         

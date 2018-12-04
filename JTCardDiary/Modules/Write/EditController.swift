@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import MediaPlayer
 import AVFoundation
+import AVKit
 
 class EditController: UIViewController {
     
@@ -46,13 +47,6 @@ class EditController: UIViewController {
         return view
     }()
     
-    @IBOutlet weak var bgmView: UIView!
-    @IBOutlet weak var heightConstraints: NSLayoutConstraint!
-    @IBOutlet weak var bgmImg: UIImageView!
-    @IBOutlet weak var bgmName: UILabel!
-    @IBOutlet weak var bgmArtistName: UILabel!
-    private var bgmPath: String?
-    
     @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var textView: JTRichTextView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
@@ -62,8 +56,13 @@ class EditController: UIViewController {
     var weatherStr = ""
     var moodStr = ""
     
-    var bgmModel: BgmModel?
+    private var insertImages: [UIImage] = []
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.textView.becomeFirstResponder()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,15 +104,6 @@ class EditController: UIViewController {
     func setDiaryModel(model: DiaryModel) {
         self.diaryModel = model
         
-        if let bgm = model.bgm {
-            //            self.bgmImg.image =
-            self.bgmName.text = bgm.musicName
-            self.bgmArtistName.text = bgm.artistName
-        } else {
-            self.bgmView.isHidden = true
-            self.heightConstraints.constant = 0
-            self.view.layoutIfNeeded()
-        }
     }
     
     
@@ -136,34 +126,6 @@ extension EditController {
         self.keyBoardTopView.delegate = self
         self.textView.inputAccessoryView = self.keyBoardTopView
         
-        // 为bgmView添加背景
-        self.bgmView.layer.shadowColor = UIColor.gray.cgColor
-        self.bgmView.layer.shadowOpacity = 0.4
-        self.bgmView.layer.shadowRadius = 4.0
-        self.bgmView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        self.bgmView.layer.shadowPath = UIBezierPath(rect: CGRect(x: -2, y: -2, width: kScreenWidth - 30 + 4, height: 50 + 4)).cgPath
-        
-        if let model = self.diaryModel {
-            if let bgm = model.bgm {
-                self.bgmView.isHidden = false
-                self.heightConstraints.constant = 50
-                self.bgmView.layer.masksToBounds = false
-                self.view.layoutIfNeeded()
-                //            self.bgmImg.image =
-                self.bgmName.text = bgm.musicName
-                self.bgmArtistName.text = bgm.artistName
-            } else {
-                self.bgmView.isHidden = true
-                self.heightConstraints.constant = 0
-                self.bgmView.layer.masksToBounds = true
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            self.bgmView.isHidden = true
-            self.heightConstraints.constant = 0
-            self.bgmView.layer.masksToBounds = true
-            self.view.layoutIfNeeded()
-        }
     }
     
     @objc private func moodAndWeatherBtnClick() {
@@ -191,8 +153,6 @@ extension EditController {
     
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
         print("保存")
-        
-        let diaryModel = DiaryModel.init(title: self.titleTF.text, weather: WeatherDic[self.weatherStr], mood: MoodDic[self.moodStr], bgm: self.bgmModel, richText: self.textView.attributedText.transformToArray())
         
     }
     
@@ -236,40 +196,6 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-//        guard let str = self.textView.text else {
-//            return
-//        }
-//        let tempStr = NSString(string: str)
-//
-//        let len = self.textView.attributedText.length - self.textView.locationStr.length
-//
-//        if len > 0 {
-//            self.textView.newRange = NSRange(location: self.textView.selectedRange.location-len, length: len)
-//            self.textView.newStr = tempStr.substring(with: self.textView.newRange)
-//        }
-//
-//        var isChinese: Bool
-//        if let mode = self.textView.textInputMode?.primaryLanguage, mode == "en-US" {
-//            isChinese = false
-//        } else {
-//            isChinese = true
-//        }
-//
-//        let use = tempStr.replacingOccurrences(of: "?", with: "")
-//        if isChinese {
-//            if let selectedRange = self.textView.markedTextRange {
-//                // 获取高亮部分
-//                // 没有高亮选择的字，则对已输入的文字进行字数统计和限制
-//                if let _ = self.textView.position(from: selectedRange.start, offset: 0) {
-//
-//                    self.textView.setStyle()
-//                } else {
-//                    print("没有转化" + use)
-//                }
-//            }
-//        } else {
-//            self.textView.setStyle()
-//        }
     }
 }
 
@@ -332,8 +258,8 @@ extension EditController: KeyBoardExtensionDelegate {
         vc.setType(type: .video)
         let nav = UINavigationController(rootViewController: vc)
         
-        vc.importVideoClick = { item in
-            self.importVideoHandle(playItem: item)
+        vc.importVideoClick = { asset, showImg in
+            self.importVideoHandle(asset: asset, showImg: showImg)
         }
         
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
@@ -352,52 +278,6 @@ extension EditController: KeyBoardExtensionDelegate {
         } else if PHPhotoLibrary.authorizationStatus() == .denied || PHPhotoLibrary.authorizationStatus() == .restricted {
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: nil, message: "请在iPhone的\"设置-隐私-照片\"选项中，\n允许访问你的手机相册。", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
-                    
-                }))
-                alert.addAction(UIAlertAction(title: "前往", style: .default, handler: { (act) in
-                    
-                }))
-                self.present(alert, animated: true, completion: {
-                    
-                })
-            }
-        } else {
-            self.present(nav, animated: true, completion: {
-                
-            })
-        }
-    }
-    
-    func bgmPressedn(_ sender: UIButton) {
-        print("音乐点击")
-        
-        self.colorView.removeFromSuperview()
-        self.fontView.removeFromSuperview()
-        
-        let vc = MusicController()
-        let nav = UINavigationController(rootViewController: vc)
-        
-        vc.importMusicClick = { bgm in
-            self.importMusicHandle(bgm: bgm)
-        }
-        
-        if MPMediaLibrary.authorizationStatus() == .notDetermined {
-            PHPhotoLibrary.requestAuthorization() { status in
-                if status == .authorized {
-                    print("authorized")
-                    
-                    DispatchQueue.main.async {
-                        
-                        self.present(nav, animated: true, completion: {
-                            
-                        })
-                    }
-                }
-            }
-        } else if MPMediaLibrary.authorizationStatus() == .denied || MPMediaLibrary.authorizationStatus() == .restricted {
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: nil, message: "请在iPhone的\"设置-隐私-照片\"选项中，\n允许访问你的手机音乐。", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
                     
                 }))
@@ -494,7 +374,7 @@ extension EditController {
                 guard let temp = image else { return }
                 
                 DispatchQueue.main.async {
-                    self.textView.insertImage(image: temp)
+                    self.textView.insertImage(image: temp, linkStr: "checkbox://")
                 }
             }
         }
@@ -502,47 +382,16 @@ extension EditController {
         self.progressHud?.dismiss(nil)
     }
     
-    private func importVideoHandle(playItem: AVPlayerItem) {
+    private func importVideoHandle(asset: AVAsset, showImg: UIImage) {
         if self.progressHud == nil {
             self.progressHud = JGProgressHUDWrapper()
         }
         
         self.progressHud?.show(self.view, completion: nil)
         
-        
-        
-    }
-    
-    private func importMusicHandle(bgm: MPMediaItem) {
-        if self.progressHud == nil {
-            self.progressHud = JGProgressHUDWrapper()
-        }
-        
-        self.progressHud?.show(self.view, completion: nil)
-        
-        if let show = bgm.artwork?.image(at: CGSize(width: 100, height: 100)) {
-            self.bgmImg.image = show
-        }
-        
-        if let songTitle = bgm.value(forProperty: MPMediaItemPropertyTitle) as? String {
-            self.bgmName.text = songTitle
-        }
-        
-        if let songArt = bgm.value(forProperty: MPMediaItemPropertyArtist) as? String {
-            self.bgmArtistName.text = songArt
-        }
-        
-        if let path = bgm.value(forProperty: MPMediaItemPropertyAssetURL) as? URL {
-            self.bgmPath = path.absoluteString
-        }
-        
-        self.bgmView.isHidden = false
-        self.heightConstraints.constant = 50
-        self.bgmView.layer.masksToBounds = false
-        self.view.layoutIfNeeded()
+        self.textView.insertVideo(image: showImg, linkStr: "videoStr")
         
         self.progressHud?.dismiss(nil)
-        
     }
     
     private func refreshTextViewStyle(style: JTFontFormat, isSet: Bool) {

@@ -89,6 +89,7 @@ enum ImageAttachmentMode {
 
 extension DiaryListController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6
         return self.listData.count
     }
     
@@ -100,9 +101,9 @@ extension DiaryListController: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DisplayController()
         
-        let arr = self.textView.attributedText.transformToArray()
-        
-        vc.setDiaryModel(model: listData[indexPath.row])
+//        let arr = self.textView.attributedText.transformToArray()
+//        
+//        vc.setDiaryModel(model: listData[indexPath.row])
 //        vc.setText(text: self.textView.attributedText)
         self.navigationController?.pushViewController(vc, animated: true)
     }

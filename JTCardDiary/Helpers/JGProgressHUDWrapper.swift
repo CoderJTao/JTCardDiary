@@ -37,11 +37,12 @@ class JGProgressHUDWrapper: NSObject {
         self.state = .idle
     }
     
+    
+    
     func show(_ view: UIView, completion: (() -> ())?) {
         if self.hud!.isVisible {
             self.hud!.dismiss()
         }
-        
         if let text = self.content {
             self.hud!.textLabel.text = text
         }

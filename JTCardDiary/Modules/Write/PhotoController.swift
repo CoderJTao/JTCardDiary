@@ -8,6 +8,8 @@
 
 import UIKit
 import Photos
+import AVFoundation
+import AVKit
 
 class PhotoController: UIViewController {
     
@@ -29,13 +31,15 @@ class PhotoController: UIViewController {
     
     private var results: PHFetchResult<PHAsset>!
     private var selectAsset: [PHAsset] = []
-    private var selectPlayItem: AVPlayerItem?
+    
+    private var selectVideoAsset: AVAsset?
+    private var videoPreviewImg: UIImage?
     
     var importImageClick: ([PHAsset])->() = { _ in
         
     }
     
-    var importVideoClick: (AVPlayerItem)->() = { _ in
+    var importVideoClick: (AVAsset, UIImage)->() = { _, _ in
         
     }
     
@@ -46,6 +50,12 @@ class PhotoController: UIViewController {
         setUpUI()
         
         initData()
+        
+        if type == .image {
+            self.title = "照片"
+        } else {
+            self.title = "视频"
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -100,26 +110,40 @@ class PhotoController: UIViewController {
     
 
     @IBAction func previewBtnClick(_ sender: UIButton) {
-        if self.selectAsset.count <= 0 { return }
-        
-        if self.preView != nil {
-            self.preView = nil
+        if self.type == .image {
+            if self.selectAsset.count <= 0 { return }
+            
+            if self.preView != nil {
+                self.preView = nil
+            }
+            
+            preView = PreviewView(frame: CGRect(x: self.view.width, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY))
+            preView?.backgroundColor = UIColor.hexString(hexString: "404040")
+            
+            self.view.addSubview(preView!)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
+            }
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
+            }) { (finished) in
+                self.preView?.setSources(sources: self.selectAsset)
+            }
+        } else {
+            guard let video = self.selectVideoAsset else { return }
+            
+            let item = AVPlayerItem(asset: video)
+            let player = AVPlayer(playerItem: item)
+            
+            //控制器推出的模式
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            playerViewController.player?.play()
+            self.present(playerViewController, animated:true, completion: nil)
         }
         
-        preView = PreviewView(frame: CGRect(x: self.view.width, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY))
-        preView?.backgroundColor = UIColor.hexString(hexString: "404040")
-        
-        self.view.addSubview(preView!)
-        
-        UIView.animate(withDuration: 0.3) {
-            self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
-        }
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
-        }) { (finished) in
-            self.preView?.setSources(sources: self.selectAsset)
-        }
     }
     
     
@@ -129,9 +153,9 @@ class PhotoController: UIViewController {
             
             self.importImageClick(self.selectAsset)
         } else {
-            guard let item = self.selectPlayItem else { return }
+            guard let item = self.selectVideoAsset, let image = self.videoPreviewImg else { return }
             
-            self.importVideoClick(item)
+            self.importVideoClick(item, image)
         }
         
         self.dismissClick()
@@ -155,7 +179,6 @@ extension PhotoController {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
-        self.title = "照片"
         self.functionView.addLine(positon: .top)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(dismissClick))
@@ -220,7 +243,7 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
             if sources.count - 1 >= indexPath.row {
                 if cell.isChoose {
                     // 选中照片
-                    if let useAsset = cell._asset {
+                    if let useAsset = cell._imageAsset {
                         if !self.selectAsset.contains(useAsset) {
                             self.selectAsset.append(useAsset)
                         }
@@ -231,7 +254,7 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
                     self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
                 } else {
                     // 取消选中
-                    if let useAsset = cell._asset {
+                    if let useAsset = cell._imageAsset {
                         if self.selectAsset.contains(useAsset) {
                             self.selectAsset = self.selectAsset.filter {
                                 $0.burstIdentifier != useAsset.burstIdentifier
@@ -257,7 +280,7 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
         } else {
             if cell.isChoose {
                 // 选中视频
-                if self.selectPlayItem != nil {
+                if self.selectVideoAsset != nil {
                     let hud = JGProgressHUDWrapper.init()
                     hud.content = "只能导入一个视频"
                     hud.show(self.view) {
@@ -265,16 +288,16 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
                             hud.dismiss(nil)
                         })
                     }
-                    return
+                    cell.isChoose = false
+                } else {
+                    self.selectVideoAsset = cell._videoAsset
+                    self.videoPreviewImg = cell._videoPreviewImage
+                    self.confirmBtn.setTitle("导入"+"(1)", for: .normal)
                 }
-                if let useItem = cell._playItem {
-                    self.selectPlayItem = useItem
-                }
-                
-                self.confirmBtn.setTitle("导入"+"(1)", for: .normal)
             } else {
                 // 取消选中
-                self.selectPlayItem = nil
+                self.selectVideoAsset = nil
+                self.videoPreviewImg = nil
                 
                 self.confirmBtn.setTitle("导入", for: .normal)
             }

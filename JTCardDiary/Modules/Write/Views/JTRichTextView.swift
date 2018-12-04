@@ -144,13 +144,13 @@ class JTRichTextView: UITextView {
     
     
     /**插入图片*/
-    func insertImage(image: UIImage) {
+    func insertImage(image: UIImage, linkStr: String) {
         //获取textView的所有文本，转成可变的文本
         let mutableStr = NSMutableAttributedString(attributedString: self.attributedText)
         
         //创建图片附件
         let imgAttachment = NSTextAttachment(data: nil, ofType: nil)
-        var imgAttachmentString: NSAttributedString
+        var imgAttachmentString: NSMutableAttributedString
         imgAttachment.image = image
         
         //设置图片显示方式
@@ -160,15 +160,19 @@ class JTRichTextView: UITextView {
         let imageHeight = image.size.height/image.size.width*imageWidth
         imgAttachment.bounds = CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)
         
-        imgAttachmentString = NSAttributedString(attachment: imgAttachment)
+        imgAttachmentString = NSMutableAttributedString(attachment: imgAttachment)
         
         //获得目前光标的位置
         let selectedRange = self.selectedRange
+        
+        imgAttachmentString.addAttribute(NSAttributedString.Key.link, value: linkStr, range: NSRange(location: 0, length: imgAttachmentString.length))
+        
         //插入文字
         mutableStr.insert(imgAttachmentString, at: selectedRange.location)
         //设置可变文本的字体属性
         mutableStr.addAttribute(NSAttributedString.Key.font, value: TextFont,
                                 range: NSMakeRange(0,mutableStr.length))
+        
         //再次记住新的光标的位置
         let newSelectedRange = NSMakeRange(selectedRange.location+1, 0)
         
@@ -216,6 +220,37 @@ class JTRichTextView: UITextView {
     
     func getCurrentLine(text: String) {
         
+    }
+    
+    /// 插入一个视频   在传入的image上画一个比方的图标
+    func insertVideo(image: UIImage, linkStr: String) {
+        
+        let icon = UIImage(named: "bgm_play")!
+        
+        let size = CGSize(width: self.width, height: self.width * 0.75)
+        
+        let scale = size.height / image.size.height
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        
+        let colorImg = UIColor.hexString(hexString: TextColor_gray).image()
+        
+        colorImg.draw(in: CGRect(origin: CGPoint.zero, size: size))
+        
+        image.draw(in: CGRect(x: (self.width - image.size.width * scale) / CGFloat(2), y: 0, width: image.size.width * scale, height: image.size.height * scale))
+        
+        icon.draw(at: CGPoint(x: size.width/2 - icon.size.width/2, y: size.height/2 - icon.size.height/2))
+        
+        let context = UIGraphicsGetCurrentContext()
+        context?.drawPath(using: CGPathDrawingMode.stroke)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        if let new = newImage {
+            self.insertImage(image: new, linkStr: linkStr)
+        }
     }
     
     
