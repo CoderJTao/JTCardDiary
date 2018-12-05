@@ -11,9 +11,6 @@ import Photos
 
 class CameraCell: UICollectionViewCell {
     
-    var player = AVPlayer()
-    private var playerLayer = AVPlayerLayer()
-    
     private lazy var showImg: UIImageView = {
         let imageV = UIImageView(frame: self.bounds)
         imageV.contentMode = UIView.ContentMode.scaleAspectFill
@@ -21,23 +18,10 @@ class CameraCell: UICollectionViewCell {
         return imageV
     }()
     
-    private lazy var videoImg: UIImageView = {
-        let imageV = UIImageView(frame: CGRect(x: 4, y: self.height-17, width: 18, height: 15))
-        imageV.image = UIImage(named: "video_white")
-        
-        return imageV
-    }()
-    
-    private lazy var videoDurationLbl: UILabel = {
-        let lbl = UILabel(frame: CGRect(x: 26, y: self.height-17, width: self.width - 30, height: 15))
-        lbl.textAlignment = .right
-        lbl.font = UIFont.systemFont(ofSize: 13)
-        lbl.textColor = UIColor.white
-        return lbl
-    }()
-    
     var isChoose: Bool = false {
         didSet {
+            self.chooseImg.isHidden = !isChoose
+            
             if isChoose {
                 self.chooseImg.image = UIImage(named: "select_yes")
                 
@@ -61,15 +45,13 @@ class CameraCell: UICollectionViewCell {
     private lazy var chooseImg: UIImageView = {
         let img = UIImageView(frame: CGRect(x: self.width-30, y: 6, width: 24, height: 24))
         img.image = UIImage(named: "select_no")
+        img.isHidden = true
         return img
     }()
     
-    private let imageManager = PHImageManager.default()
+    private let ImageManager = PHImageManager.default()
     
     var _imageAsset: PHAsset?
-    
-    var _videoAsset: AVAsset?
-    var _videoPreviewImage: UIImage?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,71 +64,13 @@ class CameraCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setAsset(asset: PHAsset, type: PHAssetMediaType) {
-        if type == .image {
-            self._imageAsset = asset
-            self.chooseImg.isHidden = false
+    func setAsset(asset: PHAsset) {
+        self._imageAsset = asset
+        
+        ImageManager.requestImage(for: asset, targetSize: CGSize(width: self.width*UIScreen.main.scale, height: self.height*UIScreen.main.scale), contentMode: PHImageContentMode.aspectFill, options: nil) { (image, imageDic) in
+            guard let temp = image else { return }
             
-            imageManager.requestImage(for: asset, targetSize: CGSize(width: self.width*UIScreen.main.scale, height: self.height*UIScreen.main.scale), contentMode: PHImageContentMode.aspectFill, options: nil) { (image, imageDic) in
-                guard let temp = image else { return }
-                
-                self.showImg.image = temp
-            }
-            
-        } else {
-            addSubview(self.videoImg)
-            addSubview(self.videoDurationLbl)
-            
-            imageManager.requestAVAsset(forVideo: asset, options: nil) { (avAsset, audioMix, info) in
-                guard let useAsset = avAsset else { return }
-                
-                self._videoAsset = useAsset
-                
-                let duration = CMTimeGetSeconds(useAsset.duration)
-                
-                let assetGen = AVAssetImageGenerator(asset: useAsset)
-                
-                assetGen.appliesPreferredTrackTransform = true
-                
-                let time = CMTimeMakeWithSeconds(0.0, preferredTimescale: 600)
-                
-                let image = try? assetGen.copyCGImage(at: time, actualTime: nil)
-                if let useImgae = image {
-                    
-                    let videoImage = UIImage(cgImage: useImgae)
-                    
-                    self._videoPreviewImage = UIImage(cgImage: useImgae)
-                    
-                    DispatchQueue.main.async {
-                        self.showImg.image = videoImage
-                        self.videoDurationLbl.text = self.getFormatPlayTime(secounds: duration)
-                    }
-                    
-                }
-            }
+            self.showImg.image = temp
         }
     }
-    
-    func setAddImage() {
-        self.chooseImg.isHidden = true
-        self.showImg.image = UIImage(named: "photo_add")
-    }
-    
-    
-    func getFormatPlayTime(secounds: Double)->String{
-        if secounds.isNaN{
-            return "00:00"
-        }
-        var Min = Int(secounds / 60)
-        let Sec = Int(secounds.truncatingRemainder(dividingBy: 60))
-        var Hour = 0
-        if Min>=60 {
-            Hour = Int(Min / 60)
-            Min = Min - Hour*60
-            return String(format: ":%02d:%02d", Min, Sec)
-        }
-        return String(format: "%02d:%02d", Min, Sec)
-    }
-    
-    
 }

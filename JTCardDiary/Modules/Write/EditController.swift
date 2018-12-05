@@ -51,6 +51,14 @@ class EditController: UIViewController {
     @IBOutlet weak var textView: JTRichTextView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    private var isFixOffset = false
+    
+    @IBOutlet weak var imgContainerView: UIView!
+    @IBOutlet weak var coverImg: UIImageView!
+    @IBOutlet weak var imgCountLbl: UILabel!
+    
+    private var importImgLists: [StoreImgModel] = []
+    
     var diaryModel: DiaryModel?
     
     var weatherStr = ""
@@ -118,6 +126,8 @@ extension EditController {
         self.textView.attributedText = self.currentText
         self.textView.becomeFirstResponder()
         
+        self.textView.alwaysBounceVertical = true
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .plain, target: self, action: #selector(saveItemClick(_:)))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.hexString(hexString: "2D2D2D")
         
@@ -126,6 +136,8 @@ extension EditController {
         self.keyBoardTopView.delegate = self
         self.textView.inputAccessoryView = self.keyBoardTopView
         
+        self.coverImg.isUserInteractionEnabled = true
+        self.coverImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(importImagesPreview)))
     }
     
     @objc private func moodAndWeatherBtnClick() {
@@ -149,6 +161,10 @@ extension EditController {
         self.present(vc, animated: false) {
             
         }
+    }
+    
+    @objc private func importImagesPreview() {
+        
     }
     
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
@@ -195,8 +211,22 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
         return true
     }
     
-    func textViewDidChange(_ textView: UITextView) {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return true
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+        ///防止拼音输入时，文本直接获取拼音UITextRange *selectedRange = [textView markedTextRange];NSString * newText = [textView textInRange:selectedRange];     //获取高亮部分if(newText.length>0){return;}
+        
+        
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        return true
+    }
+    
 }
 
 // MARK: - 键盘上l扩展方法的回调
@@ -208,8 +238,7 @@ extension EditController: KeyBoardExtensionDelegate {
         self.fontView.removeFromSuperview()
         
         let vc = PhotoController()
-        vc.setType(type: .image)
-        let nav = UINavigationController(rootViewController: vc)
+        vc.modalPresentationStyle = .overCurrentContext
         
         vc.importImageClick = { assets in
             self.importImageHandle(assets: assets)
@@ -222,9 +251,7 @@ extension EditController: KeyBoardExtensionDelegate {
                     
                     DispatchQueue.main.async {
                         
-                        self.present(nav, animated: true, completion: {
-                            
-                        })
+                        self.present(vc, animated: false, completion: nil)
                     }
                 }
             }
@@ -242,56 +269,7 @@ extension EditController: KeyBoardExtensionDelegate {
                 })
             }
         } else {
-            self.present(nav, animated: true, completion: {
-                
-            })
-        }
-    }
-    
-    func videoPressed(_ sender: UIButton) {
-        print("视频点击")
-        
-        self.colorView.removeFromSuperview()
-        self.fontView.removeFromSuperview()
-        
-        let vc = PhotoController()
-        vc.setType(type: .video)
-        let nav = UINavigationController(rootViewController: vc)
-        
-        vc.importVideoClick = { asset, showImg in
-            self.importVideoHandle(asset: asset, showImg: showImg)
-        }
-        
-        if PHPhotoLibrary.authorizationStatus() == .notDetermined {
-            PHPhotoLibrary.requestAuthorization() { status in
-                if status == .authorized {
-                    print("authorized")
-                    
-                    DispatchQueue.main.async {
-                        
-                        self.present(nav, animated: true, completion: {
-                            
-                        })
-                    }
-                }
-            }
-        } else if PHPhotoLibrary.authorizationStatus() == .denied || PHPhotoLibrary.authorizationStatus() == .restricted {
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: nil, message: "请在iPhone的\"设置-隐私-照片\"选项中，\n允许访问你的手机相册。", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
-                    
-                }))
-                alert.addAction(UIAlertAction(title: "前往", style: .default, handler: { (act) in
-                    
-                }))
-                self.present(alert, animated: true, completion: {
-                    
-                })
-            }
-        } else {
-            self.present(nav, animated: true, completion: {
-                
-            })
+            self.present(vc, animated: false, completion: nil)
         }
     }
     
@@ -366,20 +344,36 @@ extension EditController {
         
         self.progressHud?.show(self.view, completion: nil)
         
+        /*
+         let serialQueue = DispatchQueue(label: "label")    // 默认生成串行队列
+         let concurrentQueue = DispatchQueue(label: "label", attributes: .concurrent)  //  指定则为并行队列
+         */
+        
+        // 异步 + 串行 执行图片的获取
         for value in assets {
             let options = PHImageRequestOptions()
             options.isSynchronous = true
             
             PHImageManager.default().requestImage(for: value, targetSize: CGSize(width: value.pixelWidth, height: value.pixelHeight), contentMode: PHImageContentMode.default, options: options) { (image, imageInfo) in
-                guard let temp = image else { return }
+                guard let tempData = image?.pngData() else { return }
                 
-                DispatchQueue.main.async {
-                    self.textView.insertImage(image: temp, linkStr: "checkbox://")
-                }
+                let model = StoreImgModel(range: self.textView.selectedRange, imgData: tempData)
+                
+                self.importImgLists.append(model)
             }
         }
         
-        self.progressHud?.dismiss(nil)
+        DispatchQueue.main.async {
+            self.progressHud?.dismiss(nil)
+            
+            self.imgContainerView.isHidden = false
+            
+            if let firstModel = self.importImgLists.first {
+                self.coverImg.image = UIImage(data: firstModel.imgData)
+            }
+            
+            self.imgCountLbl.text = String(self.importImgLists.count)
+        }
     }
     
     private func importVideoHandle(asset: AVAsset, showImg: UIImage) {

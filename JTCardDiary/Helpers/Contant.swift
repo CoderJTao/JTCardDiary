@@ -36,6 +36,8 @@ import UIKit
 let kScreenWidth = UIScreen.main.bounds.size.width
 let kScreenHeight = UIScreen.main.bounds.size.height
 
+let kStatusBarHeight = UIApplication.shared.statusBarFrame.height
+
 /// color
 // 文字颜色
 let TextColor_gray = "8E8E93"

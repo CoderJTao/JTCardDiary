@@ -11,8 +11,8 @@ import UIKit
 protocol KeyBoardExtensionDelegate: AnyObject {
     func photoPressed(_ sender: UIButton)
     
-    func videoPressed(_ sender: UIButton)
-        
+//    func videoPressed(_ sender: UIButton)
+    
     func fontPressed(_ sender: UIButton)
     
     func colorPickerPressed(_ sender: UIButton)
@@ -37,18 +37,18 @@ class KeyBoardExtensionView: UIView {
         return btn
     }()
     
-    private lazy var videoBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*1, y: 0, width: btnWidthHeight, height: btnWidthHeight))
-        btn.addTarget(self, action: #selector(self.videoBtnClick(_:)), for: .touchUpInside)
-        
-        btn.setImage(UIImage(named: "video"), for: .normal)
-        btn.setImage(UIImage(named: "video_s"), for: .selected)
-        
-        return btn
-    }()
+//    private lazy var videoBtn: UIButton = {
+//        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*1, y: 0, width: btnWidthHeight, height: btnWidthHeight))
+//        btn.addTarget(self, action: #selector(self.videoBtnClick(_:)), for: .touchUpInside)
+//
+//        btn.setImage(UIImage(named: "video"), for: .normal)
+//        btn.setImage(UIImage(named: "video_s"), for: .selected)
+//
+//        return btn
+//    }()
     
     private lazy var fontBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*2, y: 0, width: btnWidthHeight, height: btnWidthHeight))
+        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*1, y: 0, width: btnWidthHeight, height: btnWidthHeight))
         btn.addTarget(self, action: #selector(self.fontBtnClick(_:)), for: .touchUpInside)
         
         btn.setImage(UIImage(named: "font"), for: .normal)
@@ -58,7 +58,7 @@ class KeyBoardExtensionView: UIView {
     }()
     
     private lazy var colorBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*3, y: 0, width: btnWidthHeight, height: btnWidthHeight))
+        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*2, y: 0, width: btnWidthHeight, height: btnWidthHeight))
         btn.addTarget(self, action: #selector(self.colorBtnClick(_:)), for: .touchUpInside)
         
         btn.setImage(UIImage(named: "color_picker"), for: .normal)
@@ -93,14 +93,14 @@ class KeyBoardExtensionView: UIView {
 extension KeyBoardExtensionView {
     private func setUpUI() {
         addSubview(photoBtn)
-        addSubview(videoBtn)
+//        addSubview(videoBtn)
         addSubview(fontBtn)
         addSubview(colorBtn)
         addSubview(endBtn)
     }
     
     @objc func photoBtnClick(_ sender: UIButton) {
-        self.videoBtn.isSelected = false
+//        self.videoBtn.isSelected = false
         self.fontBtn.isSelected = false
         self.colorBtn.isSelected = false
         
@@ -110,20 +110,20 @@ extension KeyBoardExtensionView {
         self.delegate?.photoPressed(sender)
     }
     
-    @objc func videoBtnClick(_ sender: UIButton) {
-        self.photoBtn.isSelected = false
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        self.fontBtn.isSelected = false
-        self.colorBtn.isSelected = false
-        
-        self.delegate?.videoPressed(sender)
-    }
+//    @objc func videoBtnClick(_ sender: UIButton) {
+//        self.photoBtn.isSelected = false
+//        self.fontBtn.isSelected = false
+//        self.colorBtn.isSelected = false
+//
+//        self.fontBtn.isSelected = false
+//        self.colorBtn.isSelected = false
+//
+//        self.delegate?.videoPressed(sender)
+//    }
     
     @objc func fontBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
-        self.videoBtn.isSelected = false
+//        self.videoBtn.isSelected = false
         self.colorBtn.isSelected = false
         
         sender.isSelected = !sender.isSelected
@@ -133,7 +133,7 @@ extension KeyBoardExtensionView {
     
     @objc func colorBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
-        self.videoBtn.isSelected = false
+//        self.videoBtn.isSelected = false
         self.fontBtn.isSelected = false
         
         sender.isSelected = !sender.isSelected
@@ -143,7 +143,7 @@ extension KeyBoardExtensionView {
     
     @objc func hideKBBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false
-        self.videoBtn.isSelected = false
+//        self.videoBtn.isSelected = false
         self.fontBtn.isSelected = false
         self.colorBtn.isSelected = false
         

@@ -13,14 +13,16 @@ import AVKit
 
 class PhotoController: UIViewController {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var functionView: UIView!
-    @IBOutlet weak var previewBtn: UIButton!
-    @IBOutlet weak var confirmBtn: UIButton!
+    @IBOutlet weak var cameraBtn: UIButton!
     
-    private var type: MediaType = .image
+    @IBOutlet weak var importBtn: UIButton!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var collectionView: UICollectionView!
+  
     private var preView: PreviewView?
     
     private var thumbnailImageSize: CGSize {
@@ -39,10 +41,16 @@ class PhotoController: UIViewController {
         
     }
     
-    var importVideoClick: (AVAsset, UIImage)->() = { _, _ in
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        self.heightConstraint.constant = 0
+        
+        UIView.animate(withDuration: 0.2) {
+            self.heightConstraint.constant = kScreenHeight / 2
+            self.view.layoutIfNeeded()
+        }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,36 +59,7 @@ class PhotoController: UIViewController {
         
         initData()
         
-        if type == .image {
-            self.title = "照片"
-        } else {
-            self.title = "视频"
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        
-    }
-    
-    func setType(type: MediaType) {
-        self.type = type
-    }
-    
-    @objc func dismissClick() {
-        if let vw = self.preView {
-            UIView.animate(withDuration: 0.3, animations: {
-                vw.frame = CGRect(x: self.view.width, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
-            }) { (finished) in
-                vw.removeFromSuperview()
-                self.preView = nil
-            }
-        } else {
-            self.dismiss(animated: true) {
-                
-            }
-        }
+        self.title = "照片"
     }
     
     private func initData() {
@@ -92,73 +71,32 @@ class PhotoController: UIViewController {
         
         allPhotosOptions.fetchLimit = 40
         
-        if self.type == .image {
-            //只获取图片""
-            allPhotosOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-            self.results = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: allPhotosOptions)
-        } else {
-            allPhotosOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.video.rawValue)
-            self.results = PHAsset.fetchAssets(with: PHAssetMediaType.video, options: allPhotosOptions)
-        }
+        //只获取图片""
+        allPhotosOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        self.results = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: allPhotosOptions)
         
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
     }
     
-    
-    
-
-    @IBAction func previewBtnClick(_ sender: UIButton) {
-        if self.type == .image {
-            if self.selectAsset.count <= 0 { return }
-            
-            if self.preView != nil {
-                self.preView = nil
-            }
-            
-            preView = PreviewView(frame: CGRect(x: self.view.width, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY))
-            preView?.backgroundColor = UIColor.hexString(hexString: "404040")
-            
-            self.view.addSubview(preView!)
-            
-            UIView.animate(withDuration: 0.3) {
-                self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
-            }
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                self.preView?.frame = CGRect(x: 0, y: self.collectionView.originY, width: self.view.width, height: self.view.height-self.collectionView.originY)
-            }) { (finished) in
-                self.preView?.setSources(sources: self.selectAsset)
-            }
-        } else {
-            guard let video = self.selectVideoAsset else { return }
-            
-            let item = AVPlayerItem(asset: video)
-            let player = AVPlayer(playerItem: item)
-            
-            //控制器推出的模式
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = player
-            playerViewController.player?.play()
-            self.present(playerViewController, animated:true, completion: nil)
+    @IBAction func cancleClick(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.15, animations: {
+            self.heightConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }) { (finished) in
+            self.dismiss(animated: false, completion: nil)
         }
-        
+    }
+    
+    @IBAction func cameraClick(_ sender: UIButton) {
     }
     
     
-    @IBAction func confirmBtnClick(_ sender: UIButton) {
-        if self.type == .image {
-            if self.selectAsset.count <= 0 { return }
-            
-            self.importImageClick(self.selectAsset)
-        } else {
-            guard let item = self.selectVideoAsset, let image = self.videoPreviewImg else { return }
-            
-            self.importVideoClick(item, image)
-        }
+    @IBAction func importBtnClick(_ sender: UIButton) {
+        self.importImageClick(self.selectAsset)
         
-        self.dismissClick()
+        self.cancleClick(UIButton())
     }
 }
 
@@ -179,10 +117,9 @@ extension PhotoController {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
-        self.functionView.addLine(positon: .top)
+        self.functionView.addLine(UIColor.hexString(hexString: TextColor_gray).cgColor, positon: .bottom)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(dismissClick))
-        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.hexString(hexString: "2D2D2D")
+        self.collectionView.alwaysBounceVertical = true
     }
     
     
@@ -190,38 +127,16 @@ extension PhotoController {
 
 extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let sources = self.results else {
-            if self.type == .image {
-                return 1
-            } else {
-                return 0
-            }
-        }
-        
-        if self.type == .image {
-            return sources.count + 1
-        } else {
-            return sources.count
-        }
+        return self.results.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CameraCell", for: indexPath) as! CameraCell
         
         guard let sources = self.results else {
-            if self.type == .image {
-                cell.setAddImage()
-            }
             return cell
         }
-        
-        if sources.count - 1 >= indexPath.row {
-            cell.setAsset(asset: sources.object(at: indexPath.row), type: self.type == .image ? PHAssetMediaType.image : PHAssetMediaType.video)
-        } else {
-            if self.type == .image {
-                cell.setAddImage()
-            }
-        }
+        cell.setAsset(asset: sources.object(at: indexPath.row))
         
         return cell
     }
@@ -229,95 +144,63 @@ extension PhotoController: UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CameraCell
         
-        guard let sources = self.results else {
-            if self.type == .image {
-                // 拍照
-                print("拍照")
-            }
-            return
-        }
-        
         cell.isChoose = !cell.isChoose
         
-        if self.type == .image {
-            if sources.count - 1 >= indexPath.row {
-                if cell.isChoose {
-                    // 选中照片
-                    if let useAsset = cell._imageAsset {
-                        if !self.selectAsset.contains(useAsset) {
-                            self.selectAsset.append(useAsset)
-                        }
-                    }
-                    self.previewBtn.isEnabled = true
-                    self.confirmBtn.isEnabled = true
-                    
-                    self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
-                } else {
-                    // 取消选中
-                    if let useAsset = cell._imageAsset {
-                        if self.selectAsset.contains(useAsset) {
-                            self.selectAsset = self.selectAsset.filter {
-                                $0.burstIdentifier != useAsset.burstIdentifier
-                            }
-                        }
-                    }
-                    
-                    if self.selectAsset.count > 0 {
-                        self.confirmBtn.setTitle("导入"+"("+"\(self.selectAsset.count)"+")", for: .normal)
-                        self.previewBtn.isEnabled = true
-                        self.confirmBtn.isEnabled = true
-                    } else {
-                        self.confirmBtn.setTitle("导入", for: .normal)
-                        self.previewBtn.isEnabled = false
-                        self.confirmBtn.isEnabled = false
-                    }
+        if cell.isChoose {
+            // 选中照片
+            if let useAsset = cell._imageAsset {
+                if !self.selectAsset.contains(useAsset) {
+                    self.selectAsset.append(useAsset)
                 }
-                
-            } else {
-                // 拍照
-                print("拍照")
             }
+            
         } else {
-            if cell.isChoose {
-                // 选中视频
-                if self.selectVideoAsset != nil {
-                    let hud = JGProgressHUDWrapper.init()
-                    hud.content = "只能导入一个视频"
-                    hud.show(self.view) {
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.init(uptimeNanoseconds: 1), execute: {
-                            hud.dismiss(nil)
-                        })
+            // 取消选中
+            if let useAsset = cell._imageAsset {
+                if self.selectAsset.contains(useAsset) {
+                    self.selectAsset = self.selectAsset.filter {
+                        $0 != useAsset
                     }
-                    cell.isChoose = false
-                } else {
-                    self.selectVideoAsset = cell._videoAsset
-                    self.videoPreviewImg = cell._videoPreviewImage
-                    self.confirmBtn.setTitle("导入"+"(1)", for: .normal)
                 }
-            } else {
-                // 取消选中
-                self.selectVideoAsset = nil
-                self.videoPreviewImg = nil
-                
-                self.confirmBtn.setTitle("导入", for: .normal)
             }
         }
+        
+        self.importBtn.setTitle("导入\(self.selectAsset.count)张照片", for: .normal)
+        
+        if self.selectAsset.count > 0 {
+            if self.bottomConstraint.constant == 0 { return }
+            
+            UIView.animate(withDuration: 0.2) {
+                self.bottomConstraint.constant = 0
+            }
+        } else {
+            UIView.animate(withDuration: 0.2) {
+                self.bottomConstraint.constant = -44
+            }
+        }
+        self.view.layoutIfNeeded()
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-enum MediaType {
-    case image
-    case video
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        
+        if heightConstraint.constant == kScreenHeight - kStatusBarHeight {
+            if offsetY <= -30 {
+                UIView.animate(withDuration: 0.2) {
+                    self.heightConstraint.constant = kScreenHeight / 2
+                    self.view.layoutIfNeeded()
+                }
+            }
+        }
+        
+        if heightConstraint.constant == kScreenHeight / 2 {
+            if offsetY >= 10 {
+                UIView.animate(withDuration: 0.2) {
+                    self.heightConstraint.constant = kScreenHeight - kStatusBarHeight
+                    self.view.layoutIfNeeded()
+                }
+            }
+        }
+        
+    }
 }

@@ -38,7 +38,6 @@ class MusicController: UIViewController {
         self.tableView.dataSource = self
         
         self.title = "音乐"
-//        self.functionView.addLine(positon: .top)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(dismissClick))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.hexString(hexString: "2D2D2D")

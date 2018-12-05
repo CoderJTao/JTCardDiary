@@ -33,5 +33,11 @@ struct DiaryModel {
 
 
 
+struct StoreImgModel {
+    var range: NSRange
+    
+    var imgData: Data
+}
+
 
 
