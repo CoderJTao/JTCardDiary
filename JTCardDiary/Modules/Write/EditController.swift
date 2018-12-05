@@ -47,6 +47,11 @@ class EditController: UIViewController {
         return view
     }()
     
+    private var preView: PreviewView = {
+        let view = PreviewView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight))
+        return view
+    }()
+    
     @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var textView: JTRichTextView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
@@ -164,7 +169,19 @@ extension EditController {
     }
     
     @objc private func importImagesPreview() {
+        self.textView.resignFirstResponder()
         
+        let vc = PreviewController()
+        vc.modalPresentationStyle = .overCurrentContext
+        
+        vc.setSources(images: self.importImgLists)
+        
+        self.present(vc, animated: false, completion: nil)
+        
+//        preView.setSources(images: self.importImgLists)
+//        self.view.addSubview(preView)
+//
+//        self.view.bringSubviewToFront(preView)
     }
     
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
