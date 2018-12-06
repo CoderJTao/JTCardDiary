@@ -14,6 +14,18 @@ class JTRichTextView: UITextView {
     private let TextFont = UIFont.systemFont(ofSize: 15)
     private let TextColor = UIColor.hexString(hexString: TextColor_black)
     
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5  // 字体的行间距
+        let attributes = [NSAttributedString.Key.font: TextFont,
+                          NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                          NSAttributedString.Key.foregroundColor: TextColor]
+        
+        self.typingAttributes = attributes
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -218,41 +230,69 @@ class JTRichTextView: UITextView {
         self.selectedRange = newSelectedRange
     }
     
-    func getCurrentLine(text: String) {
+    func getCurrentLine() {
+        let useStr: NSString = NSString(string: self.text)
         
-    }
-    
-    /// 插入一个视频   在传入的image上画一个比方的图标
-    func insertVideo(image: UIImage, linkStr: String) {
+        let range = self.selectedRange
         
-        let icon = UIImage(named: "bgm_play")!
-        
-        let size = CGSize(width: self.width, height: self.width * 0.75)
-        
-        let scale = size.height / image.size.height
-        
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        
-        let colorImg = UIColor.hexString(hexString: TextColor_gray).image()
-        
-        colorImg.draw(in: CGRect(origin: CGPoint.zero, size: size))
-        
-        image.draw(in: CGRect(x: (self.width - image.size.width * scale) / CGFloat(2), y: 0, width: image.size.width * scale, height: image.size.height * scale))
-        
-        icon.draw(at: CGPoint(x: size.width/2 - icon.size.width/2, y: size.height/2 - icon.size.height/2))
-        
-        let context = UIGraphicsGetCurrentContext()
-        context?.drawPath(using: CGPathDrawingMode.stroke)
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
-        
-        if let new = newImage {
-            self.insertImage(image: new, linkStr: linkStr)
+        // 1. 判断range后面还有没有文字
+        if range.location < useStr.length {
+            // 后面还有文字
+            // 判断后面文字是否有换行  找到选中行到换行之间的文字
+//            let lastStr = self.attributedText.attributedSubstring(from: NSRange(location: range.location, length: useStr.length - range.location))
+            
+            let lastStr = NSString(string: useStr.substring(with: NSRange(location: range.location, length: useStr.length - range.location)))
+            
+            for index in 0..<lastStr.length {
+                let newRange = NSRange(location: index, length: 1)
+                
+                
+                
+            }
+            
+            
+            
+        } else {
+            // 后面无文字  当前行操作
+            print(getLastLine())
+            
         }
     }
     
+    // 找到最后一行文字
+    private func getLastLine() -> NSAttributedString {
+        if self.contentSize.height < 40 {
+            return self.attributedText
+        }
+        
+        let copyTextView = UITextView(frame: self.bounds)
+        copyTextView.attributedText = self.attributedText
+        copyTextView.text = self.text
+        
+        let useStr: NSString = NSString(string: self.text)
+        
+        let currentHeight = self.contentSize.height
+        
+        let range = self.selectedRange
+        
+        var resultStr: NSAttributedString = NSAttributedString(string: "")
+        
+        for index in 0..<useStr.length {
+            let newRange = NSRange(location: 0, length: range.location - index)
+            
+            copyTextView.attributedText = copyTextView.attributedText.attributedSubstring(from: newRange)
+            
+            if copyTextView.contentSize.height == currentHeight {
+                continue
+            } else {
+                let resultRange = NSRange(location: newRange.length, length: range.location - newRange.length)
+                resultStr = self.attributedText.attributedSubstring(from: resultRange)
+                break
+            }
+        }
+        
+        return resultStr
+    }
     
     private func  insertSeparatLine() {
         //获取textView的所有文本，转成可变的文本
@@ -293,4 +333,3 @@ class JTRichTextView: UITextView {
     }
     
 }
-

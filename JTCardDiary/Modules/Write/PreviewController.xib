@@ -55,12 +55,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehi-dF-whV">
                     <rect key="frame" x="0.0" y="20" width="375" height="607"/>
                     <subviews>
-                        <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="YTg-YF-JXK">
-                            <rect key="frame" x="168" y="570" width="39" height="37"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="YTg-YF-JXK">
+                            <rect key="frame" x="168" y="562" width="39" height="37"/>
                         </pageControl>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="YTg-YF-JXK" firstAttribute="centerX" secondItem="ehi-dF-whV" secondAttribute="centerX" id="88H-kM-IUf"/>
+                        <constraint firstAttribute="bottom" secondItem="YTg-YF-JXK" secondAttribute="bottom" constant="8" id="aFA-FN-nOQ"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.25098039215686274" green="0.25098039215686274" blue="0.25098039215686274" alpha="0.95334507042253525" colorSpace="custom" customColorSpace="sRGB"/>

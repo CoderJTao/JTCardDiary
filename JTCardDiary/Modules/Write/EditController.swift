@@ -176,12 +176,23 @@ extension EditController {
         
         vc.setSources(images: self.importImgLists)
         
-        self.present(vc, animated: false, completion: nil)
+        vc.imagesChanged = { imagesData in
+            self.importImgLists = imagesData
+            
+            if self.importImgLists.count == 0 {
+                self.imgContainerView.isHidden = true
+            } else {
+                self.imgContainerView.isHidden = false
+                
+                if let firstModel = self.importImgLists.first {
+                    self.coverImg.image = UIImage(data: firstModel.imgData)
+                }
+                
+                self.imgCountLbl.text = String(self.importImgLists.count)
+            }
+        }
         
-//        preView.setSources(images: self.importImgLists)
-//        self.view.addSubview(preView)
-//
-//        self.view.bringSubviewToFront(preView)
+        self.present(vc, animated: false, completion: nil)
     }
     
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
@@ -234,8 +245,13 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         
-        ///防止拼音输入时，文本直接获取拼音UITextRange *selectedRange = [textView markedTextRange];NSString * newText = [textView textInRange:selectedRange];     //获取高亮部分if(newText.length>0){return;}
+        ///防止拼音输入时，文本直接获取拼音
+        if textView.markedTextRange == nil {
+            // 没有预输入文字
+            
+        }
         
+        print(textView.selectedRange)
         
     }
     
@@ -343,9 +359,11 @@ extension EditController: KeyBoardExtensionDelegate {
     
     func endPressed(_ sender: UIButton) {
         // 下降时 插入的视图也需要消失
-        self.fontView.removeFromSuperview()
+//        self.fontView.removeFromSuperview()
+//
+//        self.textView.resignFirstResponder()
         
-        self.textView.resignFirstResponder()
+        self.textView.getCurrentLine()
     }
     
 
@@ -393,24 +411,10 @@ extension EditController {
         }
     }
     
-    private func importVideoHandle(asset: AVAsset, showImg: UIImage) {
-        if self.progressHud == nil {
-            self.progressHud = JGProgressHUDWrapper()
-        }
-        
-        self.progressHud?.show(self.view, completion: nil)
-        
-        self.textView.insertVideo(image: showImg, linkStr: "videoStr")
-        
-        self.progressHud?.dismiss(nil)
-    }
-    
     private func refreshTextViewStyle(style: JTFontFormat, isSet: Bool) {
         switch style {
         case .alignLeft, .alignCenter, .alignRight:
             self.textView.alignType = style
-        case .indent:
-            self.textView.isIndent = isSet
         case .beBold:
             self.textView.isBold = isSet
         case .beItalic:
@@ -428,7 +432,5 @@ extension EditController {
         default:
             break
         }
-        
-        
     }
 }

@@ -24,24 +24,6 @@
                         <action selector="alignClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="aKn-81-Lv6"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.84999999999999998" tag="341" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rwq-bq-3yr">
-                    <rect key="frame" x="212" y="143" width="29" height="23"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="divider"/>
-                    <state key="selected" image="divider_s"/>
-                    <connections>
-                        <action selector="addLineClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="029-Hh-wQU"/>
-                    </connections>
-                </button>
-                <button opaque="NO" alpha="0.85000002384185791" tag="334" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOx-cs-gRX">
-                    <rect key="frame" x="290" y="28" width="28" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="suojin"/>
-                    <state key="selected" image="suojin_s"/>
-                    <connections>
-                        <action selector="suojinClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="fpa-s6-V20"/>
-                    </connections>
-                </button>
                 <button opaque="NO" alpha="0.84999999999999998" tag="337" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2G-qO-fIT">
                     <rect key="frame" x="212" y="83" width="28" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -114,6 +96,15 @@
                         <action selector="listClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="qbc-wb-F7q"/>
                     </connections>
                 </button>
+                <button opaque="NO" alpha="0.84999999999999998" tag="334" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rwq-bq-3yr">
+                    <rect key="frame" x="290" y="30" width="29" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="divider"/>
+                    <state key="selected" image="divider_s"/>
+                    <connections>
+                        <action selector="addLineClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="029-Hh-wQU"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -140,8 +131,6 @@
         <image name="listul_s" width="28" height="22"/>
         <image name="strikethrough" width="28" height="24"/>
         <image name="strikethrough_s" width="28" height="24"/>
-        <image name="suojin" width="27" height="26"/>
-        <image name="suojin_s" width="27" height="26"/>
         <image name="underline" width="24" height="24"/>
         <image name="underline_s" width="24" height="24"/>
     </resources>

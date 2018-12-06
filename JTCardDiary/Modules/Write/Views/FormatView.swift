@@ -42,15 +42,6 @@ class FormatView: UIView {
         self.fontClick(type, true)
     }
     
-    /// 缩进点击
-    @IBAction func suojinClick(_ sender: UIButton) {
-        let type = JTFontFormat.indent
-        
-        sender.isSelected = !sender.isSelected
-        
-        self.fontClick(type, sender.isSelected)
-    }
-    
     /// 分割线点击
     @IBAction func addLineClick(_ sender: UIButton) {
         let type = JTFontFormat.divider
@@ -120,7 +111,8 @@ enum JTFontFormat: Int {
     case alignLeft = 0
     case alignCenter = 1
     case alignRight = 2
-    case indent = 3
+    
+    case divider = 3
     
     case beBold = 4
     case beItalic = 5
@@ -130,7 +122,4 @@ enum JTFontFormat: Int {
     
     case listOL = 8  // 有序列表
     case listUL = 9  // 无序列表
-    
-    case divider = 10
-    
 }

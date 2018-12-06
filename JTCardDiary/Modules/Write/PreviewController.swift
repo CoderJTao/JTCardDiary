@@ -13,9 +13,14 @@ class PreviewController: UIViewController {
     
     @IBOutlet weak var pageControl: UIPageControl!
     
+    private var isChangeSource = false
     private var imagesData: [StoreImgModel] = []
     
     private var scrollView = UIScrollView()
+    
+    var imagesChanged: ([StoreImgModel]) -> () = { _ in
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,29 +61,40 @@ class PreviewController: UIViewController {
     
     
     @IBAction func cancelClick(_ sender: UIButton) {
+        self.imagesChanged(self.imagesData)
         self.dismiss(animated: false) {
             
         }
     }
     
     @IBAction func deleteClick(_ sender: UIButton) {
-        self.imagesData.remove(at: pageControl.currentPage)
         
+        let alert = UIAlertController(title: nil, message: "删除这张照片？", preferredStyle: .actionSheet)
         
-        for value in self.scrollView.subviews {
-            value .removeFromSuperview()
-        }
+        alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (act) in
+            self.isChangeSource = true
+            
+            self.imagesData.remove(at: self.pageControl.currentPage)
+            
+            for value in self.scrollView.subviews {
+                value .removeFromSuperview()
+            }
+            
+            self.pageControl.numberOfPages = self.imagesData.count
+            
+            for (index, value) in self.imagesData.enumerated() {
+                let imageV = UIImageView(frame: CGRect(x: self.containerView.width * CGFloat(index), y: 0, width: self.containerView.width, height: self.containerView.height))
+                imageV.image = UIImage(data: value.imgData)
+                imageV.contentMode = UIView.ContentMode.scaleAspectFit
+                self.scrollView.addSubview(imageV)
+            }
+            
+            self.scrollView.contentSize = CGSize(width: self.containerView.width * CGFloat(self.imagesData.count), height: self.containerView.height)
+        }))
         
-        self.pageControl.numberOfPages = imagesData.count
+        alert.addAction(UIAlertAction(title: "取消", style: UIAlertAction.Style.default, handler: nil))
         
-        for (index, value) in imagesData.enumerated() {
-            let imageV = UIImageView(frame: CGRect(x: self.containerView.width * CGFloat(index), y: 0, width: self.containerView.width, height: self.containerView.height))
-            imageV.image = UIImage(data: value.imgData)
-            imageV.contentMode = UIView.ContentMode.scaleAspectFit
-            scrollView.addSubview(imageV)
-        }
-        
-        scrollView.contentSize = CGSize(width: self.containerView.width * CGFloat(imagesData.count), height: self.containerView.height)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -28,6 +28,7 @@
 		6C5861F221AB978600D19E85 /* MusicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C5861F021AB978600D19E85 /* MusicCell.xib */; };
 		6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */; };
 		6C5861F621ABA4F900D19E85 /* MoodAndWeatherController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */; };
+		6C814DFE21B8D1E7008720ED /* JTImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C814DFD21B8D1E7008720ED /* JTImageUtils.swift */; };
 		6C825E0221A2B8890083FEC4 /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825E0021A2B8890083FEC4 /* EditController.swift */; };
 		6C825E0321A2B8890083FEC4 /* EditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C825E0121A2B8890083FEC4 /* EditController.xib */; };
 		6C825E0A21A3FF930083FEC4 /* KeyBoardExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C825E0921A3FF930083FEC4 /* KeyBoardExtensionView.swift */; };
@@ -83,6 +84,7 @@
 		6C5861F021AB978600D19E85 /* MusicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicCell.xib; sourceTree = "<group>"; };
 		6C5861F321ABA4F900D19E85 /* MoodAndWeatherController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAndWeatherController.swift; sourceTree = "<group>"; };
 		6C5861F421ABA4F900D19E85 /* MoodAndWeatherController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoodAndWeatherController.xib; sourceTree = "<group>"; };
+		6C814DFD21B8D1E7008720ED /* JTImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JTImageUtils.swift; sourceTree = "<group>"; };
 		6C825E0021A2B8890083FEC4 /* EditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditController.swift; sourceTree = "<group>"; };
 		6C825E0121A2B8890083FEC4 /* EditController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditController.xib; sourceTree = "<group>"; };
 		6C825E0921A3FF930083FEC4 /* KeyBoardExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardExtensionView.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 		6C4C2DD7219ABFCA00DF73BE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				6C814DFD21B8D1E7008720ED /* JTImageUtils.swift */,
 				6CB36CD4219C221300B43800 /* JTDateUtils.swift */,
 				6C4C2DD8219ABFCA00DF73BE /* JTAnimatedTransition.swift */,
 				6C4C2DD9219ABFCA00DF73BE /* Contant.swift */,
@@ -454,6 +457,7 @@
 				6CF5A85321AFF6B80065D5F2 /* PreviewView.swift in Sources */,
 				6C908B5C219EA18F00BB3D1E /* DiaryListCell.swift in Sources */,
 				6C825E1021A400050083FEC4 /* FormatView.swift in Sources */,
+				6C814DFE21B8D1E7008720ED /* JTImageUtils.swift in Sources */,
 				6C4C2DE1219ABFCA00DF73BE /* Contant.swift in Sources */,
 				6C4C2DDB219ABFCA00DF73BE /* UIColor+Extension.swift in Sources */,
 				6C8DF6CF21A683170099F1B5 /* CameraCell.swift in Sources */,
