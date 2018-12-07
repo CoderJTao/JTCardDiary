@@ -31,6 +31,54 @@ class DiaryManager {
 }
 
 extension DiaryManager {
+    
+    /// 首页
+    // year: 2018
+    /// 获取当年每个月的日记概况
+    func getMonthsInfo(year: String) -> [MonthModel] {
+        let arr: [MonthModel] = []
+        
+        return arr
+    }
+    
+    /// 首页
+    // date: 2018-12
+    /// 获取当月每天的写作情况
+    func getDaysInfo(date: String) -> [DayModel] {
+        let arr: [DayModel] = []
+        
+        return arr
+    }
+    
+    /// 列表展示页
+    //  date: 2018-12
+    /// 获取当月所有日记列表
+    func getDiarys(date: String) -> [DiaryModel] {
+        let arr: [DiaryModel] = []
+        
+        return arr
+    }
+    
+    // date: 2018-12-7
+    /// 增加一篇日记
+    func addADiary(date: String) {
+        
+        
+    }
+    
+    // date: 2018-12-7
+    /// 删除一篇日记
+    func deleteDiary(date: String) {
+        
+    }
+    
+    // date: 2018-12-7
+    /// 更新一篇日记
+    func updateDiary(date: String) {
+        
+        
+    }
+    
 //    /// 获取指定日期日记
 //    func getDiaryModel(date: String) -> DiaryModel {
 //        let defaultRealm = self.getRealm()

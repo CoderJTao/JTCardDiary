@@ -16,7 +16,6 @@ class EditController: UIViewController {
     
     fileprivate var progressHud: JGProgressHUDWrapper?
     
-    private var currentText = NSMutableAttributedString()
     private var keyboardHeight: CGFloat = 0
     
     private var imageMood: UIImageView = {
@@ -64,13 +63,16 @@ class EditController: UIViewController {
     
     private var importImgLists: [StoreImgModel] = []
     
-    var diaryModel: DiaryModel?
+    var inputDiaryModel: DiaryModel?
+    private var currentDiarModel: DiaryModel {
+        get {
+            return DiaryModel.init(title: self.titleTF.text, weather: self.weatherStr, mood: self.moodStr, richText: self.textView.attributedText, images: self.importImgLists)
+        }
+    }
     
-    var weatherStr = ""
-    var moodStr = ""
-    
-    private var insertImages: [UIImage] = []
-    
+    var weatherStr = "阴天"
+    var moodStr = "开心"
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -81,13 +83,34 @@ class EditController: UIViewController {
         super.viewDidLoad()
         showNavigationBackButton()
         
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         setUpUI()
     }
-
+    
+    override func onNavigationBackPressed(_ sender: Any) {
+        guard let model = self.inputDiaryModel else {
+            // 提示保存
+            alertToSave()
+            return
+        }
+        
+        if model.isEqual(model: currentDiarModel) {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            alertToSave()
+        }
+    }
+    
+    private func alertToSave() {
+        let alert = UIAlertController(title: nil, message: "日记没有保存，确定退出吗？", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "退出", style: .destructive, handler: { (act) in
+            self.navigationController?.popViewController(animated: true)
+        }))
+    }
+    
     func setDateTitle(title: String) {
         let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 36))
         
@@ -115,20 +138,12 @@ class EditController: UIViewController {
     }
     
     func setDiaryModel(model: DiaryModel) {
-        self.diaryModel = model
-        
-    }
-    
-    
-    
-    func setText(text: NSAttributedString) {
-        self.currentText = NSMutableAttributedString(attributedString: text)
+        self.inputDiaryModel = model
     }
 }
 // MARK: - 自身的私有方法
 extension EditController {
     private func setUpUI() {
-        self.textView.attributedText = self.currentText
         self.textView.becomeFirstResponder()
         
         self.textView.alwaysBounceVertical = true
@@ -136,13 +151,34 @@ extension EditController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .plain, target: self, action: #selector(saveItemClick(_:)))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.hexString(hexString: "2D2D2D")
         
-        
         //  kb
         self.keyBoardTopView.delegate = self
         self.textView.inputAccessoryView = self.keyBoardTopView
         
         self.coverImg.isUserInteractionEnabled = true
         self.coverImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(importImagesPreview)))
+        
+        if let model = self.inputDiaryModel {
+            self.titleTF.text = model.title
+            
+            self.imageWeather.image = UIImage(named: WeatherDic[model.weather] ?? "yintian")
+            self.imageMood.image = UIImage(named: MoodDic[model.mood] ?? "happy")
+            
+            self.textView.attributedText = model.richText
+            
+            self.importImgLists = model.images
+            
+            if self.importImgLists.count > 0 {
+                self.imgContainerView.isHidden = false
+                
+                if let firstModel = self.importImgLists.first {
+                    self.coverImg.image = UIImage(data: firstModel.imgData)
+                }
+                
+                self.imgCountLbl.text = String(self.importImgLists.count)
+            }
+        }
+        
     }
     
     @objc private func moodAndWeatherBtnClick() {
@@ -196,8 +232,18 @@ extension EditController {
     }
     
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
-        print("保存")
+        self.currentDiarModel
         
+        if self.inputDiaryModel != nil {
+            // 更新原来的日记
+            
+        } else {
+            // 新增当天日记
+            // 1. 当天可能已经有日记
+            
+            // 2. 当天无日记
+            
+        }
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -250,9 +296,6 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
             // 没有预输入文字
             
         }
-        
-        print(textView.selectedRange)
-        
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -359,18 +402,16 @@ extension EditController: KeyBoardExtensionDelegate {
     
     func endPressed(_ sender: UIButton) {
         // 下降时 插入的视图也需要消失
-//        self.fontView.removeFromSuperview()
-//
-//        self.textView.resignFirstResponder()
-        
-        self.textView.getCurrentLine()
+        self.fontView.removeFromSuperview()
+
+        self.textView.resignFirstResponder()
     }
     
 
     
 }
 
-// MARK: - 处理导入数据 图片 视频 音乐
+// MARK: - 处理导入数据 图片
 extension EditController {
     private func importImageHandle(assets: [PHAsset]) {
         if self.progressHud == nil {
@@ -392,7 +433,7 @@ extension EditController {
             PHImageManager.default().requestImage(for: value, targetSize: CGSize(width: value.pixelWidth, height: value.pixelHeight), contentMode: PHImageContentMode.default, options: options) { (image, imageInfo) in
                 guard let tempData = image?.pngData() else { return }
                 
-                let model = StoreImgModel(range: self.textView.selectedRange, imgData: tempData)
+                let model = StoreImgModel(insetIndex: self.textView.selectedRange.location, imgData: tempData)
                 
                 self.importImgLists.append(model)
             }

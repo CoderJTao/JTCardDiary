@@ -45,7 +45,6 @@ class DisplayController: UIViewController {
     
     @IBAction func editBtnClick(_ sender: UIButton) {
         let vc = EditController()
-        vc.setText(text: self.attText)
         vc.setDateTitle(title: "2018-11-19")
         self.navigationController?.pushViewController(vc, animated: true)
     }

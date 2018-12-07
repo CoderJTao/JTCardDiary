@@ -11,8 +11,8 @@ import UIKit
 
 class JTImageUtils: NSObject {
     
-    private static let CommonWidth: CGFloat = 40
-    private static let CommonHeight: CGFloat = 20
+    private static let CommonWidth: CGFloat = 50
+    private static let CommonHeight: CGFloat = 25
     
     private static let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15),
                                      NSAttributedString.Key.foregroundColor: UIColor.hexString(hexString: TextColor_black)]
@@ -28,7 +28,7 @@ class JTImageUtils: NSObject {
         
         colorImg.draw(in: CGRect(origin: CGPoint.zero, size: size))
         
-        useStr.draw(in: CGRect(x: 20, y: 0, width: 10, height: 20), withAttributes: attributes)
+        useStr.draw(in: CGRect(x: 25, y: 0, width: 10, height: 25), withAttributes: attributes)
         
         let context = UIGraphicsGetCurrentContext()
         context?.drawPath(using: CGPathDrawingMode.stroke)
@@ -51,7 +51,7 @@ class JTImageUtils: NSObject {
         
         colorImg.draw(in: CGRect(origin: CGPoint.zero, size: size))
         
-        image.draw(in: CGRect(x: 20, y: 6, width: 8, height: 8))
+        image.draw(in: CGRect(x: 25, y: 9, width: 8, height: 8))
         
         let context = UIGraphicsGetCurrentContext()
         context?.drawPath(using: CGPathDrawingMode.stroke)

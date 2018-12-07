@@ -33,33 +33,43 @@ extension NSAttributedString {
             
             //3.取出字体描述fontDescriptor
             
-            let bold = attributeDic[NSAttributedString.Key.strokeWidth] as? NSString
+            let bold = attributeDic[NSAttributedString.Key.strokeWidth] as? Int
             
             if let use = bold {
-                if use.integerValue < 0 {
+                if use < 0 {
                     dict["bold"] = NSNumber(value: true)
                 } else {
                     dict["bold"] = NSNumber(value: false)
                 }
             }
    
-            let underLine = attributeDic[NSAttributedString.Key.underlineStyle] as? NSString
+            let obliq = attributeDic[NSAttributedString.Key.obliqueness] as? CGFloat
+            
+            if let use = obliq {
+                if use > 0 {
+                    dict["obliq"] = NSNumber(value: true)
+                } else {
+                    dict["obliq"] = NSNumber(value: false)
+                }
+            }
+            
+            let underLine = attributeDic[NSAttributedString.Key.underlineStyle] as? Int
             
             if let use = underLine {
-                if use.integerValue > 0 {
+                if use > 0 {
                     dict["underLine"] = NSNumber(value: true)
                 } else {
                     dict["underLine"] = NSNumber(value: false)
                 }
             }
             
-            let obliq = attributeDic[NSAttributedString.Key.obliqueness] as? NSString
+            let strikethrough = attributeDic[NSAttributedString.Key.strikethroughStyle] as? Int
             
-            if let use = obliq {
-                if use.integerValue > 0 {
-                    dict["obliq"] = NSNumber(value: true)
+            if let use = strikethrough {
+                if use > 0 {
+                    dict["strikethrough"] = NSNumber(value: true)
                 } else {
-                    dict["obliq"] = NSNumber(value: false)
+                    dict["strikethrough"] = NSNumber(value: false)
                 }
             }
             

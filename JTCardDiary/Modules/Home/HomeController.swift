@@ -138,6 +138,9 @@ class HomeController: UIViewController {
 // MARK: - private setting
 extension HomeController {
     private func initData() {
+        
+        let monthModels = DiaryManager.sharedInstance.getMonthsInfo(year: CurrentYear)
+        
         let colorArr = ["AFDFCC", "4D839B", "FABD6B", "E35A49", "3AADEF", "B1E2FF", "A7D7CB", "FCE85A", "82CAF2", "C9FF87", "6AECD2", "A1E0EF"]
         let daysArr = JTDateUtils.getMonthDays(Date())
         let months = JTDateUtils.getMonths(Date())

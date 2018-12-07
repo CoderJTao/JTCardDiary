@@ -9,34 +9,54 @@
 import UIKit
 import Foundation
 
-//protocol BaseJsonModel{
-//    init(json: [String: Any]) throws
-//}
-
 struct MonthModel {
     var date: String
     var cover: String?
     var color: String   // 16进制
     var totalDays: Int
-    var isWrited: Int
+    var isWrited: Int = 0
 }
 
+struct DayModel {
+    var dateIndex: Int
+    
+    var isWrited: Bool = false
+}
 
 struct DiaryModel {
     var title: String?
-    var weather: String?
-    var mood: String?
+    var weather: String = "阴天"
+    var mood: String = "开心"
         
-    var richText: [[String: Any]]
+    var richText: NSAttributedString = NSAttributedString(string: "")
+    
+    var images: [StoreImgModel] = []
+    
+    func isEqual(model: DiaryModel) -> Bool {
+        if title == model.title && weather == model.weather && mood == model.mood && richText.isEqual(to: model.richText) && images.count == model.images.count {
+            for index in 0..<images.count {
+                if !images[index].isEqual(model: model.images[index]) {
+                    return false
+                }
+            }
+            return true
+        }
+        return false
+    }
 }
 
-
-
-
 struct StoreImgModel {
-    var range: NSRange
+    var insetIndex: Int = 0
     
     var imgData: Data
+    
+    func isEqual(model: StoreImgModel) -> Bool {
+        if insetIndex == model.insetIndex && imgData == model.imgData {
+            return true
+        }
+        return false
+    }
+    
 }
 
 

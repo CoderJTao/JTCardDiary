@@ -78,7 +78,7 @@
                         <action selector="fontClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="V7J-YM-3vL"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.84999999999999998" tag="339" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azZ-P9-fRA">
+                <button hidden="YES" opaque="NO" alpha="0.84999999999999998" tag="339" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azZ-P9-fRA">
                     <rect key="frame" x="57" y="141" width="27" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <state key="normal" image="listol"/>
@@ -87,7 +87,7 @@
                         <action selector="listClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="def-jn-PYF"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.84999999999999998" tag="340" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNL-Xl-ZpS">
+                <button hidden="YES" opaque="NO" alpha="0.84999999999999998" tag="340" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNL-Xl-ZpS">
                     <rect key="frame" x="133" y="143" width="29" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <state key="normal" image="listul"/>
