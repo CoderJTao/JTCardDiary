@@ -19,10 +19,32 @@ extension String {
         return formatter.date(from: self) ?? Date()
     }
     
+    /// 根据日期得到当前年份
+    // (yyyy-MM-dd hh:mm:ss)
+    func getYear() -> String {
+        let arr = self.components(separatedBy: "-")
+        
+        return arr.first ?? CurrentYear
+    }
+    
+    /// 根据日期得到当前dd
+    // (yyyy-MM-dd hh:mm:ss)   (yyyy-MM-dd)
+    func getCurrentDay() -> String {
+        let arr = self.components(separatedBy: " ")  // yyyy-MM-dd
+        
+        let results = arr.first?.components(separatedBy: "-")
+        
+        return results?.last ?? ""
+    }
+    
     /// 根据日期获取星期几
     func getWeekDayString() -> String {
-        
-        return ""
+        var calender = Calendar.current
+        calender.firstWeekday = 1
+        var com = (calender as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day], from: self.toDate())
+        let firstDay = calender.date(from: com)
+        let firstWeek = (calender as NSCalendar).ordinality(of: NSCalendar.Unit.weekday, in: NSCalendar.Unit.weekOfMonth, for: firstDay!)
+        return WeekDic[firstWeek - 1] ?? ""
     }
     
 }

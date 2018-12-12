@@ -30,7 +30,11 @@ class HomeCell: UICollectionViewCell {
         return view
     }()
     
-    var monthModel: MonthModel?
+    var cellBgClick: () -> () = {
+        
+    }
+    
+    var monthModel: MonthInfo?
     
     var isCalendar: Bool = false
     {
@@ -64,27 +68,36 @@ class HomeCell: UICollectionViewCell {
     
 
     @IBAction func moreBtnClick(_ sender: UIButton) {
+        self.cellBgClick()
     }
     
-    func setMonthModel(model: MonthModel) {
+    func setMonthModel(model: MonthInfo) {
         self.monthModel = model
         
-        self.calendar.setDate(dateStr: model.date)
+        if let use = model.date {
+            self.calendar.setDate(dateStr: use)
+            
+            let arr = use.components(separatedBy: "-")
+            let month = arr.last!
+            
+            self.monthLbl.text = month
+            self.monthEnLbl.text = MonthSubDic[month]
+            
+            self.calMonthLbl.text = month
+            self.calMonthEnLbl.text = MonthSubDic[month]
+        }
         
-        let arr = model.date.components(separatedBy: "-")
-        let month = arr.last!
+        if let use = model.cover {
+            self.showImg.image = UIImage(data: use)
+        } else {
+            if let use = model.color {
+                self.normalView.backgroundColor = UIColor.hexString(hexString: use)
+            }
+        }
         
-        self.monthLbl.text = month
-        self.monthEnLbl.text = MonthSubDic[month]
+        self.pageIndexLbl.text = "\(model.writed)" + "/" + "\(model.totalDays)"
         
-        self.calMonthLbl.text = month
-        self.calMonthEnLbl.text = MonthSubDic[month]
-        
-        self.normalView.backgroundColor = UIColor.hexString(hexString: model.color)
-        
-        self.pageIndexLbl.text = "\(model.isWrited)" + "/" + "\(model.totalDays)"
-        
-        let progress = CGFloat(model.isWrited) / CGFloat(model.totalDays)
+        let progress = CGFloat(model.writed) / CGFloat(model.totalDays)
         self.constraintProgressWidth.constant = self.progressBackGroundLbl.width * progress
     }
 }

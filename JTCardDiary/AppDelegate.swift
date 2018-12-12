@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,8 +23,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UINavigationController(rootViewController: HomeController())
         window?.makeKeyAndVisible()
         
+        NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
+        
+        // 保存当前年月份信息
+        DiaryManager.sharedInstance.saveYearInfo(year: "2018")
+        
+        
+        DiaryManager.sharedInstance.testSave()
+        let results = DiaryManager.sharedInstance.testGet()
+        
+        print(results.first?.atbStr)
+        
         return true
     }
+    
+    // MARK: - CoreData
+    lazy var managedObjectModel: NSManagedObjectModel = {
+        let modelURL = Bundle.main.url(forResource: "Models", withExtension: "momd")
+        let managedObjectModel = NSManagedObjectModel.init(contentsOf: modelURL!)
+        return managedObjectModel!
+    }()
+    
+    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator.init(managedObjectModel: managedObjectModel)
+        let sqliteURL = documentDir.appendingPathComponent("Models.sqlite")
+        let options = [NSMigratePersistentStoresAutomaticallyOption : true, NSInferMappingModelAutomaticallyOption : true]
+        var failureReason = "创建NSPersistentStoreCoordinator时出现错误"
+        
+        do {
+            try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: sqliteURL, options: options)
+        } catch {
+            // Report any error we got.
+            var dict = [String: Any]()
+            dict[NSLocalizedDescriptionKey] = "初始化NSPersistentStoreCoordinator失败" as Any?
+            dict[NSLocalizedFailureReasonErrorKey] = failureReason as Any?
+            dict[NSUnderlyingErrorKey] = error as NSError
+            let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 6666, userInfo: dict)
+            print("未解决的错误： \(wrappedError), \(wrappedError.userInfo)")
+            abort()
+        }
+        return persistentStoreCoordinator
+    }()
+    
+    lazy var context: NSManagedObjectContext = {
+        let context = NSManagedObjectContext.init(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
+        context.persistentStoreCoordinator = persistentStoreCoordinator
+        return context
+    }()
+    
+    lazy var documentDir: URL = {
+        let documentDir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first
+        return documentDir!
+    }()
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

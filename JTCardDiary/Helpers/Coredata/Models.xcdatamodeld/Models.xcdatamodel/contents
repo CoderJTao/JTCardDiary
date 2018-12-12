@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DiaryInfo" representedClassName="DiaryInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mood" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="normalText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="richText" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="weather" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StoreImgInfo" syncable="YES"/>
+    </entity>
+    <entity name="MonthInfo" representedClassName="MonthInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cover" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalDays" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="writed" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="diarys" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DiaryInfo" syncable="YES"/>
+    </entity>
+    <entity name="StoreImgInfo" representedClassName="StoreImgInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="imgData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="insertIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="TestEntity" representedClassName="TestEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="atbStr" optional="YES" attributeType="Transformable" valueTransformerName="RichtextTransformer" customClassName="NSAttributedString" syncable="YES"/>
+    </entity>
+    <entity name="YearInfo" representedClassName="YearInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="months" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MonthInfo" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="StoreImgInfo" positionX="25.2734375" positionY="306.71875" width="128" height="73"/>
+        <element name="DiaryInfo" positionX="-169.890625" positionY="279.4453125" width="128" height="148"/>
+        <element name="MonthInfo" positionX="22.57421875" positionY="66.02734375" width="128" height="133"/>
+        <element name="YearInfo" positionX="-193.34765625" positionY="62.1953125" width="128" height="73"/>
+        <element name="TestEntity" positionX="-45" positionY="252" width="128" height="60"/>
+    </elements>
+</model>

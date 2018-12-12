@@ -32,7 +32,6 @@ extension NSAttributedString {
             }
             
             //3.取出字体描述fontDescriptor
-            
             let bold = attributeDic[NSAttributedString.Key.strokeWidth] as? Int
             
             if let use = bold {
@@ -80,27 +79,12 @@ extension NSAttributedString {
                 dict["color"] = use.toHexString()
             }
             
-            //5.图片
-            let imageAtt = attributeDic[NSAttributedString.Key.attachment] as? NSTextAttachment
-            
-            if let use = imageAtt {
-                if let image = use.image {
-                    let data = image.pngData()
-                    if let useData = data {
-                        let encodedImageStr = useData.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
-                        dict["image"] = encodedImageStr
-                    }
-                }
-                
-                
-            }
-            
-            //6.行间距
-            let paragraphStyle = attributeDic[NSAttributedString.Key.paragraphStyle] as? NSParagraphStyle
-            
-            if let use = paragraphStyle {
-                dict["lineSpace"] = NSNumber(value: Float(use.lineSpacing))
-            }
+            //5.行间距
+//            let paragraphStyle = attributeDic[NSAttributedString.Key.paragraphStyle] as? NSParagraphStyle
+//
+//            if let use = paragraphStyle {
+//                dict["lineSpace"] = NSNumber(value: Float(use.lineSpacing))
+//            }
 
             //7.返回一个数组
             result.append(dict)

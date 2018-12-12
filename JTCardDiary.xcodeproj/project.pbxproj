@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		6C08A5EA21A15ACD0041EE25 /* DisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C08A5E821A15ACD0041EE25 /* DisplayController.swift */; };
 		6C08A5EB21A15ACD0041EE25 /* DisplayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C08A5E921A15ACD0041EE25 /* DisplayController.xib */; };
+		6C3B16CC21BF8FF70030D64C /* Models.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6C3B16CA21BF8FF70030D64C /* Models.xcdatamodeld */; };
+		6C3B16CF21BFB8920030D64C /* BgPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3B16CD21BFB8920030D64C /* BgPickerController.swift */; };
+		6C3B16D021BFB8920030D64C /* BgPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C3B16CE21BFB8920030D64C /* BgPickerController.xib */; };
+		6C3B16D221C112A10030D64C /* RichtextTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3B16D121C112A10030D64C /* RichtextTransformer.swift */; };
 		6C4C2DBB219AB02F00DF73BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4C2DBA219AB02F00DF73BE /* AppDelegate.swift */; };
 		6C4C2DC2219AB03300DF73BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C4C2DC1219AB03300DF73BE /* Assets.xcassets */; };
 		6C4C2DC5219AB03300DF73BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C4C2DC3219AB03300DF73BE /* LaunchScreen.storyboard */; };
@@ -64,6 +68,10 @@
 		21F838401EF64BCD03BC279D /* Pods-JTCardDiary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JTCardDiary.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JTCardDiary/Pods-JTCardDiary.debug.xcconfig"; sourceTree = "<group>"; };
 		6C08A5E821A15ACD0041EE25 /* DisplayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayController.swift; sourceTree = "<group>"; };
 		6C08A5E921A15ACD0041EE25 /* DisplayController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisplayController.xib; sourceTree = "<group>"; };
+		6C3B16CB21BF8FF70030D64C /* Models.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Models.xcdatamodel; sourceTree = "<group>"; };
+		6C3B16CD21BFB8920030D64C /* BgPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BgPickerController.swift; sourceTree = "<group>"; };
+		6C3B16CE21BFB8920030D64C /* BgPickerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BgPickerController.xib; sourceTree = "<group>"; };
+		6C3B16D121C112A10030D64C /* RichtextTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichtextTransformer.swift; sourceTree = "<group>"; };
 		6C4C2DB7219AB02F00DF73BE /* JTCardDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JTCardDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C4C2DBA219AB02F00DF73BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C4C2DC1219AB03300DF73BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -168,6 +176,16 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		6C3B16C921BF8FB40030D64C /* Coredata */ = {
+			isa = PBXGroup;
+			children = (
+				6C3B16CA21BF8FF70030D64C /* Models.xcdatamodeld */,
+				6C4C2DDA219ABFCA00DF73BE /* DiaryManager.swift */,
+				6C3B16D121C112A10030D64C /* RichtextTransformer.swift */,
+			);
+			path = Coredata;
+			sourceTree = "<group>";
+		};
 		6C4C2DAE219AB02F00DF73BE = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +237,8 @@
 				6C4C2DE7219ACAA400DF73BE /* HomeController.xib */,
 				6CB36CD6219D513400B43800 /* DatePickerController.swift */,
 				6CB36CD7219D513400B43800 /* DatePickerController.xib */,
+				6C3B16CD21BFB8920030D64C /* BgPickerController.swift */,
+				6C3B16CE21BFB8920030D64C /* BgPickerController.xib */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -243,8 +263,8 @@
 				6CB36CD4219C221300B43800 /* JTDateUtils.swift */,
 				6C4C2DD8219ABFCA00DF73BE /* JTAnimatedTransition.swift */,
 				6C4C2DD9219ABFCA00DF73BE /* Contant.swift */,
-				6C4C2DDA219ABFCA00DF73BE /* DiaryManager.swift */,
 				6CF5A84A21AFD1E80065D5F2 /* JGProgressHUDWrapper.swift */,
+				6C3B16C921BF8FB40030D64C /* Coredata */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -365,6 +385,7 @@
 			files = (
 				6C5861F621ABA4F900D19E85 /* MoodAndWeatherController.xib in Resources */,
 				6C825E1621A40DB90083FEC4 /* FormatView.xib in Resources */,
+				6C3B16D021BFB8920030D64C /* BgPickerController.xib in Resources */,
 				6C08A5EB21A15ACD0041EE25 /* DisplayController.xib in Resources */,
 				6C900AD121B80EE600E1B836 /* PreviewController.xib in Resources */,
 				6C8DF6F321A803B60099F1B5 /* MusicController.xib in Resources */,
@@ -443,6 +464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C3B16CF21BFB8920030D64C /* BgPickerController.swift in Sources */,
 				6CB36CDC219D679400B43800 /* DiaryListController.swift in Sources */,
 				6C4C2DDE219ABFCA00DF73BE /* UIViewController+Extension.swift in Sources */,
 				6CB36CE1219D6CD700B43800 /* JTCalendarView.swift in Sources */,
@@ -454,10 +476,12 @@
 				6C814E0F21BA6D1C008720ED /* ModelRealm.swift in Sources */,
 				6C4C2DDF219ABFCA00DF73BE /* String+Extension.swift in Sources */,
 				6C5861F521ABA4F900D19E85 /* MoodAndWeatherController.swift in Sources */,
+				6C3B16D221C112A10030D64C /* RichtextTransformer.swift in Sources */,
 				6C825E0A21A3FF930083FEC4 /* KeyBoardExtensionView.swift in Sources */,
 				6C825E0221A2B8890083FEC4 /* EditController.swift in Sources */,
 				6C8DF6EE21A7A5D80099F1B5 /* PhotoController.swift in Sources */,
 				6C4C2DE5219AC0EC00DF73BE /* HomeCell.swift in Sources */,
+				6C3B16CC21BF8FF70030D64C /* Models.xcdatamodeld in Sources */,
 				6CF5A85321AFF6B80065D5F2 /* PreviewView.swift in Sources */,
 				6C908B5C219EA18F00BB3D1E /* DiaryListCell.swift in Sources */,
 				6C825E1021A400050083FEC4 /* FormatView.swift in Sources */,
@@ -673,6 +697,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6C3B16CA21BF8FF70030D64C /* Models.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6C3B16CB21BF8FF70030D64C /* Models.xcdatamodel */,
+			);
+			currentVersion = 6C3B16CB21BF8FF70030D64C /* Models.xcdatamodel */;
+			path = Models.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6C4C2DAF219AB02F00DF73BE /* Project object */;
 }

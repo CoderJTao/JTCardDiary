@@ -22,7 +22,7 @@ class DisplayController: UIViewController {
     
     private var attText = NSAttributedString()
     
-    var diaryModel: DiaryModel?
+    var diaryInfo: DiaryInfo?
     
     
     override func viewDidLoad() {
@@ -35,12 +35,8 @@ class DisplayController: UIViewController {
         setUpUI()
     }
     
-    func setDiaryModel(model: DiaryModel) {
-        self.diaryModel = model
-    }
-    
-    func setText(text: NSAttributedString) {
-        self.attText = text
+    func setDiary(info: DiaryInfo) {
+        self.diaryInfo = info
     }
     
     @IBAction func editBtnClick(_ sender: UIButton) {
@@ -50,6 +46,7 @@ class DisplayController: UIViewController {
     }
     
     @IBAction func likeBtnClick(_ sender: UIButton) {
+        
     }
     
     @IBAction func deletBtnClick(_ sender: UIButton) {
@@ -71,6 +68,40 @@ class DisplayController: UIViewController {
 
 extension DisplayController {
     private func setUpUI() {
+        guard let useModel = self.diaryInfo else {
+            return
+        }
+        
+        self.titleLbl.text = useModel.title
+        self.dateLbl.text = useModel.date
+        
+        if let text = useModel.normalText {
+            let count = NSString(string: text).length
+            self.countLbl.text = "字数：\(count)"
+        }
+        
+        if let use = useModel.mood {
+            self.moodImg.image = UIImage(named: MoodDic[use]!)
+        }
+        
+        if let use = useModel.weather {
+            self.weatherImg.image = UIImage(named: WeatherDic[use]!)
+        }
+        
+    }
+    
+    private func getShowAttributedString() {
+        guard let useModel = self.diaryInfo else {
+            return
+        }
+        
+        
+        
+//        guard let atbStr = useModel.ric else {
+//
+//        }
+        
+        
         
         
     }

@@ -38,7 +38,9 @@ class PreviewView: UIView {
         
         for (index, value) in images.enumerated() {
             let imageV = UIImageView(frame: CGRect(x: self.width * CGFloat(index), y: 0, width: self.width, height: self.height))
-            imageV.image = UIImage(data: value.imgData)
+            if let use = value.imgData {
+                imageV.image = UIImage(data: use)
+            }
             imageV.contentMode = UIView.ContentMode.scaleAspectFit
             scrollView.addSubview(imageV)
         }

@@ -20,18 +20,17 @@ class HomeController: UIViewController {
     @IBOutlet weak var yearLbl: UILabel!
     @IBOutlet weak var yearArrowImg: UIImageView!
     
-    var monthData: [MonthModel] = []
+    var monthData: [MonthInfo] = []
     
     private var isShowCalendar = false
     
     // MARK: - scroll prop
-    private var _currentIndex: Int = 0
+    private var _currentIndex: Int = Int(CurrentMonth)! - 1
     private var _dragStartX: CGFloat = 0
     private var _dragEndX: CGFloat = 0
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        _currentIndex = 10
     }
     
     override func viewDidLoad() {
@@ -138,16 +137,7 @@ class HomeController: UIViewController {
 // MARK: - private setting
 extension HomeController {
     private func initData() {
-        
-        let monthModels = DiaryManager.sharedInstance.getMonthsInfo(year: CurrentYear)
-        
-        let colorArr = ["AFDFCC", "4D839B", "FABD6B", "E35A49", "3AADEF", "B1E2FF", "A7D7CB", "FCE85A", "82CAF2", "C9FF87", "6AECD2", "A1E0EF"]
-        let daysArr = JTDateUtils.getMonthDays(Date())
-        let months = JTDateUtils.getMonths(Date())
-        for (index, value) in colorArr.enumerated() {
-            let model = MonthModel.init(date: months[index], cover: nil, color: value, totalDays: daysArr[index], isWrited: 5)
-            self.monthData.append(model)
-        }
+        self.monthData = DiaryManager.sharedInstance.getCurrentYearMonths(year: CurrentYear)
     }
     
     private func setUpUI() {
@@ -209,6 +199,22 @@ extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource, 
         cell.isCalendar = self.isShowCalendar
         cell.setMonthModel(model: self.monthData[indexPath.row])
         
+        // 更改cell背景颜色
+        cell.cellBgClick = {
+            let vc = BgPickerController()
+            vc.modalPresentationStyle = .overCurrentContext
+            
+            vc.pickerColor = { colorStr in
+                
+            }
+            
+            vc.pickImage = { img in
+                
+            }
+            
+            self.present(vc, animated: false, completion: nil)
+        }
+        
         return cell
     }
     
@@ -239,6 +245,7 @@ extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource, 
         // 进入当月列表
         let vc = DiaryListController()
         vc.setTitle(title: title)
+        vc.setMonthInfo(month: self.monthData[indexPath.row])
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

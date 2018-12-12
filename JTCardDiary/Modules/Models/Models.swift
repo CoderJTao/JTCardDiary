@@ -10,11 +10,11 @@ import UIKit
 import Foundation
 
 struct MonthModel {
-    var date: String
+    var date: String = ""
     var cover: String?
     var color: String   // 16进制
-    var totalDays: Int
-    var isWrited: Int = 0
+    var totalDays: Int?
+    var writed: Int = 0
 }
 
 struct DayModel {
@@ -24,11 +24,14 @@ struct DayModel {
 }
 
 struct DiaryModel {
-    var title: String?
+    var date: String?
+    
+    var title: String = ""
     var weather: String = "阴天"
     var mood: String = "开心"
         
     var richText: NSAttributedString = NSAttributedString(string: "")
+    var normalText: String = ""
     
     var images: [StoreImgModel] = []
     
@@ -43,12 +46,16 @@ struct DiaryModel {
         }
         return false
     }
+    
+    func richToData() -> Data? {
+        return try? NSKeyedArchiver.archivedData(withRootObject: richText.transformToArray(), requiringSecureCoding: true)
+    }
 }
 
 struct StoreImgModel {
     var insetIndex: Int = 0
     
-    var imgData: Data
+    var imgData: Data?
     
     func isEqual(model: StoreImgModel) -> Bool {
         if insetIndex == model.insetIndex && imgData == model.imgData {
@@ -56,7 +63,6 @@ struct StoreImgModel {
         }
         return false
     }
-    
 }
 
 

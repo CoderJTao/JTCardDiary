@@ -57,4 +57,13 @@ extension UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    
+    // MARK: - show alert
+    func showAlert(title: String?, msg: String?, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: { (act) in
+            completion?()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }

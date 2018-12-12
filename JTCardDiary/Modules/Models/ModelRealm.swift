@@ -9,14 +9,32 @@
 import UIKit
 import RealmSwift
 
+/*
+ var date: String
+ var cover: String?
+ var color: String   // 16进制
+ var totalDays: Int
+ var writed: Int = 0
+ */
+class MonthModelRealm: Object {
+    @objc dynamic var date: String = ""
+    
+    @objc dynamic var cover: String?
+    
+    @objc dynamic var color: String = ""
+    
+    @objc dynamic var totalDays: Int = 0
+    
+    @objc dynamic var writed: Int = 0
+    
+    override static func indexedProperties() -> [String] {
+        return ["date"]
+    }
+}
+
+
 class DiaryModelRealm: Object {
-//    var title: String?
-//    var weather: String = "阴天"
-//    var mood: String = "开心"
-//
-//    var richText: NSAttributedString = NSAttributedString(string: "")
-//
-//    var images: [StoreImgModel] = []
+    @objc dynamic var date: String = ""
     
     @objc dynamic var title: String = ""
     
@@ -43,4 +61,5 @@ class StoreImgModelRealm: Object {
     @objc dynamic var insetIndex: Int = 0
     
     @objc dynamic var imgData: Data?
+    
 }

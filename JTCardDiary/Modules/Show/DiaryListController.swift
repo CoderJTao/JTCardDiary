@@ -13,7 +13,9 @@ class DiaryListController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var listData: [DiaryModel] = []
+    var listData: [DiaryInfo] = []
+    
+    var currentMonth: MonthInfo?
     
     private var textView = UITextView()
     private let textFont = UIFont.systemFont(ofSize: 15, weight: .thin)
@@ -27,8 +29,7 @@ class DiaryListController: UIViewController {
         
         setUpUI()
         
-        
-        
+        initData()
     }
     
     func setTitle(title: String) {
@@ -38,6 +39,10 @@ class DiaryListController: UIViewController {
         lbl.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         lbl.text = title
         self.navigationItem.titleView = lbl
+    }
+    
+    func setMonthInfo(month: MonthInfo) {
+        self.currentMonth = month
     }
     
     @IBAction func writeTodayBtnClick(_ sender: UIButton) {
@@ -78,39 +83,42 @@ extension DiaryListController {
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.collectionViewLayout = layout
     }
+    
+    private func initData() {
+        guard let currentDate = currentMonth?.date else {
+            return
+        }
+        
+        self.listData = DiaryManager.sharedInstance.getDiarysOfMonth(month: currentDate)
+        
+        self.collectionView.reloadData()
+    }
+    
 }
 
-//插入的图片附件的尺寸样式
-enum ImageAttachmentMode {
-    case `default`  //默认（不改变大小）
-    case fitTextLine  //使尺寸适应行高
-    case fitTextView  //使尺寸适应textView
-}
 
 extension DiaryListController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
         return self.listData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryListCell", for: indexPath) as! DiaryListCell
+        
+        cell.setDiary(diary: self.listData[indexPath.row])
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DisplayController()
-        
-//        let arr = self.textView.attributedText.transformToArray()
-//        
-//        vc.setDiaryModel(model: listData[indexPath.row])
-//        vc.setText(text: self.textView.attributedText)
+        vc.setDiary(info: self.listData[indexPath.row])
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: kScreenWidth*0.75, height: kScreenWidth*0.75)
+        return CGSize(width: kScreenWidth*0.8, height: 150)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

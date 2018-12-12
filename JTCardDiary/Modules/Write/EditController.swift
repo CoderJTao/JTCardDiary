@@ -66,7 +66,7 @@ class EditController: UIViewController {
     var inputDiaryModel: DiaryModel?
     private var currentDiarModel: DiaryModel {
         get {
-            return DiaryModel.init(title: self.titleTF.text, weather: self.weatherStr, mood: self.moodStr, richText: self.textView.attributedText, images: self.importImgLists)
+            return DiaryModel.init(date: JTDateUtils.stringFromDate(date: Date()), title: (self.titleTF.text ?? ""), weather: self.weatherStr, mood: self.moodStr, richText: self.textView.attributedText, normalText: self.textView.text, images: self.importImgLists)
         }
     }
     
@@ -92,7 +92,11 @@ class EditController: UIViewController {
     override func onNavigationBackPressed(_ sender: Any) {
         guard let model = self.inputDiaryModel else {
             // 提示保存
-            alertToSave()
+            if self.textView.text.isEmpty && self.importImgLists.count == 0 {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                alertToSave()
+            }
             return
         }
         
@@ -109,6 +113,7 @@ class EditController: UIViewController {
         alert.addAction(UIAlertAction(title: "退出", style: .destructive, handler: { (act) in
             self.navigationController?.popViewController(animated: true)
         }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func setDateTitle(title: String) {
@@ -172,7 +177,9 @@ extension EditController {
                 self.imgContainerView.isHidden = false
                 
                 if let firstModel = self.importImgLists.first {
-                    self.coverImg.image = UIImage(data: firstModel.imgData)
+                    if let use = firstModel.imgData {
+                        self.coverImg.image = UIImage(data: use)
+                    }
                 }
                 
                 self.imgCountLbl.text = String(self.importImgLists.count)
@@ -221,7 +228,9 @@ extension EditController {
                 self.imgContainerView.isHidden = false
                 
                 if let firstModel = self.importImgLists.first {
-                    self.coverImg.image = UIImage(data: firstModel.imgData)
+                    if let use = firstModel.imgData {
+                        self.coverImg.image = UIImage(data: use)
+                    }
                 }
                 
                 self.imgCountLbl.text = String(self.importImgLists.count)
@@ -232,17 +241,28 @@ extension EditController {
     }
     
     @objc private func saveItemClick(_ sender: UIBarButtonItem) {
-        self.currentDiarModel
-        
         if self.inputDiaryModel != nil {
             // 更新原来的日记
+            if currentDiarModel.isEqual(model: self.inputDiaryModel!) {
+                // 如果没有任何修改，则返回
+                self.navigationController?.popViewController(animated: true)
+                return
+            }
+            DiaryManager.sharedInstance.updateADiary(model: currentDiarModel)
+            
+            // 保存完了，返回
+            self.navigationController?.popViewController(animated: true)
             
         } else {
             // 新增当天日记
-            // 1. 当天可能已经有日记
+            if currentDiarModel.images.count == 0 && self.textView.text.isEmpty {
+                self.showAlert(title: nil, msg: "您还什么都没写呢。")
+                return
+            }
+            DiaryManager.sharedInstance.addANewDiary(model: currentDiarModel)
             
-            // 2. 当天无日记
-            
+            // 保存完了，返回
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -445,7 +465,9 @@ extension EditController {
             self.imgContainerView.isHidden = false
             
             if let firstModel = self.importImgLists.first {
-                self.coverImg.image = UIImage(data: firstModel.imgData)
+                if let use = firstModel.imgData {
+                    self.coverImg.image = UIImage(data: use)
+                }
             }
             
             self.imgCountLbl.text = String(self.importImgLists.count)

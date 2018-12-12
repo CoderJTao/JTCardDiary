@@ -41,7 +41,9 @@ class PreviewController: UIViewController {
         
         for (index, value) in imagesData.enumerated() {
             let imageV = UIImageView(frame: CGRect(x: self.containerView.width * CGFloat(index), y: 0, width: self.containerView.width, height: self.containerView.height))
-            imageV.image = UIImage(data: value.imgData)
+            if let use = value.imgData {
+                imageV.image = UIImage(data: use)
+            }
             imageV.contentMode = UIView.ContentMode.scaleAspectFit
             scrollView.addSubview(imageV)
         }
@@ -84,7 +86,9 @@ class PreviewController: UIViewController {
             
             for (index, value) in self.imagesData.enumerated() {
                 let imageV = UIImageView(frame: CGRect(x: self.containerView.width * CGFloat(index), y: 0, width: self.containerView.width, height: self.containerView.height))
-                imageV.image = UIImage(data: value.imgData)
+                if let use = value.imgData {
+                    imageV.image = UIImage(data: use)
+                }
                 imageV.contentMode = UIView.ContentMode.scaleAspectFit
                 self.scrollView.addSubview(imageV)
             }
