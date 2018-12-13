@@ -19,6 +19,15 @@ extension String {
         return formatter.date(from: self) ?? Date()
     }
     
+    ///   获取月份 MonthInfo 需要的日期的格式
+    /// input : DiaryModel date yyyy-MM-dd hh:mm:ss
+    /// return: MonthInfo date yyyy-MM
+    func getMonthDate() -> String {
+        let use = NSString(string: self)
+    
+        return use.substring(with: NSRange(location: 0, length: 7))
+    }
+    
     /// 根据日期得到当前年份
     // (yyyy-MM-dd hh:mm:ss)
     func getYear() -> String {

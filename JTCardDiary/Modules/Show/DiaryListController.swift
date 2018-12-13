@@ -20,6 +20,14 @@ class DiaryListController: UIViewController {
     private var textView = UITextView()
     private let textFont = UIFont.systemFont(ofSize: 15, weight: .thin)
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: AddNewDiaryNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: UpdateDiaryNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: DeleteDiaryNotification, object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +61,12 @@ class DiaryListController: UIViewController {
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    
+    @objc func refreshData() {
+        initData()
+    }
+    
 }
 
 /*

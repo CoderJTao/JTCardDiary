@@ -31,6 +31,10 @@ import UIKit
  
  */
 
+/// Notification.Name
+let AddNewDiaryNotification = Notification.Name.init("AddNewDiary")
+let UpdateDiaryNotification = Notification.Name.init("UpdateDiary")
+let DeleteDiaryNotification = Notification.Name.init("DeleteDiary")
 
 /// size
 let kScreenWidth = UIScreen.main.bounds.size.width

@@ -47,8 +47,6 @@ class DiaryListCell: UICollectionViewCell {
             self.moodImg.image = UIImage(named: MoodDic[use]!)
         }
         
-        self.moodImg.image = nil
-        
         guard let cover = diary.images?.firstObject else {
             self.coverImg.isHidden = true
             self.titleLbl.isHidden = false
@@ -56,7 +54,7 @@ class DiaryListCell: UICollectionViewCell {
             //无封面
             
             self.titleLbl.text = diary.title
-            self.contentLbl.text = diary.normalText
+            self.contentLbl.text = diary.richText?.string
             
             return
         }
@@ -77,7 +75,7 @@ class DiaryListCell: UICollectionViewCell {
         shadowLayer.layer.shadowOpacity = 0.6
         shadowLayer.layer.shadowRadius = 4.0
         shadowLayer.layer.shadowOffset = CGSize(width: 0, height: 0)
-        shadowLayer.layer.shadowPath = UIBezierPath(rect: CGRect(x: -3, y: -3, width: kScreenWidth*0.75 + 6, height: (kScreenWidth*0.75-56) + 6)).cgPath
+        shadowLayer.layer.shadowPath = UIBezierPath(rect: CGRect(x: -3, y: -3, width: kScreenWidth*0.8 + 6, height: 150 + 6)).cgPath
     
         //设置缓存
         shadowLayer.layer.shouldRasterize = true

@@ -31,7 +31,6 @@ struct DiaryModel {
     var mood: String = "开心"
         
     var richText: NSAttributedString = NSAttributedString(string: "")
-    var normalText: String = ""
     
     var images: [StoreImgModel] = []
     
@@ -47,8 +46,26 @@ struct DiaryModel {
         return false
     }
     
-    func richToData() -> Data? {
-        return try? NSKeyedArchiver.archivedData(withRootObject: richText.transformToArray(), requiringSecureCoding: true)
+    /*
+     self.date = info.date
+     self.title = info.title ?? ""
+     self.weather = info.weather ?? "阴天"
+     self.mood = info.mood ?? "开心"
+     self.richText = info.richText ?? NSAttributedString(string: "")
+     
+     self.images = info.images?.array as? [StoreImgModel] ?? []
+     */
+    
+    func transformToCDInfo() -> DiaryInfo {
+        let diary = DiaryInfo(context: DiaryManager.sharedInstance.context)
+        
+        diary.date = self.date
+        diary.title = self.title
+        diary.weather = self.weather
+        diary.mood = self.mood
+        diary.richText = self.richText
+        diary.images = NSOrderedSet(array: images)
+        return diary
     }
 }
 
@@ -62,6 +79,13 @@ struct StoreImgModel {
             return true
         }
         return false
+    }
+    
+    func transformToCDInfo() -> StoreImgInfo {
+        let storeImg = StoreImgInfo(context: DiaryManager.sharedInstance.context)
+        storeImg.insertIndex = Int32(self.insetIndex)
+        storeImg.imgData = self.imgData
+        return storeImg
     }
 }
 

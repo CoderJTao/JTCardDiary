@@ -167,108 +167,74 @@ extension DiaryManager {
     }
     
     /// 增加一篇日记
-    func addANewDiary(model: DiaryModel) {
+    func addANewDiary(info: DiaryInfo) {
+        guard let diaryDate = info.date else {
+            return
+        }
         
-        let diary = DiaryInfo(context: self.context)
+        let monthDate = diaryDate.getMonthDate()
         
-        diary.date = model.date
-        diary.weather = model.weather
-        diary.mood = model.mood
-        diary.title = model.title
-        diary.richText = model.richToData()
-        diary.images = NSOrderedSet(array: model.images)
-        diary.normalText = model.normalText
+        let fetchRequest: NSFetchRequest<MonthInfo> = MonthInfo.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "date == %@", monthDate)
         
         do {
-            try self.context.save()
+            let result = try self.context.fetch(fetchRequest).first
+            
+            if result?.diarys != nil {
+                let set = NSMutableOrderedSet(orderedSet: (result?.diarys)!)
+                set.add(info)
+                result?.diarys = set
+            } else {
+                let set = NSOrderedSet(object: info)
+                result?.diarys = set
+            }
+            
         } catch let error as NSError {
             debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
         }
-    }
-    
-    /// 删除一篇日记
-    func deleteADiary(model: DiaryModel) {
-        guard let key = model.date else { return }
         
-        let fetchRequest: NSFetchRequest = DiaryInfo.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "date = %@", key)
-        
-        do {
-            let results = try context.fetch(fetchRequest)
-            for value in results {
-                context.delete(value)
-            }
-        } catch let error as NSError {
-            debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
-        }
-    }
-    
-    /// 更新一篇日记
-    func updateADiary(model: DiaryModel) {
-        guard let key = model.date else { return }
-        
-        let fetchRequest: NSFetchRequest = DiaryInfo.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "name == %@", key)
-        do {
-            let result = try context.fetch(fetchRequest)
-            for value in result {
-                value.date = model.date
-                value.title = model.title
-                value.weather = model.weather
-                value.mood = model.mood
-                value.richText = model.richToData()
-                value.images = NSOrderedSet(array: model.images)
-                value.normalText = model.normalText
-            }
-        } catch {
-            fatalError();
-        }
         saveContext()
     }
     
-    
-    ///
-    func testSave() {
-        let diary = TestEntity(context: self.context)
+    /// 删除一篇日记
+    func deleteADiary(info: DiaryInfo) {
+        guard let diaryDate = info.date else {
+            return
+        }
         
-        let str = "I am a test string."
+        let monthDate = diaryDate.getMonthDate()
         
-        let mutableStr = NSMutableAttributedString(string: str)
+        let fetchRequest: NSFetchRequest<MonthInfo> = MonthInfo.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "date == %@", monthDate)
         
-        mutableStr.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: NSRange(location: 0, length: mutableStr.length))
-        mutableStr.addAttribute(NSAttributedString.Key.strokeWidth, value: NSNumber(value: 20), range: NSRange(location: 0, length: mutableStr.length))
-        
-        diary.atbStr = mutableStr
-      
         do {
-            try self.context.save()
+            let result = try self.context.fetch(fetchRequest).first
+            
+            var tempDiarys = NSOrderedSet()
+            if let diarys = result?.diarys {
+                let lastArr = diarys.filter { (value) -> Bool in
+                    let use = value as! DiaryInfo
+                    return use.date != info.date
+                }
+                
+                tempDiarys = NSOrderedSet(array: lastArr)
+            }
+            
+            result?.diarys = tempDiarys
+            
         } catch let error as NSError {
             debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
         }
+        
+        saveContext()
     }
     
-    func testGet() -> [TestEntity] {
-        
-        let fetchRequest: NSFetchRequest<TestEntity> = TestEntity.fetchRequest()
-        
-        var returnArr: [TestEntity] = []
-        
-        do {
-            let results = try self.context.fetch(fetchRequest)
-            
-            
-            return results
-            
-        } catch let error as NSError {
-            debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
-        }
-        
-        return returnArr
+    /// 更新一篇日记
+    func updateADiary(original: DiaryInfo, newModel: DiaryInfo) {
+        self.deleteADiary(info: original)
+        self.addANewDiary(info: newModel)
     }
 }
-
-
-
 
 /*
  // 增加数据

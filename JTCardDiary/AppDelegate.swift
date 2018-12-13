@@ -28,12 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 保存当前年月份信息
         DiaryManager.sharedInstance.saveYearInfo(year: "2018")
         
-        
-        DiaryManager.sharedInstance.testSave()
-        let results = DiaryManager.sharedInstance.testGet()
-        
-        print(results.first?.atbStr)
-        
         return true
     }
     

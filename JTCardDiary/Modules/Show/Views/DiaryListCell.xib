@@ -37,10 +37,10 @@
                                 <color key="textColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="happy" translatesAutoresizingMaskIntoConstraints="NO" id="Q5X-J1-Oh7">
-                                <rect key="frame" x="40.5" y="100" width="18" height="18"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yintian" translatesAutoresizingMaskIntoConstraints="NO" id="Q5X-J1-Oh7">
+                                <rect key="frame" x="38.5" y="100" width="22" height="18"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="Q5X-J1-Oh7" secondAttribute="height" multiplier="1:1" id="Ux6-Fp-xcq"/>
+                                    <constraint firstAttribute="width" secondItem="Q5X-J1-Oh7" secondAttribute="height" multiplier="21:17" id="TJv-s7-hvM"/>
                                     <constraint firstAttribute="height" constant="18" id="otz-Pi-XkC"/>
                                 </constraints>
                             </imageView>
@@ -56,7 +56,7 @@
                                 <color key="textColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yintian" translatesAutoresizingMaskIntoConstraints="NO" id="8vR-T0-Eob">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="happy" translatesAutoresizingMaskIntoConstraints="NO" id="8vR-T0-Eob">
                                 <rect key="frame" x="16.5" y="100" width="18" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="8vR-T0-Eob" secondAttribute="height" multiplier="1:1" id="k02-t1-dlj"/>
@@ -134,10 +134,10 @@
                 <outlet property="contentLbl" destination="eKK-tT-vzG" id="Cgc-lJ-BgI"/>
                 <outlet property="coverImg" destination="OP4-0w-RkB" id="jeC-aA-FZl"/>
                 <outlet property="dayLbl" destination="mp5-3D-iLY" id="isU-dv-4x7"/>
-                <outlet property="moodImg" destination="Q5X-J1-Oh7" id="5qy-Rt-CCs"/>
+                <outlet property="moodImg" destination="8vR-T0-Eob" id="7sy-U1-roP"/>
                 <outlet property="shadowLayer" destination="g33-eJ-Auk" id="N5I-rA-imL"/>
                 <outlet property="titleLbl" destination="hBo-JM-vMj" id="oyV-gm-BeV"/>
-                <outlet property="weatherImg" destination="8vR-T0-Eob" id="Mqo-Sj-3dn"/>
+                <outlet property="weatherImg" destination="Q5X-J1-Oh7" id="ZWK-c6-33A"/>
                 <outlet property="weekLbl" destination="7Cb-PS-UgE" id="Zhf-4g-Wz9"/>
             </connections>
             <point key="canvasLocation" x="-70.400000000000006" y="155.62218890554723"/>

@@ -63,10 +63,18 @@ class EditController: UIViewController {
     
     private var importImgLists: [StoreImgModel] = []
     
+    var displayCallback: (DiaryInfo)->() = { _ in
+        
+    }
+    
     var inputDiaryModel: DiaryModel?
     private var currentDiarModel: DiaryModel {
         get {
-            return DiaryModel.init(date: JTDateUtils.stringFromDate(date: Date()), title: (self.titleTF.text ?? ""), weather: self.weatherStr, mood: self.moodStr, richText: self.textView.attributedText, normalText: self.textView.text, images: self.importImgLists)
+            if inputDiaryModel != nil {
+                return DiaryModel.init(date: inputDiaryModel?.date, title: (self.titleTF.text ?? ""), weather: self.weatherStr, mood: self.moodStr,  richText: self.textView.attributedText, images: self.importImgLists)
+            } else {
+                return DiaryModel.init(date: JTDateUtils.stringFromDate(date: Date()), title: (self.titleTF.text ?? ""), weather: self.weatherStr, mood: self.moodStr,  richText: self.textView.attributedText, images: self.importImgLists)
+            }
         }
     }
     
@@ -142,8 +150,23 @@ class EditController: UIViewController {
         self.navigationItem.titleView = titleView
     }
     
-    func setDiaryModel(model: DiaryModel) {
-        self.inputDiaryModel = model
+    func setDiaryModel(info: DiaryInfo) {
+        var arr: [StoreImgModel] = []
+        if let images = info.images {
+            for value in images {
+                let use = value as! StoreImgInfo
+                let model = StoreImgModel.init(insetIndex: Int(use.insertIndex), imgData: use.imgData)
+                arr.append(model)
+            }
+        }
+
+        self.importImgLists = arr
+
+        // UI
+        self.weatherStr = info.weather ?? "阴天"
+        self.moodStr = info.mood ?? "开心"
+
+        self.inputDiaryModel = DiaryModel.init(date: info.date, title: (info.title ?? ""), weather: self.weatherStr, mood: self.moodStr, richText: (info.richText ?? NSAttributedString(string: "")), images: self.importImgLists)
     }
 }
 // MARK: - 自身的私有方法
@@ -186,6 +209,28 @@ extension EditController {
             }
         }
         
+        if let input = self.inputDiaryModel {
+            self.titleTF.text = input.title
+            
+            self.imageWeather.image = UIImage(named: WeatherDic[self.weatherStr] ?? "yintian")
+            self.imageMood.image = UIImage(named: MoodDic[self.moodStr] ?? "happy")
+            
+            self.textView.attributedText = input.richText
+            
+            if self.importImgLists.count == 0 {
+                self.imgContainerView.isHidden = true
+            } else {
+                self.imgContainerView.isHidden = false
+                
+                if let firstModel = self.importImgLists.first {
+                    if let use = firstModel.imgData {
+                        self.coverImg.image = UIImage(data: use)
+                    }
+                }
+                
+                self.imgCountLbl.text = String(self.importImgLists.count)
+            }
+        }
     }
     
     @objc private func moodAndWeatherBtnClick() {
@@ -248,7 +293,11 @@ extension EditController {
                 self.navigationController?.popViewController(animated: true)
                 return
             }
-            DiaryManager.sharedInstance.updateADiary(model: currentDiarModel)
+            DiaryManager.sharedInstance.updateADiary(original: (inputDiaryModel?.transformToCDInfo())!, newModel: currentDiarModel.transformToCDInfo())
+            
+            NotificationCenter.default.post(name: UpdateDiaryNotification, object: nil)
+            
+            self.displayCallback(self.currentDiarModel.transformToCDInfo())
             
             // 保存完了，返回
             self.navigationController?.popViewController(animated: true)
@@ -259,7 +308,9 @@ extension EditController {
                 self.showAlert(title: nil, msg: "您还什么都没写呢。")
                 return
             }
-            DiaryManager.sharedInstance.addANewDiary(model: currentDiarModel)
+            DiaryManager.sharedInstance.addANewDiary(info: currentDiarModel.transformToCDInfo())
+            
+            NotificationCenter.default.post(name: AddNewDiaryNotification, object: nil)
             
             // 保存完了，返回
             self.navigationController?.popViewController(animated: true)
@@ -426,9 +477,6 @@ extension EditController: KeyBoardExtensionDelegate {
 
         self.textView.resignFirstResponder()
     }
-    
-
-    
 }
 
 // MARK: - 处理导入数据 图片
@@ -496,4 +544,8 @@ extension EditController {
             break
         }
     }
+}
+
+extension EditController {
+    
 }
