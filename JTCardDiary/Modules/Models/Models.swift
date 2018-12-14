@@ -17,12 +17,6 @@ struct MonthModel {
     var writed: Int = 0
 }
 
-struct DayModel {
-    var dateIndex: Int
-    
-    var isWrited: Bool = false
-}
-
 struct DiaryModel {
     var date: String?
     

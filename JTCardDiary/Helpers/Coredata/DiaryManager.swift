@@ -40,14 +40,13 @@ extension DiaryManager {
             yearInfo.date = CurrentYear
             
             let daysArr = JTDateUtils.getMonthDays(Date())
-            let colorArr = ["AFDFCC", "4D839B", "FABD6B", "E35A49", "3AADEF", "B1E2FF", "A7D7CB", "FCE85A", "82CAF2", "C9FF87", "6AECD2", "A1E0EF"]
             
             var temp: [MonthInfo] = []
             for index in 0..<12 {
                 let month = MonthInfo(context: self.context)
                 
                 month.date = year + "-\(index+1)"
-                month.color = colorArr[index]
+                month.color = "26BFFF"
                 month.cover = nil
                 month.totalDays = Int64(daysArr[index])
                 month.writed = 0
@@ -231,8 +230,43 @@ extension DiaryManager {
     
     /// 更新一篇日记
     func updateADiary(original: DiaryInfo, newModel: DiaryInfo) {
-        self.deleteADiary(info: original)
-        self.addANewDiary(info: newModel)
+        guard let diaryDate = original.date else {
+            return
+        }
+        
+        let monthDate = diaryDate.getMonthDate()
+        
+        let fetchRequest: NSFetchRequest<MonthInfo> = MonthInfo.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "date == %@", monthDate)
+        
+        do {
+            let result = try self.context.fetch(fetchRequest).first
+            
+            var tempDiarys = NSMutableOrderedSet()
+            if let diarys = result?.diarys {
+                for value in diarys {
+                    let use = value as! DiaryInfo
+                    
+                    if use.date == diaryDate {
+                        use.date = diaryDate
+                        use.title = newModel.title
+                        use.weather = newModel.weather
+                        use.mood = newModel.mood
+                        use.richText = newModel.richText
+                        use.images = newModel.images
+                    }
+                    
+                    tempDiarys.add(use)
+                }
+            }
+            
+            result?.diarys = tempDiarys
+            
+        } catch let error as NSError {
+            debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
+        }
+        
+        saveContext()
     }
 }
 

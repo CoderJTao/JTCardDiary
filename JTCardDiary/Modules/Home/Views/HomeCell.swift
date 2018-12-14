@@ -30,7 +30,7 @@ class HomeCell: UICollectionViewCell {
         return view
     }()
     
-    var cellBgClick: () -> () = {
+    var cellBgClick: (HomeCell) -> () = {_ in 
         
     }
     
@@ -58,6 +58,7 @@ class HomeCell: UICollectionViewCell {
         
         self.layer.masksToBounds = false
         
+        self.showImg.isHidden = true
     }
     
     
@@ -68,7 +69,7 @@ class HomeCell: UICollectionViewCell {
     
 
     @IBAction func moreBtnClick(_ sender: UIButton) {
-        self.cellBgClick()
+        self.cellBgClick(self)
     }
     
     func setMonthModel(model: MonthInfo) {
@@ -89,7 +90,9 @@ class HomeCell: UICollectionViewCell {
         
         if let use = model.cover {
             self.showImg.image = UIImage(data: use)
+            self.showImg.isHidden = false
         } else {
+            self.showImg.isHidden = true
             if let use = model.color {
                 self.normalView.backgroundColor = UIColor.hexString(hexString: use)
             }

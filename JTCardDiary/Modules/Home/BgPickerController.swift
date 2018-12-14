@@ -12,6 +12,9 @@ import Photos
 
 class BgPickerController: UIViewController {
     
+    private let colorArr = ["9966CC", "26BFFF", "FFC09F", "A3A380", "FCE85A", "1DB0B8", "6AECD2", "F29F3F", "F2753F", "FF5983", "D699BA", "F17C67", "E20048", "01939A", "AFDFCC", "FABD6B", "D2D2D2", "8E8E93", "404040", "2D2D2D"]
+    private let Color_Tag = 301
+    
     var pickerColor: (String) -> () = { _ in
         
     }
@@ -35,8 +38,14 @@ class BgPickerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
+        for index in 0..<colorArr.count {
+            let color = self.view.viewWithTag(Color_Tag + index)
+            color?.clipsToBounds = true
+            color?.layer.cornerRadius = 18
+            
+            color?.isUserInteractionEnabled = true
+            color?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(colorTap(_:))))
+        }
     }
 
     @IBAction func closeClick(_ sender: UIButton) {
@@ -54,6 +63,16 @@ class BgPickerController: UIViewController {
         } else {
             // 没有授权
         }
+    }
+    
+    @objc func colorTap(_ sender: UITapGestureRecognizer) {
+        guard let vw = sender.view else { return }
+        
+        let color = colorArr[vw.tag - Color_Tag]
+        
+        self.pickerColor(color)
+        
+        self.closeClick(UIButton())
     }
     
 
@@ -78,7 +97,9 @@ extension BgPickerController: UIImagePickerControllerDelegate, UINavigationContr
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            print("----")
+            
+            self.pickImage(pickedImage)
+            self.closeClick(UIButton())
         }
         
         picker.dismiss(animated: true, completion: nil)

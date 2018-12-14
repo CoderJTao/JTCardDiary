@@ -40,7 +40,6 @@ class HomeController: UIViewController {
         
         initData()
         setUpUI()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,10 +61,11 @@ class HomeController: UIViewController {
     private func flipToCalendar() {
         let cells = self.collectionView.visibleCells as! [HomeCell]
         for value in cells {
-            UIView.transition(with: value, duration: 0.5, options: UIView.AnimationOptions.transitionFlipFromRight, animations: {
+            value.layer.shadowColor = UIColor.clear.cgColor
+            UIView.transition(with: value.contentView, duration: 0.5, options: UIView.AnimationOptions.transitionFlipFromRight, animations: {
                 value.isCalendar = true
             }) { (finished) in
-                
+                value.layer.shadowColor = UIColor.gray.cgColor
             }
         }
     }
@@ -73,10 +73,11 @@ class HomeController: UIViewController {
     private func flipToShowImg() {
         let cells = self.collectionView.visibleCells as! [HomeCell]
         for value in cells {
-            UIView.transition(with: value, duration: 0.5, options: UIView.AnimationOptions.transitionFlipFromLeft, animations: {
+            value.layer.shadowColor = UIColor.clear.cgColor
+            UIView.transition(with: value.contentView, duration: 0.5, options: UIView.AnimationOptions.transitionFlipFromLeft, animations: {
                 value.isCalendar = false
             }) { (finished) in
-                
+                value.layer.shadowColor = UIColor.gray.cgColor
             }
         }
     }
@@ -138,6 +139,8 @@ class HomeController: UIViewController {
 extension HomeController {
     private func initData() {
         self.monthData = DiaryManager.sharedInstance.getCurrentYearMonths(year: CurrentYear)
+                
+        self.collectionView.reloadData()
     }
     
     private func setUpUI() {
@@ -200,16 +203,36 @@ extension HomeController: UICollectionViewDelegate, UICollectionViewDataSource, 
         cell.setMonthModel(model: self.monthData[indexPath.row])
         
         // 更改cell背景颜色
-        cell.cellBgClick = {
+        cell.cellBgClick = { clickCell in
             let vc = BgPickerController()
             vc.modalPresentationStyle = .overCurrentContext
             
+            let index = collectionView.indexPath(for: clickCell)!
+            
+            let monthInfo = self.monthData[index.row]
+            
             vc.pickerColor = { colorStr in
+                // 选取了颜色
+                monthInfo.color = colorStr
+                self.monthData[index.row].color = colorStr
                 
+                UIView.transition(with: cell.normalView, duration: 0.4, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+                    cell.normalView.backgroundColor = UIColor.hexString(hexString: colorStr)
+                }, completion: nil)
+                
+                DiaryManager.sharedInstance.updateMonthInfo(info: monthInfo)
             }
             
             vc.pickImage = { img in
+                monthInfo.cover = img.pngData()
+                self.monthData[index.row].cover = img.pngData()
                 
+                UIView.transition(with: cell.showImg, duration: 0.4, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+                    cell.showImg.isHidden = false
+                    cell.showImg.image = img
+                }, completion: nil)
+                
+                DiaryManager.sharedInstance.updateMonthInfo(info: monthInfo)
             }
             
             self.present(vc, animated: false, completion: nil)

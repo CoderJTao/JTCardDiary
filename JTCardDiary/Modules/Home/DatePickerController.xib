@@ -100,7 +100,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.30067121478873238" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20031910211267606" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="5fI-yx-n2P" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="WG9-dF-znl"/>
                 <constraint firstItem="5fI-yx-n2P" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" constant="300" id="X3g-Jg-egc"/>

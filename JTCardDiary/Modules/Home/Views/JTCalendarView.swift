@@ -73,6 +73,22 @@ class JTCalendarView: UIView {
         self.backgroundColor = UIColor.white
     }
     
+    func setData(diarys: [DiaryInfo]) {
+        let days = self.currentMonthTotalDays + self.firstDayIsWeekInMonth
+        
+        var allData: [Bool] = []
+        
+        for index in 0..<days {
+            if index < self.firstDayIsWeekInMonth {
+                // 添加空数据
+                allData.append(false)
+            } else {
+                // 根据传入数据填充数据
+                
+            }
+        }
+    }
+    
     func setDate(dateStr: String) {
         let str = dateStr + "-15"
         let getDate = str.toDate()

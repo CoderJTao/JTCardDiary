@@ -120,7 +120,7 @@
                         <constraint firstAttribute="width" secondItem="sSS-Uc-bjZ" secondAttribute="height" multiplier="5:5" id="XZq-ua-m2F"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="今天是个好日子" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kMc-Gn-gmY">
+                <textField opaque="NO" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="今天是个好日子" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kMc-Gn-gmY">
                     <rect key="frame" x="12" y="28" width="351" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="WeE-on-U5Q"/>

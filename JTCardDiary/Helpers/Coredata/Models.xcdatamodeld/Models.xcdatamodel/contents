@@ -4,7 +4,7 @@
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mood" attributeType="String" defaultValueString="开心" syncable="YES"/>
         <attribute name="richText" optional="YES" attributeType="Transformable" valueTransformerName="RichtextTransformer" customClassName="NSAttributedString" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="weather" attributeType="String" defaultValueString="阴天" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StoreImgInfo" syncable="YES"/>
     </entity>
@@ -25,9 +25,9 @@
         <relationship name="months" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MonthInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="StoreImgInfo" positionX="25.2734375" positionY="306.71875" width="128" height="73"/>
-        <element name="DiaryInfo" positionX="-169.890625" positionY="279.4453125" width="128" height="133"/>
+        <element name="DiaryInfo" positionX="-169.890625" positionY="279.4453125" width="128" height="135"/>
         <element name="MonthInfo" positionX="22.57421875" positionY="66.02734375" width="128" height="133"/>
+        <element name="StoreImgInfo" positionX="25.2734375" positionY="306.71875" width="128" height="73"/>
         <element name="YearInfo" positionX="-193.34765625" positionY="62.1953125" width="128" height="73"/>
     </elements>
 </model>
