@@ -14,6 +14,9 @@ protocol JTCalendarViewDelegate: AnyObject {
 
 class JTCalendarView: UIView {
     
+    private var writeDays: [String] = []
+    
+    
     weak var delegate: JTCalendarViewDelegate?
     
     fileprivate var contentViewHeight: CGFloat {
@@ -74,19 +77,16 @@ class JTCalendarView: UIView {
     }
     
     func setData(diarys: [DiaryInfo]) {
-        let days = self.currentMonthTotalDays + self.firstDayIsWeekInMonth
-        
-        var allData: [Bool] = []
-        
-        for index in 0..<days {
-            if index < self.firstDayIsWeekInMonth {
-                // 添加空数据
-                allData.append(false)
-            } else {
-                // 根据传入数据填充数据
-                
+        for diary in diarys {
+            if let date = diary.date {
+                let day = date.getCurrentDay()
+                if !writeDays.contains(day) {
+                    writeDays.append(day)
+                }
             }
         }
+        
+        self.collectionView.reloadData()
     }
     
     func setDate(dateStr: String) {
@@ -156,7 +156,15 @@ extension JTCalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
             cell.backgroundColor = UIColor.white
         } else {
             day = index - self.firstDayIsWeekInMonth + 1
-            cell.daysLbl.text = String(day)
+            
+            let dayStr = String(day)
+            cell.daysLbl.text = dayStr
+            
+            if writeDays.contains(dayStr) {
+                cell.isWrited = true
+            } else {
+                cell.isWrited = false
+            }
             
             if index % 7 == 0 {
                 cell.dayType = .sunday
@@ -182,7 +190,7 @@ extension JTCalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
 //                }
             }
         }
-        cell.isWrited = false
+        
         return cell
     }
     

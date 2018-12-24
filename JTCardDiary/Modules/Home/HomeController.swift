@@ -31,6 +31,8 @@ class HomeController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        initData()
     }
     
     override func viewDidLoad() {
@@ -97,6 +99,8 @@ class HomeController: UIViewController {
             self.yearLbl.text = "\(year)"
             self._currentIndex = month-1
             self.collectionView.scrollToItem(at: IndexPath(item: self._currentIndex, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+            
+            self.initData(String(year))
         }
         
         self.present(vc, animated: false) {
@@ -137,8 +141,8 @@ class HomeController: UIViewController {
 
 // MARK: - private setting
 extension HomeController {
-    private func initData() {
-        self.monthData = DiaryManager.sharedInstance.getCurrentYearMonths(year: CurrentYear)
+    private func initData(_ year: String = CurrentYear) {
+        self.monthData = DiaryManager.sharedInstance.getCurrentYearMonths(year: year)
                 
         self.collectionView.reloadData()
     }

@@ -183,11 +183,12 @@ extension DiaryManager {
                 let set = NSMutableOrderedSet(orderedSet: (result?.diarys)!)
                 set.add(info)
                 result?.diarys = set
+                result?.writed = Int64(set.count)
             } else {
                 let set = NSOrderedSet(object: info)
                 result?.diarys = set
+                result?.writed = Int64(set.count)
             }
-            
         } catch let error as NSError {
             debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
         }
@@ -220,6 +221,7 @@ extension DiaryManager {
             }
             
             result?.diarys = tempDiarys
+            result?.writed = Int64(tempDiarys.count)
             
         } catch let error as NSError {
             debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")

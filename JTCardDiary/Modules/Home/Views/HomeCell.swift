@@ -102,5 +102,10 @@ class HomeCell: UICollectionViewCell {
         
         let progress = CGFloat(model.writed) / CGFloat(model.totalDays)
         self.constraintProgressWidth.constant = self.progressBackGroundLbl.width * progress
+        
+        // set calendar data
+        if let diarys = model.diarys?.array as? [DiaryInfo] {
+            self.calendar.setData(diarys: diarys)
+        }
     }
 }

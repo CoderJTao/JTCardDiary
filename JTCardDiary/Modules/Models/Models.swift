@@ -58,7 +58,14 @@ struct DiaryModel {
         diary.weather = self.weather
         diary.mood = self.mood
         diary.richText = self.richText
-        diary.images = NSOrderedSet(array: images)
+        
+        let sets = NSMutableOrderedSet()
+        for value in images {
+            let storeImgInfo = value.transformToCDInfo()
+            sets.add(storeImgInfo)
+        }
+        diary.images = sets
+        
         return diary
     }
 }

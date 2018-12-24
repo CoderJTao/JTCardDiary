@@ -43,7 +43,7 @@ class JTCalendarCell: UICollectionViewCell {
     
     var isWrited: Bool = false {
         didSet {
-            self.daysLbl.alpha = isWrited ? 0.8 : 0.4
+            self.daysLbl.alpha = isWrited ? 1.0 : 0.3
         }
     }
     
