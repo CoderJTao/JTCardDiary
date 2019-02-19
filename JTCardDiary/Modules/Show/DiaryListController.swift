@@ -10,6 +10,8 @@ import UIKit
 
 class DiaryListController: UIViewController {
 
+    @IBOutlet weak var noneLbl: UILabel!
+    
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -106,6 +108,8 @@ extension DiaryListController {
         self.listData = DiaryManager.sharedInstance.getDiarysOfMonth(month: currentDate)
         
         self.collectionView.reloadData()
+        
+        self.noneLbl.isHidden = !(self.listData.count == 0)
     }
     
 }

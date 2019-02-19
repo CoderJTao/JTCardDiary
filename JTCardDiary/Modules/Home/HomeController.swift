@@ -40,11 +40,15 @@ class HomeController: UIViewController {
         
         self.hideNavigationBarHairLine()
         
+        self.yearLbl.text = CurrentYear
+        
         initData()
         setUpUI()
     }
     
-    override func viewDidLayoutSubviews() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         self.collectionView.scrollToItem(at: IndexPath(item: _currentIndex, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: false)
     }
     
@@ -98,9 +102,9 @@ class HomeController: UIViewController {
             
             self.yearLbl.text = "\(year)"
             self._currentIndex = month-1
-            self.collectionView.scrollToItem(at: IndexPath(item: self._currentIndex, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
             
             self.initData(String(year))
+            self.collectionView.scrollToItem(at: IndexPath(item: self._currentIndex, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
         }
         
         self.present(vc, animated: false) {

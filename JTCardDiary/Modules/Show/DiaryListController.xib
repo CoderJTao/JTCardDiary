@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DiaryListController" customModule="JTCardDiary" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="Mwc-7D-0kh" id="cAl-uJ-RYS"/>
+                <outlet property="noneLbl" destination="Adq-gP-JfO" id="Kyf-9Z-7iz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -53,6 +53,12 @@
                         <action selector="writeTodayBtnClick:" destination="-1" eventType="touchUpInside" id="Q0x-QH-Foq"/>
                     </connections>
                 </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前月份还没有记录。快点开始写出自己的故事吧。" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Adq-gP-JfO">
+                    <rect key="frame" x="30" y="315.5" width="315" height="36"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -60,11 +66,14 @@
                 <constraint firstItem="Mwc-7D-0kh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="4a7-Q4-yyE"/>
                 <constraint firstItem="E6v-BE-5nS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="98b-6a-xhD"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="vEF-ZD-mQZ" secondAttribute="bottom" constant="20" id="E6Y-cU-NrA"/>
+                <constraint firstItem="Adq-gP-JfO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Kqs-BL-Y1n"/>
                 <constraint firstItem="Mwc-7D-0kh" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="LxI-Az-T48"/>
                 <constraint firstItem="081-FO-D54" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="O6l-Pm-0kd"/>
                 <constraint firstItem="E6v-BE-5nS" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="Pn3-gW-W4n"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Mwc-7D-0kh" secondAttribute="trailing" id="Ziy-ot-0Zd"/>
                 <constraint firstItem="E6v-BE-5nS" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="fkP-rU-Msw"/>
+                <constraint firstItem="Adq-gP-JfO" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="hw6-ST-TVD"/>
+                <constraint firstItem="Adq-gP-JfO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="ibx-co-TtB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="081-FO-D54" secondAttribute="bottom" id="keE-N0-QP4"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vEF-ZD-mQZ" secondAttribute="trailing" constant="12" id="llh-Ab-cqk"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Mwc-7D-0kh" secondAttribute="bottom" id="mek-Z5-bnu"/>

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
         
         // 保存当前年月份信息
-        DiaryManager.sharedInstance.saveYearInfo(year: "2018")
+        DiaryManager.sharedInstance.saveYearInfo(year: CurrentYear)
         
         return true
     }

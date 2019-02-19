@@ -37,7 +37,7 @@ extension DiaryManager {
         let createYearInfo = {
             let yearInfo = YearInfo(context: self.context)
             
-            yearInfo.date = CurrentYear
+            yearInfo.date = year
             
             let daysArr = JTDateUtils.getMonthDays(Date())
             
@@ -95,11 +95,16 @@ extension DiaryManager {
                 $0.date == year
             }
             
-            if let tempYear = resultYear.first {
-                if let months = tempYear.months {
-                    for value in months {
-                        if let model = value as? MonthInfo {
-                            result.append(model)
+            if resultYear.count == 0 {
+                self.saveYearInfo(year: year)
+                return getCurrentYearMonths(year: year)
+            } else {
+                if let tempYear = resultYear.first {
+                    if let months = tempYear.months {
+                        for value in months {
+                            if let model = value as? MonthInfo {
+                                result.append(model)
+                            }
                         }
                     }
                 }

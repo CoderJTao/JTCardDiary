@@ -82,7 +82,7 @@ class DatePickerController: UIViewController {
     }
     
     @IBAction func moveBtnClick(_ sender: UIButton) {
-        self.jumpToDate(self.selectMonthIndex+1, (2018-5)+self.selectYearIndex)
+        self.jumpToDate(self.selectMonthIndex+1, (Int(CurrentYear)!-5)+self.selectYearIndex)
         
         UIView.animate(withDuration: 0.2, animations: {
             self.bottomConstraint.constant = 300
