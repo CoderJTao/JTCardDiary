@@ -20,13 +20,13 @@ class EditController: UIViewController {
     
     private var imageMood: UIImageView = {
         let image = UIImageView(frame: CGRect(x: 140, y: 10, width: 16, height: 16))
-        image.image = UIImage(named: "happy")
+        image.image = UIImage(named: "happy_s")
         image.contentMode = UIView.ContentMode.scaleAspectFit
         return image
     }()
     private var imageWeather: UIImageView = {
         let image = UIImageView(frame: CGRect(x: 160, y: 10, width: 16, height: 16))
-        image.image = UIImage(named: "yintian")
+        image.image = UIImage(named: "yintian_s")
         image.contentMode = UIView.ContentMode.scaleAspectFit
         return image
     }()
@@ -131,7 +131,7 @@ class EditController: UIViewController {
         lbl.textAlignment = .center
         lbl.textColor = UIColor.hexString(hexString: TextColor_black)
         lbl.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
-        lbl.text = "NOV, 23 / 2018"
+        lbl.text = title
         titleView.addSubview(lbl)
         lbl.center = CGPoint(x: titleView.center.x-25, y: titleView.center.y)
         
@@ -379,7 +379,6 @@ extension EditController: UITextViewDelegate, UITextFieldDelegate {
 // MARK: - 键盘上l扩展方法的回调
 extension EditController: KeyBoardExtensionDelegate {
     func photoPressed(_ sender: UIButton) {
-        print("照片点击")
         
         self.colorView.removeFromSuperview()
         self.fontView.removeFromSuperview()
@@ -394,7 +393,6 @@ extension EditController: KeyBoardExtensionDelegate {
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
-                    print("authorized")
                     
                     DispatchQueue.main.async {
                         
@@ -421,7 +419,6 @@ extension EditController: KeyBoardExtensionDelegate {
     }
     
     func fontPressed(_ sender: UIButton) {
-        print("字体点击")
         self.colorView.removeFromSuperview()
         
         if sender.isSelected {
@@ -440,7 +437,6 @@ extension EditController: KeyBoardExtensionDelegate {
     }
     
     func colorPickerPressed(_ sender: UIButton) {
-        print("色板点击")
         self.fontView.removeFromSuperview()
         
         if sender.isSelected {

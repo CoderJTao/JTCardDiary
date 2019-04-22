@@ -37,16 +37,6 @@ class KeyBoardExtensionView: UIView {
         return btn
     }()
     
-//    private lazy var videoBtn: UIButton = {
-//        let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*1, y: 0, width: btnWidthHeight, height: btnWidthHeight))
-//        btn.addTarget(self, action: #selector(self.videoBtnClick(_:)), for: .touchUpInside)
-//
-//        btn.setImage(UIImage(named: "video"), for: .normal)
-//        btn.setImage(UIImage(named: "video_s"), for: .selected)
-//
-//        return btn
-//    }()
-    
     private lazy var fontBtn: UIButton = {
         let btn = UIButton(frame: CGRect(x: 12+(btnWidthHeight+margin)*1, y: 0, width: btnWidthHeight, height: btnWidthHeight))
         btn.addTarget(self, action: #selector(self.fontBtnClick(_:)), for: .touchUpInside)
@@ -109,17 +99,6 @@ extension KeyBoardExtensionView {
         
         self.delegate?.photoPressed(sender)
     }
-    
-//    @objc func videoBtnClick(_ sender: UIButton) {
-//        self.photoBtn.isSelected = false
-//        self.fontBtn.isSelected = false
-//        self.colorBtn.isSelected = false
-//
-//        self.fontBtn.isSelected = false
-//        self.colorBtn.isSelected = false
-//
-//        self.delegate?.videoPressed(sender)
-//    }
     
     @objc func fontBtnClick(_ sender: UIButton) {
         self.photoBtn.isSelected = false

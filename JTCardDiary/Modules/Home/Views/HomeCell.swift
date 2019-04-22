@@ -81,10 +81,10 @@ class HomeCell: UICollectionViewCell {
             let arr = use.components(separatedBy: "-")
             let month = arr.last!
             
-            self.monthLbl.text = month
+            self.monthLbl.text = String(Int(month)!)
             self.monthEnLbl.text = MonthSubDic[month]
             
-            self.calMonthLbl.text = month
+            self.calMonthLbl.text = String(Int(month)!)
             self.calMonthEnLbl.text = MonthSubDic[month]
         }
         

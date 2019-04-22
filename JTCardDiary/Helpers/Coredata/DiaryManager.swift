@@ -45,7 +45,12 @@ extension DiaryManager {
             for index in 0..<12 {
                 let month = MonthInfo(context: self.context)
                 
-                month.date = year + "-\(index+1)"
+                if index + 1 < 10 {
+                    month.date = year + "-0\(index+1)"
+                } else {
+                    month.date = year + "-\(index+1)"
+                }
+                
                 month.color = "26BFFF"
                 month.cover = nil
                 month.totalDays = Int64(daysArr[index])
@@ -170,20 +175,38 @@ extension DiaryManager {
         return returnArr
     }
     
+    func getDiary(date: String) {
+        let fetchRequest: NSFetchRequest = DiaryInfo.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "date == %@", date)
+        do {
+            let result: [DiaryInfo] = try context.fetch(fetchRequest)
+            print(result)
+        } catch {
+            fatalError();
+        }
+        
+    }
+    
     /// 增加一篇日记
     func addANewDiary(info: DiaryInfo) {
         guard let diaryDate = info.date else {
             return
         }
         
-        let monthDate = diaryDate.getMonthDate()
+//        var diary = NSEntityDescription.insertNewObject(forEntityName: "DiaryInfo", into: context) as! DiaryInfo
+//
+//        diary = info
+//
+//        saveContext()
         
+        let monthDate = diaryDate.getMonthDate()
+
         let fetchRequest: NSFetchRequest<MonthInfo> = MonthInfo.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "date == %@", monthDate)
-        
+
         do {
             let result = try self.context.fetch(fetchRequest).first
-            
+
             if result?.diarys != nil {
                 let set = NSMutableOrderedSet(orderedSet: (result?.diarys)!)
                 set.add(info)
@@ -197,7 +220,7 @@ extension DiaryManager {
         } catch let error as NSError {
             debugPrint("ViewController Fetch error:\(error), description:\(error.userInfo)")
         }
-        
+
         saveContext()
     }
     
