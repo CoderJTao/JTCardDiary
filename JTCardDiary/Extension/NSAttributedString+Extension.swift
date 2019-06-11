@@ -10,6 +10,32 @@ import UIKit
 import Foundation
 
 extension NSAttributedString {
+    
+    /// get should config paragraph range
+    ///
+    /// - Parameter selectRange: cursor position
+    /// - Returns: paragraph range
+    func getParagraphRange(selectRange: NSRange) -> NSRange {
+        
+        let tempStr = NSString(string: self.string)
+        
+        var beforeRange = tempStr.range(of: "\n", options: NSString.CompareOptions.backwards, range: NSRange(location: 0, length: selectRange.location))
+        
+        if beforeRange.location == NSNotFound {
+            beforeRange.location = 0
+        }
+        
+        var afetrRange = tempStr.range(of: "\n", options: NSString.CompareOptions.forcedOrdering, range: NSRange(location: selectRange.location, length: tempStr.length - selectRange.location))
+        
+        if afetrRange.location == NSNotFound {
+            afetrRange.location = tempStr.length
+        }
+        
+        let length = (afetrRange.location - beforeRange.location + 1) > selectRange.location ? selectRange.location : (afetrRange.location - beforeRange.location + 1)
+        
+        return NSRange(location: beforeRange.location + beforeRange.length, length: length)
+    }
+    
     func transformToArray() -> [[String: Any]] {
         var result: [[String: Any]] = []
         

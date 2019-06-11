@@ -19,29 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JTCardDiary/Helpers/Coredata/DiaryManager.swift"
-            timestampString = "577596371.018031"
+            filePath = "JTCardDiary/Modules/Write/Views/JTRichTextView.swift"
+            timestampString = "581938401.326812"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "getDiary(date:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JTCardDiary/Helpers/Coredata/DiaryManager.swift"
-            timestampString = "577596371.018109"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
-            landmarkName = "addANewDiary(info:)"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "setOrderList(isSet:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

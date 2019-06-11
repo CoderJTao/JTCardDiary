@@ -11,8 +11,21 @@ import CoreText
 
 class JTRichTextView: UITextView {
     
-    private let TextFont = UIFont.systemFont(ofSize: 15)
+    // MARK: - const property
+    
+    private let TextFont = UIFont.systemFont(ofSize: 17)
     private let TextColor = UIColor.hexString(hexString: TextColor_black)
+    
+    private lazy var bulletStyleString: NSAttributedString = {
+        let aStr = NSMutableAttributedString(string: "  . ")
+        aStr.addAttributes([NSAttributedString.Key.font : UIFont(name: "ArialRoundedMTBold", size: 17) ?? UIFont.boldSystemFont(ofSize: 17),
+                            NSAttributedString.Key.baselineOffset: NSNumber(value: 3.5),
+                            NSAttributedString.Key.strokeWidth: -3],
+                           range: NSRange(location: 0, length: 3))
+        return aStr
+    }()
+    
+    // MARK: - init function
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -24,6 +37,8 @@ class JTRichTextView: UITextView {
                           NSAttributedString.Key.foregroundColor: TextColor]
         
         self.typingAttributes = attributes
+        
+        self.delegate = self
     }
     
     override func awakeFromNib() {
@@ -36,10 +51,14 @@ class JTRichTextView: UITextView {
                           NSAttributedString.Key.foregroundColor: TextColor]
         
         self.typingAttributes = attributes
+        
+        self.delegate = self
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    // MARK: - some property we can set
     
     /**字体颜色*/
     var color = UIColor.hexString(hexString: TextColor_black) {
@@ -74,7 +93,7 @@ class JTRichTextView: UITextView {
         }
     }
     
-    /**缩进*/
+    /**缩进*/  // 利用  paragraphStyle 设置
     var isIndent = false
     
     
@@ -125,7 +144,7 @@ class JTRichTextView: UITextView {
         }
     }
     
-    /// 更改样式
+    /// refresh style
     private func changeStyle() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 5  // 字体的行间距
@@ -275,12 +294,30 @@ class JTRichTextView: UITextView {
     
     /// 设置有序列表
     private func setOrderList(isSet: Bool) {
+        let shouldListPRange = self.attributedText.getParagraphRange(selectRange: self.selectedRange)
+        
+        let shouldListText = NSMutableAttributedString(attributedString: self.attributedText.attributedSubstring(from: shouldListPRange))
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5  // 字体的行间距
+        paragraphStyle.paragraphSpacingBefore = 20
+        
+        shouldListText.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle],
+                                     range: NSRange(location: 0, length: shouldListPRange.length))
         
         
+        let orignalStr = NSMutableAttributedString(attributedString: self.attributedText)
+        
+        orignalStr.replaceCharacters(in: shouldListPRange, with: shouldListText)
+        orignalStr.insert(bulletStyleString, at: shouldListPRange.location)
+        
+        self.attributedText = orignalStr
     }
     
     /// 设置无序列表
     private func setUnorderedList(isSet: Bool) {
+        
+        
         
         
     }
@@ -473,5 +510,29 @@ extension JTRichTextView {
         dic["content"] = result
         
         return dic
+    }
+}
+
+extension JTRichTextView: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        print(textView.selectedRange)
+        
+        
+        // 换行处理
+        if text == "\n" && (isListOL || isListUL) {
+            if isListUL {
+                
+            } else {
+                // 获取本段文字  若文字为空，则删除列表符号，否则，换行并自动添加列表符号
+                
+            }
+        }
+        
+        return true
+    }
+    
+    // 移动光标时调用
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        print(textView.selectedRange)
     }
 }
