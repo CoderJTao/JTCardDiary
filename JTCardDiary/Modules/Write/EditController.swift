@@ -519,10 +519,7 @@ extension EditController {
     }
     
     private func refreshTextViewStyle(style: JTFontFormat, isSet: Bool) {
-        
-        let use = JTFontFormat.listOL
-        
-        switch use {
+        switch style {
         case .alignLeft, .alignCenter, .alignRight:
             self.textView.alignType = style
         case .beBold:
